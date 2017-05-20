@@ -1,0 +1,24 @@
+PODS:
+  - APIKit (3.1.1):
+    - Result (~> 3.0)
+  - MastodonKit (1.0.10)
+  - NorthLayout (3.0.0)
+  - Result (3.2.2)
+  - "※ikemen (0.2.0)"
+
+DEPENDENCIES:
+  - APIKit
+  - MastodonKit
+  - NorthLayout
+  - "※ikemen"
+
+SPEC CHECKSUMS:
+  APIKit: 7460983f490d3bde6aaaaa4164d18c9865a6f91d
+  MastodonKit: 573c2b32491108599aef4d99addb0e13a154cd6a
+  NorthLayout: 28db8bfa49b861b4e972cc8e7c683c8ba819ff88
+  Result: 4edd39003fdccf281d418ee1b006571f70123250
+  "※ikemen": c04aecee4293a2b6deb2119f7e67e7a82c6dea06
+
+PODFILE CHECKSUM: 1f17b33c6ae2f9f25ba874b9477ce254c9082f80
+
+COCOAPODS: 1.2.1
