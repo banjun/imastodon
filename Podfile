@@ -7,7 +7,7 @@ target 'imastodon' do
   pod 'Kingfisher'
   pod 'SVProgressHUD'
   pod 'BrightFutures'
-  pod 'APIKit'
+  pod 'Himotoki'
   pod 'pencil'
   pod 'MastodonKit'
   pod 'IKEventSource'

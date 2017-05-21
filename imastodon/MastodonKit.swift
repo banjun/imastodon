@@ -1,6 +1,8 @@
 import MastodonKit
 import BrightFutures
 import pencil
+import Himotoki
+import Foundation
 
 // stupid wrapper for MastodonKit
 
@@ -89,7 +91,7 @@ extension Account: CustomReadWriteElement {
             username: account.username,
             acct: account.acct,
             displayName: account.displayName,
-            note: account.displayName,
+            note: account.note,
             url: account.username,
             avatar: account.avatar,
             avatarStatic: account.avatarStatic,
@@ -123,6 +125,224 @@ extension Account: CustomReadWriteElement {
         } catch {
             return nil
         }
+    }
+}
+extension Account: Decodable {
+    public static func decode(_ e: Extractor) throws -> Account {
+        return try Account(
+            id: e <| "id",
+            username: e <| "username",
+            acct: e <| "acct",
+            displayName: e <| "display_name",
+            note: e <| "note",
+            url: e <| "url",
+            avatar: e <| "avatar",
+            avatarStatic: e <| "avatar_static",
+            header: e <| "header",
+            headerStatic: e <| "header_static",
+            locked: e <| "locked",
+            createdAt: DateTransformer.apply(e <| "created_at"),
+            followersCount: e <| "followers_count",
+            followingCount: e <| "following_count",
+            statusesCount: e <| "statuses_count")
+    }
+}
+
+// copy and paste -ed for visibility issue at MastodonKit
+struct Status {
+    /// The ID of the status.
+    public let id: Int
+    /// A Fediverse-unique resource ID.
+    public let uri: String
+    /// URL to the status page (can be remote).
+    public let url: URL
+    /// The Account which posted the status.
+    public let account: Account
+    /// null or the ID of the status it replies to.
+    public let inReplyToID: Int?
+    /// null or the ID of the account it replies to.
+    public let inReplyToAccountID: Int?
+    /// Body of the status; this will contain HTML (remote HTML already sanitized).
+    public let content: String
+    /// The time the status was created.
+    public let createdAt: Date
+    /// The number of reblogs for the status.
+    public let reblogsCount: Int
+    /// The number of favourites for the status.
+    public let favouritesCount: Int
+    /// Whether the authenticated user has reblogged the status.
+    public let reblogged: Bool?
+    /// Whether the authenticated user has favourited the status.
+    public let favourited: Bool?
+    /// Whether media attachments should be hidden by default.
+    public let sensitive: Bool?
+    /// If not empty, warning text that should be displayed before the actual content.
+    public let spoilerText: String
+    /// The visibility of the status.
+    public let visibility: Visibility
+    /// An array of attachments.
+    public let mediaAttachments: [Attachment]
+    /// An array of mentions.
+    public let mentions: [Mention]
+    /// An array of tags.
+    public let tags: [Tag]
+    /// Application from which the status was posted.
+    public let application: Application?
+    /// The reblogged Status
+    public var reblog: Status? {
+        return reblogWrapper.first?.flatMap { $0 }
+    }
+
+    var reblogWrapper: [Status?]
+}
+
+let URLTransformer = Transformer<String, URL> { URLString throws -> URL in
+    if let URL = URL(string: URLString) {
+        return URL
+    }
+
+    throw customError("Invalid URL string: \(URLString)")
+}
+
+let DateTransformer = Transformer<String, Date> { dateString throws -> Date in
+    let formatter = ISO8601DateFormatter()
+    formatter.formatOptions = [.withFullDate, .withTime, .withDashSeparatorInDate, .withColonSeparatorInTime] // handle milliseconds
+    guard let date = formatter.date(from: dateString) else {
+        throw customError("Invalid date string: \(dateString)")
+    }
+    return date
+}
+
+let VisibilityTransformer = Transformer<String, Visibility> { s throws -> Visibility in
+    guard let v = Visibility(rawValue: s) else {
+        throw customError("Invalid Visibility string: \(s)")
+    }
+    return v
+}
+
+let AttachmentTypeTransformer = Transformer<String, AttachmentType> { s throws -> AttachmentType in
+    switch s {
+    case "image": return .image
+    case "video": return .video
+    case "gifv": return .gifv
+    default: return .unknown
+    }
+}
+
+struct Attachment {
+    /// ID of the attachment.
+    public let id: Int
+    /// Type of the attachment.
+    public let type: AttachmentType
+    /// URL of the locally hosted version of the image.
+    public let url: String
+    /// For remote images, the remote URL of the original image.
+    public let remoteURL: String?
+    /// URL of the preview image.
+    public let previewURL: String
+    /// Shorter URL for the image, for insertion into text (only present on local images).
+    public let textURL: String?
+}
+extension Attachment: Decodable {
+    public static func decode(_ e: Extractor) throws -> Attachment {
+        return try Attachment(
+            id: e <| "id",
+            type: AttachmentTypeTransformer.apply(e <| "type"),
+            url: e <| "url",
+            remoteURL: e <|? "remote_url",
+            previewURL: e <| "preview_url",
+            textURL: e <|? "text_url")
+    }
+    init(_ a: MastodonKit.Attachment) {
+        self.init(id: a.id, type: a.type, url: a.url, remoteURL: a.remoteURL, previewURL: a.previewURL, textURL: a.textURL)
+    }
+}
+
+public struct Mention {
+    /// Account ID.
+    public let id: Int
+    /// The username of the account.
+    public let username: String
+    /// Equals username for local users, includes @domain for remote ones.
+    public let acct: String
+    /// URL of user's profile (can be remote).
+    public let url: String
+}
+extension Mention: Decodable {
+    public static func decode(_ e: Extractor) throws -> Mention {
+        return try Mention(
+            id: e <| "id",
+            username: e <| "username",
+            acct: e <| "acct",
+            url: e <| "url")
+    }
+    init(_ m: MastodonKit.Mention) {
+        self.init(id: m.id, username: m.username, acct: m.acct, url: m.url)
+    }
+}
+
+public struct Tag {
+    /// The hashtag, not including the preceding #.
+    public let name: String
+    /// The URL of the hashtag.
+    public let url: String
+}
+extension Tag: Decodable {
+    public static func decode(_ e: Extractor) throws -> Tag {
+        return try Tag(
+            name: e <| "name",
+            url: e <| "url")
+    }
+    init(_ t: MastodonKit.Tag) {
+        self.init(name: t.name, url: t.url)
+    }
+}
+
+public struct Application {
+    /// Name of the app.
+    public let name: String
+    /// Homepage URL of the app.
+    public let website: String?
+}
+extension Application: Decodable {
+    public static func decode(_ e: Extractor) throws -> Application {
+        return try Application(
+            name: e <| "name",
+            website: e <|? "website")
+    }
+    init(_ a: MastodonKit.Application) {
+        self.init(name: a.name, website: a.website)
+    }
+}
+
+extension Status: Decodable {
+    static func decode(_ e: Extractor) throws -> Status {
+        return try Status(
+            id: e <| "id",
+            uri: e <| "uri",
+            url: URLTransformer.apply(e <| "url"),
+            account: e <| "account",
+            inReplyToID: e <|? "in_reply_to_id",
+            inReplyToAccountID: e <|? "in_reply_to_account_id",
+            content: e <| "content",
+            createdAt: DateTransformer.apply(e <| "created_at"),
+            reblogsCount: e <| "reblogs_count",
+            favouritesCount: e <| "favourites_count",
+            reblogged: e <|? "reblogged",
+            favourited: e <|? "favourited",
+            sensitive: e <|? "sensitive",
+            spoilerText: e <| "spoiler_text",
+            visibility: VisibilityTransformer.apply(e <| "visibility"),
+            mediaAttachments: e <|| "media_attachments",
+            mentions: e <|| "mentions",
+            tags: e <|| "tags",
+            application: e <|? "application",
+            reblogWrapper: [])
+    }
+}
+extension Status {
+    init(_ status: MastodonKit.Status) {
+        self.init(id: status.id, uri: status.uri, url: status.url, account: Account(status.account), inReplyToID: status.inReplyToID, inReplyToAccountID: status.inReplyToAccountID, content: status.content, createdAt: status.createdAt, reblogsCount: status.reblogsCount, favouritesCount: status.favouritesCount, reblogged: status.reblogged, favourited: status.favourited, sensitive: status.sensitive, spoilerText: status.spoilerText, visibility: status.visibility, mediaAttachments: status.mediaAttachments.map {Attachment($0)}, mentions: status.mentions.map {Mention($0)}, tags: status.tags.map {Tag($0)}, application: status.application.map {Application($0)}, reblogWrapper: [])
     }
 }
 
@@ -244,7 +464,7 @@ extension Client {
                 promise.failure(.mastodonKitNullPo)
                 return
             }
-            promise.success(statuses)
+            promise.success(statuses.map {Status($0)})
         }
         return promise.future
     }
@@ -260,7 +480,7 @@ extension Client {
                 promise.failure(.mastodonKitNullPo)
                 return
             }
-            promise.success(statuses)
+            promise.success(statuses.map {Status($0)})
         }
         return promise.future
     }

@@ -1,9 +1,8 @@
 PODS:
-  - APIKit (3.1.1):
-    - Result (~> 3.0)
   - BrightFutures (5.2.0):
     - Result (~> 3.2)
   - Eureka (3.0.0)
+  - Himotoki (3.0.1)
   - IKEventSource (2.0.0)
   - Kingfisher (3.9.1)
   - MastodonKit (1.0.10)
@@ -14,9 +13,9 @@ PODS:
   - "※ikemen (0.2.0)"
 
 DEPENDENCIES:
-  - APIKit
   - BrightFutures
   - Eureka
+  - Himotoki
   - IKEventSource
   - Kingfisher
   - MastodonKit
@@ -26,9 +25,9 @@ DEPENDENCIES:
   - "※ikemen"
 
 SPEC CHECKSUMS:
-  APIKit: 7460983f490d3bde6aaaaa4164d18c9865a6f91d
   BrightFutures: 8681dbb9fa831b69b6e7dc4a498b9e081d5daeb5
   Eureka: f36fd440c3ebb7bfea0a4fbe6f16a05f1cb35906
+  Himotoki: 85fda41d4d0e14f7228317a3b474175cdfb8f515
   IKEventSource: 7377db25431c3baed1a09f572468528a77f77d2c
   Kingfisher: 6729a0baaa458245bfb8cd5a1296c71c10d6eb6c
   MastodonKit: 573c2b32491108599aef4d99addb0e13a154cd6a
@@ -38,6 +37,6 @@ SPEC CHECKSUMS:
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
   "※ikemen": c04aecee4293a2b6deb2119f7e67e7a82c6dea06
 
-PODFILE CHECKSUM: e35c8c7a4cbdd371ef0ab78223b08833ecb85002
+PODFILE CHECKSUM: f57a4989fcfdda8b2a9a0115fcf406554ca3c28b
 
 COCOAPODS: 1.2.1
