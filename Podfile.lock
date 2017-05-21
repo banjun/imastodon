@@ -16,7 +16,7 @@ DEPENDENCIES:
   - BrightFutures
   - Eureka
   - Himotoki
-  - IKEventSource
+  - IKEventSource (from `https://github.com/banjun/EventSource`, branch `banjun`)
   - Kingfisher
   - MastodonKit
   - NorthLayout
@@ -24,11 +24,21 @@ DEPENDENCIES:
   - SVProgressHUD
   - "※ikemen"
 
+EXTERNAL SOURCES:
+  IKEventSource:
+    :branch: banjun
+    :git: https://github.com/banjun/EventSource
+
+CHECKOUT OPTIONS:
+  IKEventSource:
+    :commit: 5dc44368679640fd9d2aa8e5f3c31fdaebb8c4d3
+    :git: https://github.com/banjun/EventSource
+
 SPEC CHECKSUMS:
   BrightFutures: 8681dbb9fa831b69b6e7dc4a498b9e081d5daeb5
   Eureka: f36fd440c3ebb7bfea0a4fbe6f16a05f1cb35906
   Himotoki: 85fda41d4d0e14f7228317a3b474175cdfb8f515
-  IKEventSource: 7377db25431c3baed1a09f572468528a77f77d2c
+  IKEventSource: 6526ddd3ecc340375a7d4c658eb47d82b92e7606
   Kingfisher: 6729a0baaa458245bfb8cd5a1296c71c10d6eb6c
   MastodonKit: 573c2b32491108599aef4d99addb0e13a154cd6a
   NorthLayout: 28db8bfa49b861b4e972cc8e7c683c8ba819ff88
@@ -37,6 +47,6 @@ SPEC CHECKSUMS:
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
   "※ikemen": c04aecee4293a2b6deb2119f7e67e7a82c6dea06
 
-PODFILE CHECKSUM: f57a4989fcfdda8b2a9a0115fcf406554ca3c28b
+PODFILE CHECKSUM: ead18c3565d88ea0e6b9272ace39dc8e4820899d
 
 COCOAPODS: 1.2.1

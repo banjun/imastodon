@@ -10,5 +10,5 @@ target 'imastodon' do
   pod 'Himotoki'
   pod 'pencil'
   pod 'MastodonKit'
-  pod 'IKEventSource'
+  pod 'IKEventSource', git: 'https://github.com/banjun/EventSource', branch: 'banjun'
 end

@@ -25,19 +25,22 @@ class LocalViewController: FormViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        fetch()
-        reconnectEventSource()
+        if timelineSection.isEmpty {
+            fetch()
+        }
+        if eventSource == nil {
+            reconnectEventSource()
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        eventSource?.close()
-        eventSource = nil
     }
 
     private func append(_ statuses: [Status]) {
         timelineSection.insert(contentsOf: statuses.map { s in
             StatusRow {$0.value = s}
+                .onCellSelection { [unowned self] cell, row in self.didTap(status: s, cell: cell, row: row)}
         }, at: 0)
 
         if timelineSection.count > 100 {
@@ -48,12 +51,15 @@ class LocalViewController: FormViewController {
     private func reconnectEventSource() {
         eventSource?.close()
         eventSource = EventSource(url: "https://" + instanceAccount.instance.uri + "/api/v1/streaming/public/local", headers: ["Authorization": "Bearer \(instanceAccount.accessToken)"]) ※ { es in
-            es.onOpen {
-                NSLog("%@", "EventSource opened: \(es.readyState)")
+            es.onOpen { [weak es] in
+                NSLog("%@", "EventSource opened: \(String(describing: es?.readyState))")
             }
-            es.onError { [weak self] e in
+            es.onError { [weak es, weak self] e in
                 NSLog("%@", "EventSource error: \(String(describing: e))")
+                es?.invalidate()
                 self?.eventSource = nil
+
+                guard e?.code != NSURLErrorCancelled else { return }
                 DispatchQueue.main.async {
                     let ac = UIAlertController(title: "Stream Error", message: e?.localizedDescription, preferredStyle: .alert)
                     ac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
@@ -96,5 +102,8 @@ class LocalViewController: FormViewController {
                 ac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                 self.present(ac, animated: true)
         }
+    }
+
+    private func didTap(status: Status, cell: BaseCell, row: BaseRow) {
     }
 }
