@@ -126,6 +126,23 @@ extension Account: CustomReadWriteElement {
     }
 }
 
+extension Status {
+    var textContent: String {
+        return attributedTextContent?.string ?? content
+    }
+
+    var attributedTextContent: NSAttributedString? {
+        guard let data = ("<style>body{font-size: 16px;} p {margin:0;padding:0;display:inline;}</style>" + content).data(using: .utf8),
+            let at = try? NSMutableAttributedString(
+                data: data,
+                options: [
+                    NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
+                    NSCharacterEncodingDocumentAttribute: String.Encoding.utf8.rawValue],
+                documentAttributes: nil) else { return nil }
+        return at
+    }
+}
+
 extension Client {
     convenience init(_ instanceAccount: InstanceAccout) {
         self.init(baseURL: "https://" + instanceAccount.instance.uri, accessToken: instanceAccount.accessToken)
