@@ -34,7 +34,10 @@ final class StatusCell: Cell<Status>, CellType {
         super.update()
 
         let attrText = NSMutableAttributedString(attributedString: row.value?.attributedTextContent ?? NSAttributedString(string: row.value?.textContent ?? ""))
-        attrText.insert(NSAttributedString(string: (row.value?.account.displayName ?? "") + "\n", attributes: [NSForegroundColorAttributeName: UIColor.darkGray]), at: 0)
+        attrText.insert(NSAttributedString(
+            string: (row.value?.account.displayName ?? "") + "\n",
+            attributes: [NSForegroundColorAttributeName: UIColor.darkGray,
+                         NSFontAttributeName: UIFont.systemFont(ofSize: 12)]), at: 0)
         textLabel?.attributedText = attrText
         detailTextLabel?.text = nil
 
