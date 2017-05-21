@@ -7,6 +7,8 @@
 ## Build generated
 build/
 DerivedData/
+*.ipa
+*.dSYM.zip
 
 ## Various settings
 *.pbxuser
