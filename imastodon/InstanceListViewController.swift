@@ -6,12 +6,14 @@ import pencil
 struct InstanceAccout: CustomReadWriteElement {
     var instance: Instance
     var account: Account
+    var accessToken: String
 
     static func read(from components: Components) -> InstanceAccout? {
         do {
             return try InstanceAccout(
                 instance: components.component(for: "instance"),
-                account: components.component(for: "account"))
+                account: components.component(for: "account"),
+                accessToken: components.component(for: "accessToken"))
         } catch {
             return nil
         }

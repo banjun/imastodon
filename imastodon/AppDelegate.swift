@@ -1,6 +1,7 @@
 import UIKit
 import Ikemen
 import MastodonKit
+import SVProgressHUD
 
 let imastodonBaseURL = "https://imastodon.net"
 
@@ -22,7 +23,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-//        registerApp() // NOTE: only needed for initial development phase
+
+        SVProgressHUD.setDefaultMaskType(.black)
 
         window = UIWindow() ※ { w in
             let vc = ViewController()

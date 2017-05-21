@@ -59,7 +59,7 @@ class LoginViewController: FormViewController {
             }
             .onComplete {_ in SVProgressHUD.dismiss()}
             .onSuccess { app, loginSettings, instance, account in
-                self.onNewInstance?(InstanceAccout(instance: instance, account: account))
+                self.onNewInstance?(InstanceAccout(instance: instance, account: account, accessToken: loginSettings.accessToken))
             }.onFailure { e in
                 let ac = UIAlertController(title: "Error", message: e.localizedDescription, preferredStyle: .alert)
                 self.present(ac, animated: true)
