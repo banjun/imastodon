@@ -18,6 +18,10 @@ class LocalViewController: FormViewController {
     }
     required init?(coder aDecoder: NSCoder) {fatalError()}
 
+    deinit {
+        eventSource?.close()
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
@@ -32,9 +36,13 @@ class LocalViewController: FormViewController {
     }
 
     private func append(_ statuses: [Status]) {
-        self.timelineSection.insert(contentsOf: statuses.map { s in
+        timelineSection.insert(contentsOf: statuses.map { s in
             StatusRow {$0.value = s}
         }, at: 0)
+
+        if timelineSection.count > 100 {
+            timelineSection.removeLast(timelineSection.count - 80)
+        }
     }
 
     private func reconnectEventSource() {
