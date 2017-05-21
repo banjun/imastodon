@@ -64,3 +64,28 @@ final class StatusRow: Row<StatusCell>, RowType {
         super.init(tag: tag)
     }
 }
+
+import SafariServices
+
+extension UIAlertController {
+    convenience init(actionFor status: Status, safari: @escaping (SFSafariViewController) -> Void, boost: @escaping () -> Void, favorite: @escaping () -> Void) {
+        self.init(title: "Action", message: String(status.textContent.characters.prefix(20)), preferredStyle: .actionSheet)
+
+        if let at = status.attributedTextContent {
+            status.attributedTextContent?.enumerateAttribute(NSLinkAttributeName, in: NSRange(location: 0, length: at.length), options: []) { value, _, _ in
+                switch value {
+                case let url as URL:
+                    addAction(UIAlertAction(title: url.absoluteString, style: .default) { _ in
+                        safari(SFSafariViewController(url: url))
+                    })
+                default:
+                    NSLog("%@", "attributed value = \(String(describing: value))")
+                }
+            }
+        }
+
+        addAction(UIAlertAction(title: "🔁", style: .default) {_ in boost()})
+        addAction(UIAlertAction(title: "⭐️", style: .default) {_ in favorite()})
+        addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+    }
+}

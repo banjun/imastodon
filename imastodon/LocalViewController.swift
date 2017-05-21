@@ -4,6 +4,7 @@ import SVProgressHUD
 import MastodonKit
 import IKEventSource
 import Ikemen
+import SafariServices
 
 class LocalViewController: FormViewController {
     let instanceAccount: InstanceAccout
@@ -22,6 +23,11 @@ class LocalViewController: FormViewController {
         eventSource?.close()
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        tableView?.showsVerticalScrollIndicator = false
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
@@ -38,13 +44,16 @@ class LocalViewController: FormViewController {
     }
 
     private func append(_ statuses: [Status]) {
-        timelineSection.insert(contentsOf: statuses.map { s in
+        statuses.reversed().map { s in
             StatusRow {$0.value = s}
-                .onCellSelection { [unowned self] cell, row in self.didTap(status: s, cell: cell, row: row)}
-        }, at: 0)
+                .onCellSelection {[unowned self] cell, row in self.didTap(status: s, cell: cell, row: row)}
+            }.forEach {
+                timelineSection.insert($0, at: 0)
+        }
 
         if timelineSection.count > 100 {
             timelineSection.removeLast(timelineSection.count - 80)
+            timelineSection.reload()
         }
     }
 
@@ -105,5 +114,10 @@ class LocalViewController: FormViewController {
     }
 
     private func didTap(status: Status, cell: BaseCell, row: BaseRow) {
+        let ac = UIAlertController(actionFor: status,
+                                   safari: {[unowned self] in self.show($0, sender: nil)},
+                                   boost: {},
+                                   favorite: {})
+        present(ac, animated: true)
     }
 }
