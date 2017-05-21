@@ -5,17 +5,24 @@ import MastodonKit
 import IKEventSource
 import Ikemen
 import SafariServices
+import BouncyLayout
 
-class LocalViewController: FormViewController {
+private let statusCellID = "Status"
+
+class LocalViewController: UICollectionViewController {
     let instanceAccount: InstanceAccout
-    private var timelineSection = Section()
     private var eventSource: EventSource?
+//    let layout = BouncyLayout() // BouncyLayout can corrupt layout size in animation
+    let layout = UICollectionViewFlowLayout()
+    fileprivate var statuses: [(Status, NSAttributedString?)] // as creating attributed text is heavy, cache it
 
-    init(instanceAccount: InstanceAccout) {
+    init(instanceAccount: InstanceAccout, statuses: [Status] = []) {
         self.instanceAccount = instanceAccount
-        super.init(style: .plain)
+        self.statuses = statuses.map {($0, $0.attributedTextContent)}
+        layout.minimumLineSpacing = 0
+        layout.minimumInteritemSpacing = 0
+        super.init(collectionViewLayout: layout)
         title = "Local@\(instanceAccount.instance.title) \(instanceAccount.account.displayName)"
-        form +++ timelineSection
     }
     required init?(coder aDecoder: NSCoder) {fatalError()}
 
@@ -25,13 +32,15 @@ class LocalViewController: FormViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView?.showsVerticalScrollIndicator = false
+        collectionView?.backgroundColor = .white
+        collectionView?.showsVerticalScrollIndicator = false
+        collectionView?.register(StatusCollectionViewCell.self, forCellWithReuseIdentifier: statusCellID)
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        if timelineSection.isEmpty {
+        if statuses.isEmpty {
             fetch()
         }
         if eventSource == nil {
@@ -39,21 +48,21 @@ class LocalViewController: FormViewController {
         }
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.willTransition(to: newCollection, with: coordinator)
+        layout.invalidateLayout()
+        collectionView?.reloadData()
     }
 
     private func append(_ statuses: [Status]) {
-        statuses.reversed().map { s in
-            StatusRow {$0.value = s}
-                .onCellSelection {[unowned self] cell, row in self.didTap(status: s, cell: cell, row: row)}
-            }.forEach {
-                timelineSection.insert($0, at: 0)
+        statuses.reversed().forEach {
+            self.statuses.insert(($0, $0.attributedTextContent), at: 0)
+            self.collectionView?.insertItems(at: [IndexPath(item: 0, section: 0)])
         }
 
-        if timelineSection.count > 100 {
-            timelineSection.removeLast(timelineSection.count - 80)
-            timelineSection.reload()
+        if self.statuses.count > 100 {
+            self.statuses.removeLast(self.statuses.count - 80)
+            collectionView?.reloadData()
         }
     }
 
@@ -104,8 +113,8 @@ class LocalViewController: FormViewController {
         Client(instanceAccount).local()
             .onComplete {_ in SVProgressHUD.dismiss()}
             .onSuccess { statuses in
-                self.timelineSection.removeAll(keepingCapacity: true)
                 self.append(statuses)
+                self.collectionView?.reloadData()
             }.onFailure { e in
                 let ac = UIAlertController(title: "Error", message: e.localizedDescription, preferredStyle: .alert)
                 ac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
@@ -119,5 +128,47 @@ class LocalViewController: FormViewController {
                                    boost: {},
                                    favorite: {})
         present(ac, animated: true)
+    }
+}
+
+extension LocalViewController {
+    override func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return statuses.count
+    }
+
+    fileprivate func status(_ indexPath: IndexPath) -> (Status, NSAttributedString?) {
+        return statuses[indexPath.row]
+    }
+
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: statusCellID, for: indexPath) as! StatusCollectionViewCell
+        let s = status(indexPath)
+        cell.setStatus(s.0, attributedText: s.1)
+        return cell
+    }
+
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let s = status(indexPath).0
+        let ac = UIAlertController(actionFor: s,
+                                   safari: {[unowned self] in self.show($0, sender: nil)},
+                                   boost: {},
+                                   favorite: {})
+        present(ac, animated: true)
+    }
+}
+
+private let layoutCell = StatusCollectionViewCell(frame: .zero)
+
+extension LocalViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let size = collectionView.bounds.size
+        let s = status(indexPath)
+        layoutCell.setStatus(s.0, attributedText: s.1)
+        let layoutSize = layoutCell.systemLayoutSizeFitting(size, withHorizontalFittingPriority: UILayoutPriorityRequired, verticalFittingPriority: UILayoutPriorityFittingSizeLevel)
+        return CGSize(width: collectionView.bounds.width, height: layoutSize.height)
     }
 }

@@ -6,6 +6,7 @@ target 'imastodon' do
   pod 'Eureka'
   pod 'Kingfisher'
   pod 'SVProgressHUD'
+  pod 'BouncyLayout'
   pod 'BrightFutures'
   pod 'Himotoki'
   pod 'pencil'

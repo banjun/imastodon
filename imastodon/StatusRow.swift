@@ -1,6 +1,7 @@
 import Eureka
 import MastodonKit
 import Kingfisher
+import Ikemen
 
 extension Status: Equatable {
     public static func == (lhs: Status, rhs: Status) -> Bool {
@@ -87,5 +88,70 @@ extension UIAlertController {
         addAction(UIAlertAction(title: "🔁", style: .default) {_ in boost()})
         addAction(UIAlertAction(title: "⭐️", style: .default) {_ in favorite()})
         addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+    }
+}
+
+
+
+final class StatusCollectionViewCell: UICollectionViewCell {
+    let iconView = UIImageView() ※ { iv in
+        iv.clipsToBounds = true
+        iv.layer.cornerRadius = 4
+    }
+    let nameLabel = UILabel() ※ { l in
+        l.font = .systemFont(ofSize: 12)
+        l.textColor = .darkGray
+        l.numberOfLines = 0
+        l.lineBreakMode = .byTruncatingTail
+    }
+    let bodyLabel = UILabel() ※ { l in
+        l.font = .systemFont(ofSize: 16)
+        l.textColor = .black
+        l.numberOfLines = 0
+        l.lineBreakMode = .byTruncatingTail
+    }
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        backgroundColor = .white
+        isOpaque = true
+
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        let autolayout = northLayoutFormat(["p": 8], [
+            "icon": iconView,
+            "name": nameLabel,
+            "body": bodyLabel])
+        autolayout("H:|-p-[icon(==32)]")
+        autolayout("H:[icon]-p-[name]-p-|")
+        autolayout("H:[icon]-p-[body]-p-|")
+        autolayout("V:|-p-[icon(==32)]-(>=p)-|")
+        autolayout("V:|-p-[name]-p-[body]-p-|")
+        nameLabel.setContentHuggingPriority(UILayoutPriorityRequired, for: .vertical)
+    }
+
+    required init?(coder aDecoder: NSCoder) {fatalError()}
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        iconView.kf.cancelDownloadTask()
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        contentView.frame = bounds
+    }
+
+    func setStatus(_ status: Status, attributedText: NSAttributedString?) {
+        if let avatarURL = (URL(string: status.account.avatar) ?? URL(string: status.account.avatarStatic)) {
+            iconView.kf.setImage(
+                with: avatarURL,
+                placeholder: stubIcon,
+                options: [.scaleFactor(2), .processor(iconResizer)],
+                progressBlock: nil,
+                completionHandler: nil)
+        }
+        nameLabel.text = status.account.displayName
+        bodyLabel.attributedText = attributedText ?? NSMutableAttributedString(attributedString: status.attributedTextContent ?? NSAttributedString(string: status.textContent))
     }
 }

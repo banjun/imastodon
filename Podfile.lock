@@ -1,4 +1,5 @@
 PODS:
+  - BouncyLayout (1.1.0)
   - BrightFutures (5.2.0):
     - Result (~> 3.2)
   - Eureka (3.0.0)
@@ -13,6 +14,7 @@ PODS:
   - "※ikemen (0.2.0)"
 
 DEPENDENCIES:
+  - BouncyLayout
   - BrightFutures
   - Eureka
   - Himotoki
@@ -35,6 +37,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/banjun/EventSource
 
 SPEC CHECKSUMS:
+  BouncyLayout: f91c6504437a61acd733404f55f75bd8154f5840
   BrightFutures: 8681dbb9fa831b69b6e7dc4a498b9e081d5daeb5
   Eureka: f36fd440c3ebb7bfea0a4fbe6f16a05f1cb35906
   Himotoki: 85fda41d4d0e14f7228317a3b474175cdfb8f515
@@ -47,6 +50,6 @@ SPEC CHECKSUMS:
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
   "※ikemen": c04aecee4293a2b6deb2119f7e67e7a82c6dea06
 
-PODFILE CHECKSUM: ead18c3565d88ea0e6b9272ace39dc8e4820899d
+PODFILE CHECKSUM: 92b5dac5c14d98e832759420ee8bec8743aed5b7
 
 COCOAPODS: 1.2.1
