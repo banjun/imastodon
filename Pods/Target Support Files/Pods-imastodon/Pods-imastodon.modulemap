@@ -1,6 +1,0 @@
-framework module Pods_imastodon {
-  umbrella header "Pods-imastodon-umbrella.h"
-
-  export *
-  module * { export * }
-}

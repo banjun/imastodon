@@ -1,6 +1,0 @@
-framework module pencil {
-  umbrella header "pencil-umbrella.h"
-
-  export *
-  module * { export * }
-}
