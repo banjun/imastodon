@@ -5,6 +5,7 @@ PODS:
     - Result (~> 3.2)
   - Eureka (3.0.0)
   - IKEventSource (2.0.0)
+  - Kingfisher (3.9.1)
   - MastodonKit (1.0.10)
   - NorthLayout (3.0.0)
   - pencil (0.2.5)
@@ -17,6 +18,7 @@ DEPENDENCIES:
   - BrightFutures
   - Eureka
   - IKEventSource
+  - Kingfisher
   - MastodonKit
   - NorthLayout
   - pencil
@@ -28,6 +30,7 @@ SPEC CHECKSUMS:
   BrightFutures: 8681dbb9fa831b69b6e7dc4a498b9e081d5daeb5
   Eureka: f36fd440c3ebb7bfea0a4fbe6f16a05f1cb35906
   IKEventSource: 7377db25431c3baed1a09f572468528a77f77d2c
+  Kingfisher: 6729a0baaa458245bfb8cd5a1296c71c10d6eb6c
   MastodonKit: 573c2b32491108599aef4d99addb0e13a154cd6a
   NorthLayout: 28db8bfa49b861b4e972cc8e7c683c8ba819ff88
   pencil: 9b7209d05b5c766df45ccba4571f3dcf54b3ca0e
@@ -35,6 +38,6 @@ SPEC CHECKSUMS:
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
   "※ikemen": c04aecee4293a2b6deb2119f7e67e7a82c6dea06
 
-PODFILE CHECKSUM: c3ae8e1df13e2c6c239389fcf4056bc5b69a061d
+PODFILE CHECKSUM: e35c8c7a4cbdd371ef0ab78223b08833ecb85002
 
 COCOAPODS: 1.2.1
