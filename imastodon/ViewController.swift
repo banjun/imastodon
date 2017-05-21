@@ -39,17 +39,28 @@ class ViewController: FormViewController {
         let s = Store.shared
 
         defaultTimelinesSection.removeAll(keepingCapacity: true)
-        defaultTimelinesSection.append(contentsOf: s.instanceAccounts.map { i in
-            LabelRow {
-                $0.cellStyle = .subtitle
-                $0.title = "Home"
-                $0.value = "\(i.instance.title) \(i.account.displayName)"
-                }.onCellSelection {[unowned self] _ in self.showHomeTimeline(i)}
+        defaultTimelinesSection.append(contentsOf: s.instanceAccounts.flatMap { i in
+            [
+                LabelRow {
+                    $0.cellStyle = .subtitle
+                    $0.title = "Home"
+                    $0.value = "\(i.instance.title) \(i.account.displayName)"
+                    }.onCellSelection {[unowned self] _ in self.showHomeTimeline(i)},
+                LabelRow {
+                    $0.cellStyle = .subtitle
+                    $0.title = "Local"
+                    $0.value = "\(i.instance.title) \(i.account.displayName)"
+                    }.onCellSelection {[unowned self] _ in self.showLocalTimeline(i)}]
         })
     }
 
     private func showHomeTimeline(_ instanceAccount: InstanceAccout) {
         let vc = HomeViewController(instanceAccount: instanceAccount)
+        show(vc, sender: self)
+    }
+
+    private func showLocalTimeline(_ instanceAccount: InstanceAccout) {
+        let vc = LocalViewController(instanceAccount: instanceAccount)
         show(vc, sender: self)
     }
 }

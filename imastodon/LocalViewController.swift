@@ -3,14 +3,14 @@ import Eureka
 import SVProgressHUD
 import MastodonKit
 
-class HomeViewController: FormViewController {
+class LocalViewController: FormViewController {
     let instanceAccount: InstanceAccout
     private var timelineSection = Section()
 
     init(instanceAccount: InstanceAccout) {
         self.instanceAccount = instanceAccount
         super.init(style: .plain)
-        title = "Home@\(instanceAccount.instance.title) \(instanceAccount.account.displayName)"
+        title = "Local@\(instanceAccount.instance.title) \(instanceAccount.account.displayName)"
         form +++ timelineSection
     }
     required init?(coder aDecoder: NSCoder) {fatalError()}
@@ -23,7 +23,7 @@ class HomeViewController: FormViewController {
 
     private func fetch() {
         SVProgressHUD.show()
-        Client(instanceAccount).home()
+        Client(instanceAccount).local()
             .onComplete {_ in SVProgressHUD.dismiss()}
             .onSuccess { statuses in
                 self.timelineSection.removeAll(keepingCapacity: true)
