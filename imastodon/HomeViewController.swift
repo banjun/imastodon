@@ -1,7 +1,7 @@
 import Foundation
 import Eureka
-import MastodonKit
 import SVProgressHUD
+import MastodonKit
 
 class HomeViewController: FormViewController {
     let instanceAccount: InstanceAccout
@@ -23,8 +23,7 @@ class HomeViewController: FormViewController {
 
     private func fetch() {
         SVProgressHUD.show()
-        let client = Client(baseURL: "https://" + instanceAccount.instance.uri, accessToken: instanceAccount.accessToken)
-        client.home()
+        Client(instanceAccount).home()
             .onComplete {_ in SVProgressHUD.dismiss()}
             .onSuccess { statuses in
                 self.timelineSection.removeAll(keepingCapacity: true)
@@ -39,25 +38,5 @@ class HomeViewController: FormViewController {
                 ac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                 self.present(ac, animated: true)
         }
-    }
-}
-
-import BrightFutures
-
-extension Client {
-    func home() -> Future<[Status], AppError> {
-        let promise = Promise<[Status], AppError>()
-        run(Timelines.home()) { statuses, error in
-            if let error = error {
-                promise.failure(.mastodonKit(error))
-                return
-            }
-            guard let statuses = statuses else {
-                promise.failure(.mastodonKitNullPo)
-                return
-            }
-            promise.success(statuses)
-        }
-        return promise.future
     }
 }

@@ -16,6 +16,7 @@
 		EAE218B31ED147E2001209F2 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE218B21ED147E2001209F2 /* LoginViewController.swift */; };
 		EAE218B51ED15494001209F2 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE218B41ED15494001209F2 /* Store.swift */; };
 		EAE218B91ED15BB0001209F2 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE218B81ED15BB0001209F2 /* HomeViewController.swift */; };
+		EAE218BB1ED1615A001209F2 /* MastodonKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE218BA1ED1615A001209F2 /* MastodonKit.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		EAE218B21ED147E2001209F2 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		EAE218B41ED15494001209F2 /* Store.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		EAE218B81ED15BB0001209F2 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		EAE218BA1ED1615A001209F2 /* MastodonKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MastodonKit.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +87,7 @@
 			isa = PBXGroup;
 			children = (
 				EAC55F2D1ED07C5700CD567D /* AppDelegate.swift */,
+				EAE218BA1ED1615A001209F2 /* MastodonKit.swift */,
 				EAE218B41ED15494001209F2 /* Store.swift */,
 				EAC55F2F1ED07C5700CD567D /* ViewController.swift */,
 				EAE218B81ED15BB0001209F2 /* HomeViewController.swift */,
@@ -226,6 +229,7 @@
 				EAC55F2E1ED07C5700CD567D /* AppDelegate.swift in Sources */,
 				EAE218B11ED1460B001209F2 /* InstanceListViewController.swift in Sources */,
 				EAE218B91ED15BB0001209F2 /* HomeViewController.swift in Sources */,
+				EAE218BB1ED1615A001209F2 /* MastodonKit.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,13 +1,7 @@
 import Foundation
 import Eureka
 import SVProgressHUD
-import BrightFutures
 import MastodonKit
-
-enum AppError: Error {
-    case mastodonKit(Error)
-    case mastodonKitNullPo
-}
 
 class LoginViewController: FormViewController {
     var onNewInstance: ((InstanceAccout) -> Void)?
@@ -64,88 +58,5 @@ class LoginViewController: FormViewController {
                 let ac = UIAlertController(title: "Error", message: e.localizedDescription, preferredStyle: .alert)
                 self.present(ac, animated: true)
         }
-    }
-}
-
-extension Client {
-    func registerApp() -> Future<MastodonKit.ClientApplication, AppError> {
-        let promise = Promise<MastodonKit.ClientApplication, AppError>()
-        run(Clients.register(
-            clientName: "iM@STODON-banjun",
-            scopes: [.read, .write, .follow],
-            website: "https://imastodon.banjun.jp/")) { app, error in
-                if let error = error {
-                    promise.failure(.mastodonKit(error))
-                    return
-                }
-                guard let app = app else {
-                    promise.failure(.mastodonKitNullPo)
-                    return
-                }
-
-                print("id: \(app.id)")
-                print("redirect uri: \(app.redirectURI)")
-                print("client id: \(app.clientID)")
-                print("client secret: \(app.clientSecret)")
-
-                promise.success(app)
-        }
-        return promise.future
-    }
-
-    func login(app: MastodonKit.ClientApplication, email: String, password: String) -> Future<LoginSettings, AppError> {
-        let promise = Promise<LoginSettings, AppError>()
-        run(Login.silent(
-            clientID: app.clientID,
-            clientSecret: app.clientSecret,
-            scopes: [.read, .write, .follow],
-            username: email,
-            password: password)) { settings, error in
-                if let error = error {
-                    promise.failure(.mastodonKit(error))
-                    return
-                }
-                guard let settings = settings else {
-                    promise.failure(.mastodonKitNullPo)
-                    return
-                }
-
-                // update token on self
-                self.accessToken = settings.accessToken
-                promise.success(settings)
-        }
-        return promise.future
-    }
-
-    func currentUser() -> Future<Account, AppError> {
-        let promise = Promise<Account, AppError>()
-        run(Accounts.currentUser()) { account, error in
-            if let error = error {
-                promise.failure(.mastodonKit(error))
-                return
-            }
-            guard let account = account else {
-                promise.failure(.mastodonKitNullPo)
-                return
-            }
-            promise.success(Account(account))
-        }
-        return promise.future
-    }
-
-    func currentInstance() -> Future<Instance, AppError> {
-        let promise = Promise<Instance, AppError>()
-        run(Instances.current()) { instance, error in
-            if let error = error {
-                promise.failure(.mastodonKit(error))
-                return
-            }
-            guard let instance = instance else {
-                promise.failure(.mastodonKitNullPo)
-                return
-            }
-            promise.success(Instance(instance))
-        }
-        return promise.future
     }
 }
