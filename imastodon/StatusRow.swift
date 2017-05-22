@@ -118,15 +118,15 @@ final class StatusCollectionViewCell: UICollectionViewCell {
         isOpaque = true
 
         contentView.translatesAutoresizingMaskIntoConstraints = false
-        let autolayout = northLayoutFormat(["p": 8], [
+        let autolayout = northLayoutFormat(["s": 4, "p": 8], [
             "icon": iconView,
             "name": nameLabel,
             "body": bodyLabel])
         autolayout("H:|-p-[icon(==32)]")
-        autolayout("H:[icon]-p-[name]-p-|")
-        autolayout("H:[icon]-p-[body]-p-|")
+        autolayout("H:[icon]-s-[name]-p-|")
+        autolayout("H:[icon]-s-[body]-p-|")
         autolayout("V:|-p-[icon(==32)]-(>=p)-|")
-        autolayout("V:|-p-[name]-p-[body]-p-|")
+        autolayout("V:|-p-[name]-2-[body]-p-|")
         nameLabel.setContentHuggingPriority(UILayoutPriorityRequired, for: .vertical)
     }
 
