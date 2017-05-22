@@ -485,3 +485,27 @@ extension Client {
         return promise.future
     }
 }
+
+extension Client {
+    func post(message: String) -> Future<Status, AppError> {
+        let promise = Promise<Status, AppError>()
+        run(Statuses.create(
+            status: message,
+            replyToID: nil,
+            mediaIDs: [],
+            sensitive: false,
+            spoilerText: nil,
+            visibility: .`public`)) { status, error in
+                if let error = error {
+                    promise.failure(.mastodonKit(error))
+                    return
+                }
+                guard let status = status else {
+                    promise.failure(.mastodonKitNullPo)
+                    return
+                }
+                promise.success(Status(status))
+        }
+        return promise.future
+    }
+}

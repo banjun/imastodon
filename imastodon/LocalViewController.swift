@@ -23,6 +23,7 @@ class LocalViewController: UICollectionViewController {
         layout.minimumInteritemSpacing = 0
         super.init(collectionViewLayout: layout)
         title = "Local@\(instanceAccount.instance.title) \(instanceAccount.account.displayName)"
+        toolbarItems = [UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(showPost))]
     }
     required init?(coder aDecoder: NSCoder) {fatalError()}
 
@@ -35,6 +36,11 @@ class LocalViewController: UICollectionViewController {
         collectionView?.backgroundColor = .white
         collectionView?.showsVerticalScrollIndicator = false
         collectionView?.register(StatusCollectionViewCell.self, forCellWithReuseIdentifier: statusCellID)
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setToolbarHidden(false, animated: animated)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -128,6 +134,13 @@ class LocalViewController: UICollectionViewController {
                                    boost: {},
                                    favorite: {})
         present(ac, animated: true)
+    }
+
+    @objc private func showPost() {
+        let vc = PostViewController(client: Client(instanceAccount))
+        let nc = UINavigationController(rootViewController: vc)
+        nc.modalPresentationStyle = .overCurrentContext
+        present(nc, animated: true)
     }
 }
 
