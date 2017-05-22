@@ -74,7 +74,14 @@ class LocalViewController: UICollectionViewController {
 
     private func reconnectEventSource() {
         eventSource?.close()
-        eventSource = EventSource(url: "https://" + instanceAccount.instance.uri + "/api/v1/streaming/public/local", headers: ["Authorization": "Bearer \(instanceAccount.accessToken)"]) ※ { es in
+        let host: String = {
+            let h = instanceAccount.instance.uri
+            switch h {
+            case "mstdn.jp": return "streaming." + h
+            default: return h
+            }
+        }()
+        eventSource = EventSource(url: "https://" + host + "/api/v1/streaming/public/local", headers: ["Authorization": "Bearer \(instanceAccount.accessToken)"]) ※ { es in
             es.onOpen { [weak es] in
                 NSLog("%@", "EventSource opened: \(String(describing: es?.readyState))")
             }
