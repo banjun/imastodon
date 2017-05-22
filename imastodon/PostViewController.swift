@@ -34,7 +34,7 @@ class PostViewController: UIViewController {
 
         let autolayoutVC = northLayoutFormat([:], ["content": contentView])
         autolayoutVC("H:|[content]|")
-        autolayoutVC("V:|[content(==128)]|")
+        autolayoutVC("V:|[content(==128)]")
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -43,6 +43,7 @@ class PostViewController: UIViewController {
     }
 
     @objc private func cancel() {
+        view.endEditing(true)
         dismiss(animated: true)
     }
 
@@ -51,7 +52,10 @@ class PostViewController: UIViewController {
         SVProgressHUD.show()
         client.post(message: status)
             .onComplete {_ in SVProgressHUD.dismiss()}
-            .onSuccess {_ in self.dismiss(animated: true)}
+            .onSuccess {_ in
+                self.view.endEditing(true)
+                self.dismiss(animated: true)
+            }
             .onFailure { e in
                 let ac = UIAlertController(title: "Error", message: e.localizedDescription, preferredStyle: .alert)
                 ac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
