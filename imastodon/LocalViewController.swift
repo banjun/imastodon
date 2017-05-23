@@ -113,7 +113,7 @@ class LocalViewController: UICollectionViewController {
                     DispatchQueue.main.async {
                         // for debug, append error message
                         let errorAccount = Account(id: 0, username: "", acct: "", displayName: "error", note: "", url: "", avatar: "", avatarStatic: "", header: "", headerStatic: "", locked: false, createdAt: Date(), followersCount: 0, followingCount: 0, statusesCount: 0)
-                        let errorStatus = Status(id: 0, uri: "", url: URL(string: "")!, account: errorAccount, inReplyToID: nil, inReplyToAccountID: nil, content: error.localizedDescription, createdAt: Date(), reblogsCount: 0, favouritesCount: 0, reblogged: nil, favourited: nil, sensitive: nil, spoilerText: "", visibility: .public, mediaAttachments: [], mentions: [], tags: [], application: nil, reblogWrapper: [])
+                        let errorStatus = Status(id: 0, uri: "", url: URL(string: "https://localhost/")!, account: errorAccount, inReplyToID: nil, inReplyToAccountID: nil, content: error.localizedDescription, createdAt: Date(), reblogsCount: 0, favouritesCount: 0, reblogged: nil, favourited: nil, sensitive: nil, spoilerText: "", visibility: .public, mediaAttachments: [], mentions: [], tags: [], application: nil, reblogWrapper: [])
                         self?.append([errorStatus])
                     }
                 }

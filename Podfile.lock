@@ -33,7 +33,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   IKEventSource:
-    :commit: 5dc44368679640fd9d2aa8e5f3c31fdaebb8c4d3
+    :commit: 8b924826db3270f25b4e56cae7b3b0ec87cf8ca1
     :git: https://github.com/banjun/EventSource
 
 SPEC CHECKSUMS:
