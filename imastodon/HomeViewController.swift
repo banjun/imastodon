@@ -3,27 +3,28 @@ import Eureka
 import SVProgressHUD
 import MastodonKit
 
-class HomeViewController: FormViewController {
+class HomeViewController: TimelineViewController {
     let instanceAccount: InstanceAccout
-    private var timelineSection = Section()
 
     init(instanceAccount: InstanceAccout) {
         self.instanceAccount = instanceAccount
-        super.init(style: .plain)
+        super.init(statuses: [])
         title = "Home@\(instanceAccount.instance.title) \(instanceAccount.account.displayName)"
-        form +++ timelineSection
+        toolbarItems = [UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(showPost))]
     }
     required init?(coder aDecoder: NSCoder) {fatalError()}
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        tableView?.showsVerticalScrollIndicator = false
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setToolbarHidden(false, animated: animated)
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        fetch()
+        if statuses.isEmpty {
+            fetch()
+        }
     }
 
     private func fetch() {
@@ -31,11 +32,7 @@ class HomeViewController: FormViewController {
         Client(instanceAccount).home()
             .onComplete {_ in SVProgressHUD.dismiss()}
             .onSuccess { statuses in
-                self.timelineSection.removeAll(keepingCapacity: true)
-                self.timelineSection.append(contentsOf: statuses.map { s in
-                    StatusRow {$0.value = s}
-                        .onCellSelection { [unowned self] cell, row in self.didTap(status: s, cell: cell, row: row)}
-                })
+                self.append(statuses)
             }.onFailure { e in
                 let ac = UIAlertController(title: "Error", message: e.localizedDescription, preferredStyle: .alert)
                 ac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
@@ -49,5 +46,12 @@ class HomeViewController: FormViewController {
                                    boost: {},
                                    favorite: {})
         present(ac, animated: true)
+    }
+
+    @objc private func showPost() {
+        let vc = PostViewController(client: Client(instanceAccount))
+        let nc = UINavigationController(rootViewController: vc)
+        nc.modalPresentationStyle = .overCurrentContext
+        present(nc, animated: true)
     }
 }
