@@ -8,13 +8,15 @@ import Ikemen
 private let statusCellID = "Status"
 
 class TimelineViewController: UICollectionViewController {
+    var baseURL: URL? // base url for images such as /avatars/original/missing.png
     var statuses: [(Status, NSAttributedString?)] // as creating attributed text is heavy, cache it
     let layout = UICollectionViewFlowLayout() ※ { l in
         l.minimumLineSpacing = 0
         l.minimumInteritemSpacing = 0
     }
 
-    init(statuses: [Status] = []) {
+    init(statuses: [Status] = [], baseURL: URL? = nil) {
+        self.baseURL = baseURL
         self.statuses = statuses.map {($0, $0.attributedTextContent)}
         super.init(collectionViewLayout: layout)
     }
@@ -70,7 +72,7 @@ extension TimelineViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: statusCellID, for: indexPath) as! StatusCollectionViewCell
         let s = status(indexPath)
-        cell.setStatus(s.0, attributedText: s.1)
+        cell.setStatus(s.0, attributedText: s.1, baseURL: baseURL)
         return cell
     }
 
@@ -90,7 +92,7 @@ extension TimelineViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let size = collectionView.bounds.size
         let s = status(indexPath)
-        layoutCell.setStatus(s.0, attributedText: s.1)
+        layoutCell.setStatus(s.0, attributedText: s.1, baseURL: nil)
         let layoutSize = layoutCell.systemLayoutSizeFitting(size, withHorizontalFittingPriority: UILayoutPriorityRequired, verticalFittingPriority: UILayoutPriorityFittingSizeLevel)
         return CGSize(width: collectionView.bounds.width, height: layoutSize.height)
     }

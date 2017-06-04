@@ -36,6 +36,9 @@ struct InstanceAccout: CustomReadWriteElement {
         }
     }
 }
+extension Instance {
+    var baseURL: URL? {return URL(string: "https://" + uri)}
+}
 
 // NOTE: MastodonKit.ClientApplication is not initializable. copied same members.
 struct ClientApplication {
@@ -156,6 +159,11 @@ extension Account: Decodable {
             statusesCount: e <| "statuses_count")
     }
 }
+extension Account {
+    func avatarURL(baseURL: URL) -> URL? {
+        return URL(string: avatar, relativeTo: baseURL)
+    }
+}
 
 // copy and paste -ed for visibility issue at MastodonKit
 struct Status {
@@ -234,6 +242,16 @@ let AttachmentTypeTransformer = Transformer<String, AttachmentType> { s throws -
     case "image": return .image
     case "video": return .video
     case "gifv": return .gifv
+    default: return .unknown
+    }
+}
+
+let NotificationTypeTransformer = Transformer<String, NotificationType> { s throws -> NotificationType in
+    switch s {
+    case "mention": return .mention
+    case "reblog": return .reblog
+    case "favourite": return .favourite
+    case "follow": return .follow
     default: return .unknown
     }
 }
@@ -324,6 +342,32 @@ extension Application: Decodable {
     }
 }
 
+struct Notification {
+    /// The notification ID.
+    public let id: Int
+    /// The notification type.
+    public let type: NotificationType
+    /// The time the notification was created.
+    public let createdAt: Date
+    /// The Account sending the notification to the user.
+    public let account: Account
+    /// The Status associated with the notification, if applicable.
+    public let status: Status?
+}
+extension Notification: Decodable {
+    public static func decode(_ e: Extractor) throws -> Notification {
+        return try Notification(
+            id: e <| "id",
+            type: NotificationTypeTransformer.apply(e <| "type"),
+            createdAt: DateTransformer.apply(e <| "created_at"),
+            account: e <| "account",
+            status: e <|? "status")
+    }
+    init(_ n: MastodonKit.Notification) {
+        self.init(id: n.id, type: n.type, createdAt: n.createdAt, account: Account(n.account), status: n.status.map {Status($0)})
+    }
+}
+
 extension Status: Decodable {
     static func decode(_ e: Extractor) throws -> Status {
         return try Status(
@@ -374,7 +418,7 @@ extension Status {
 
 extension Client {
     convenience init(_ instanceAccount: InstanceAccout) {
-        self.init(baseURL: "https://" + instanceAccount.instance.uri, accessToken: instanceAccount.accessToken)
+        self.init(baseURL: instanceAccount.instance.baseURL?.absoluteString ?? "", accessToken: instanceAccount.accessToken)
     }
 }
 

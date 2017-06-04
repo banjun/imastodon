@@ -1,21 +1,25 @@
 import Foundation
 import SVProgressHUD
 import MastodonKit
+import UserNotifications
+import Kingfisher
 
 class LocalViewController: TimelineViewController {
     let instanceAccount: InstanceAccout
-    private var stream: Stream?
+    private var localStream: Stream?
+    private var userStream: Stream?
+    private var streams: [Stream] {return [localStream, userStream].flatMap {$0}}
 
     init(instanceAccount: InstanceAccout, statuses: [Status] = []) {
         self.instanceAccount = instanceAccount
-        super.init(statuses: statuses)
+        super.init(statuses: statuses, baseURL: instanceAccount.instance.baseURL)
         title = "Local@\(instanceAccount.instance.title) \(instanceAccount.account.displayName)"
         toolbarItems = [UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(showPost))]
     }
     required init?(coder aDecoder: NSCoder) {fatalError()}
 
     deinit {
-        stream?.close()
+        streams.forEach {$0.close()}
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -29,18 +33,35 @@ class LocalViewController: TimelineViewController {
         if statuses.isEmpty {
             fetch()
         }
-        if stream == nil {
+        if localStream == nil || userStream == nil {
             reconnectStream()
         }
     }
 
     private func reconnectStream() {
-        stream?.close()
-        stream = Stream(localTimelineForHost: instanceAccount.instance.uri, token: instanceAccount.accessToken)
-        stream?.signal.observeResult { [weak self] r in
+        streams.forEach {$0.close()}
+
+        localStream = Stream(localTimelineForHost: instanceAccount.instance.uri, token: instanceAccount.accessToken)
+        localStream?.updateSignal.observeResult { [weak self] r in
             DispatchQueue.main.async {
                 switch r {
                 case let .success(s): self?.append([s])
+                case let .failure(e): self?.append([e.errorStatus])
+                }
+            }
+        }
+
+        userStream = Stream(userTimelineForHost: instanceAccount.instance.uri, token: instanceAccount.accessToken)
+        userStream?.notificationSignal.observeResult { [weak self] r in
+            DispatchQueue.main.async {
+                switch r {
+                case let .success(n):
+                    // NSLog("%@", "notification: \(n.account), \(n.type), \(String(describing: n.status?.textContent))")
+                    let content = UNMutableNotificationContent()
+                    content.title = "\(n.account.displayName) \(n.type)"
+                    content.body = n.status?.textContent ?? "you"
+                    UNUserNotificationCenter.current()
+                        .add(UNNotificationRequest(identifier: "notification \(n.id)", content: content, trigger: nil))
                 case let .failure(e): self?.append([e.errorStatus])
                 }
             }

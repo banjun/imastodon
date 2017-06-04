@@ -8,7 +8,7 @@ class HomeViewController: TimelineViewController {
 
     init(instanceAccount: InstanceAccout) {
         self.instanceAccount = instanceAccount
-        super.init(statuses: [])
+        super.init(statuses: [], baseURL: instanceAccount.instance.baseURL)
         title = "Home@\(instanceAccount.instance.title) \(instanceAccount.account.displayName)"
         toolbarItems = [UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(showPost))]
     }

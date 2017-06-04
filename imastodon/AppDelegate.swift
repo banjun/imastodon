@@ -1,19 +1,31 @@
 import UIKit
 import Ikemen
 import SVProgressHUD
+import UserNotifications
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        setupNotifications()
         window = UIWindow() ※ { w in
             let vc = ViewController()
             w.rootViewController = UINavigationController(rootViewController: vc)
             w.makeKeyAndVisible()
         }
         SVProgressHUD.setDefaultMaskType(.black)
+
         return true
+    }
+
+    private func setupNotifications() {
+        UNUserNotificationCenter.current().delegate = self
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) {_ in}
+    }
+
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.alert, .sound])
     }
 }
 

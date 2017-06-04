@@ -4,35 +4,50 @@ import ReactiveSwift
 
 struct Stream {
     let source: EventSource
-    let signal: Signal<Status, AppError>
-    private let observer: Observer<Status, AppError>
+    let updateSignal: Signal<Status, AppError>
+    private let updateObserver: Observer<Status, AppError>
+    let notificationSignal: Signal<Notification, AppError>
+    private let notificationObserver: Observer<Notification, AppError>
 
     init(endpoint: URL, token: String) {
-        (signal, observer) = Signal<Status, AppError>.pipe()
+        (updateSignal, updateObserver) = Signal<Status, AppError>.pipe()
+        (notificationSignal, notificationObserver) = Signal<Notification, AppError>.pipe()
         source = EventSource(url: endpoint.absoluteString, headers: ["Authorization": "Bearer \(token)"])
         source.onOpen { [weak source] in
             NSLog("%@", "EventSource opened: \(String(describing: source))")
         }
-        source.onError { [weak source, weak observer] e in
+        source.onError { [weak source, weak updateObserver, weak notificationObserver] e in
             NSLog("%@", "EventSource error: \(String(describing: e))")
             source?.invalidate()
-            observer?.send(error: .eventstream(e))
+            updateObserver?.send(error: .eventstream(e))
+            notificationObserver?.send(error: .eventstream(e))
         }
-        source.addEventListener("update") { [weak observer] id, event, data in
+        source.addEventListener("update") { [weak updateObserver] id, event, data in
             do {
                 let j = try JSONSerialization.jsonObject(with: data?.data(using: .utf8) ?? Data())
                 let status = try Status.decodeValue(j)
-                observer?.send(value: status)
+                updateObserver?.send(value: status)
             } catch {
                 NSLog("%@", "EventSource event update, failed to parse with error \(error): \(String(describing: id)), \(String(describing: event)), \(String(describing: data))")
-                observer?.send(error: .eventstream(error))
+                updateObserver?.send(error: .eventstream(error))
+            }
+        }
+        source.addEventListener("notification") { [weak notificationObserver] id, event, data in
+            do {
+                let j = try JSONSerialization.jsonObject(with: data?.data(using: .utf8) ?? Data())
+                let notification = try Notification.decodeValue(j)
+                notificationObserver?.send(value: notification)
+            } catch {
+                NSLog("%@", "EventSource event update, failed to parse with error \(error): \(String(describing: id)), \(String(describing: event)), \(String(describing: data))")
+                notificationObserver?.send(error: .eventstream(error))
             }
         }
     }
 
     func close() {
         source.close()
-        observer.sendInterrupted()
+        updateObserver.sendInterrupted()
+        notificationObserver.sendInterrupted()
     }
 }
 
