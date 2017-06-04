@@ -2,17 +2,13 @@ import Foundation
 import Eureka
 import SVProgressHUD
 import MastodonKit
-import IKEventSource
-import Ikemen
 import SafariServices
-import BouncyLayout
 
 private let statusCellID = "Status"
 
 class LocalViewController: UICollectionViewController {
     let instanceAccount: InstanceAccout
-    private var eventSource: EventSource?
-//    let layout = BouncyLayout() // BouncyLayout can corrupt layout size in animation
+    private var stream: Stream?
     let layout = UICollectionViewFlowLayout()
     fileprivate var statuses: [(Status, NSAttributedString?)] // as creating attributed text is heavy, cache it
 
@@ -28,7 +24,7 @@ class LocalViewController: UICollectionViewController {
     required init?(coder aDecoder: NSCoder) {fatalError()}
 
     deinit {
-        eventSource?.close()
+        stream?.close()
     }
 
     override func viewDidLoad() {
@@ -49,8 +45,8 @@ class LocalViewController: UICollectionViewController {
         if statuses.isEmpty {
             fetch()
         }
-        if eventSource == nil {
-            reconnectEventSource()
+        if stream == nil {
+            reconnectStream()
         }
     }
 
@@ -72,50 +68,14 @@ class LocalViewController: UICollectionViewController {
         }
     }
 
-    private func reconnectEventSource() {
-        eventSource?.close()
-        let host: String = {
-            let h = instanceAccount.instance.uri
-            switch h {
-            case "mstdn.jp": return "streaming." + h
-            default: return h
-            }
-        }()
-        eventSource = EventSource(url: "https://" + host + "/api/v1/streaming/public/local", headers: ["Authorization": "Bearer \(instanceAccount.accessToken)"]) ※ { es in
-            es.onOpen { [weak es] in
-                NSLog("%@", "EventSource opened: \(String(describing: es?.readyState))")
-            }
-            es.onError { [weak es, weak self] e in
-                NSLog("%@", "EventSource error: \(String(describing: e))")
-                es?.invalidate()
-                self?.eventSource = nil
-
-                guard e?.code != NSURLErrorCancelled else { return }
-                DispatchQueue.main.async {
-                    let ac = UIAlertController(title: "Stream Error", message: e?.localizedDescription, preferredStyle: .alert)
-                    ac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                    self?.present(ac, animated: true)
-                }
-            }
-            es.onMessage { _ in // [weak self] id, event, data in
-                // NSLog("%@", "EventSource onMessage: \(id), \(event), \(data)")
-            }
-            es.addEventListener("update") { [weak self] id, event, data in
-                do {
-                    let j = try JSONSerialization.jsonObject(with: data?.data(using: .utf8) ?? Data())
-                    let status = try Status.decodeValue(j)
-                    DispatchQueue.main.async {
-                        self?.append([status])
-                    }
-                    // NSLog("%@", "EventSource event update: \(status)")
-                } catch {
-                    NSLog("%@", "EventSource event update, failed to parse with error \(error): \(String(describing: id)), \(String(describing: event)), \(String(describing: data))")
-                    DispatchQueue.main.async {
-                        // for debug, append error message
-                        let errorAccount = Account(id: 0, username: "", acct: "", displayName: "error", note: "", url: "", avatar: "", avatarStatic: "", header: "", headerStatic: "", locked: false, createdAt: Date(), followersCount: 0, followingCount: 0, statusesCount: 0)
-                        let errorStatus = Status(id: 0, uri: "", url: URL(string: "https://localhost/")!, account: errorAccount, inReplyToID: nil, inReplyToAccountID: nil, content: error.localizedDescription, createdAt: Date(), reblogsCount: 0, favouritesCount: 0, reblogged: nil, favourited: nil, sensitive: nil, spoilerText: "", visibility: .public, mediaAttachments: [], mentions: [], tags: [], application: nil, reblogWrapper: [])
-                        self?.append([errorStatus])
-                    }
+    private func reconnectStream() {
+        stream?.close()
+        stream = Stream(localTimelineForHost: instanceAccount.instance.uri, token: instanceAccount.accessToken)
+        stream?.signal.observeResult { [weak self] r in
+            DispatchQueue.main.async {
+                switch r {
+                case let .success(s): self?.append([s])
+                case let .failure(e): self?.append([e.errorStatus])
                 }
             }
         }

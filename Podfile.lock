@@ -1,5 +1,4 @@
 PODS:
-  - BouncyLayout (1.1.0)
   - BrightFutures (5.2.0):
     - Result (~> 3.2)
   - Eureka (3.0.0)
@@ -9,12 +8,13 @@ PODS:
   - MastodonKit (1.0.10)
   - NorthLayout (3.0.0)
   - pencil (0.2.5)
+  - ReactiveSwift (1.1.3):
+    - Result (~> 3.2)
   - Result (3.2.2)
   - SVProgressHUD (2.1.2)
   - "※ikemen (0.2.0)"
 
 DEPENDENCIES:
-  - BouncyLayout
   - BrightFutures
   - Eureka
   - Himotoki
@@ -23,6 +23,7 @@ DEPENDENCIES:
   - MastodonKit
   - NorthLayout
   - pencil
+  - ReactiveSwift
   - SVProgressHUD
   - "※ikemen"
 
@@ -37,7 +38,6 @@ CHECKOUT OPTIONS:
     :git: https://github.com/banjun/EventSource
 
 SPEC CHECKSUMS:
-  BouncyLayout: f91c6504437a61acd733404f55f75bd8154f5840
   BrightFutures: 8681dbb9fa831b69b6e7dc4a498b9e081d5daeb5
   Eureka: f36fd440c3ebb7bfea0a4fbe6f16a05f1cb35906
   Himotoki: 85fda41d4d0e14f7228317a3b474175cdfb8f515
@@ -46,10 +46,11 @@ SPEC CHECKSUMS:
   MastodonKit: 573c2b32491108599aef4d99addb0e13a154cd6a
   NorthLayout: 28db8bfa49b861b4e972cc8e7c683c8ba819ff88
   pencil: 9b7209d05b5c766df45ccba4571f3dcf54b3ca0e
+  ReactiveSwift: f54ba12c2e799003432930fa55495315ae44f32b
   Result: 4edd39003fdccf281d418ee1b006571f70123250
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
   "※ikemen": c04aecee4293a2b6deb2119f7e67e7a82c6dea06
 
-PODFILE CHECKSUM: 92b5dac5c14d98e832759420ee8bec8743aed5b7
+PODFILE CHECKSUM: bcac3635315de5370906b7a637bd944184727448
 
 COCOAPODS: 1.2.1

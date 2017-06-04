@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1AA9E5D5D16230C8EA09FCAE /* Pods_imastodon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF693483815FAE1CC3AB6956 /* Pods_imastodon.framework */; };
+		EA0EDB4A1EE41FC400280536 /* Stream.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0EDB491EE41FC000280536 /* Stream.swift */; };
 		EAC55F2E1ED07C5700CD567D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC55F2D1ED07C5700CD567D /* AppDelegate.swift */; };
 		EAC55F301ED07C5700CD567D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC55F2F1ED07C5700CD567D /* ViewController.swift */; };
 		EAC55F351ED07C5700CD567D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EAC55F341ED07C5700CD567D /* Assets.xcassets */; };
@@ -26,6 +27,7 @@
 		3395940DED0D0BA0835EFD0E /* Pods-imastodon.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-imastodon.release.xcconfig"; path = "Pods/Target Support Files/Pods-imastodon/Pods-imastodon.release.xcconfig"; sourceTree = "<group>"; };
 		7C138BF5F063A0B55F519D11 /* Pods-imastodon.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-imastodon.debug.xcconfig"; path = "Pods/Target Support Files/Pods-imastodon/Pods-imastodon.debug.xcconfig"; sourceTree = "<group>"; };
 		CF693483815FAE1CC3AB6956 /* Pods_imastodon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_imastodon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		EA0EDB491EE41FC000280536 /* Stream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stream.swift; sourceTree = "<group>"; };
 		EAC55F2A1ED07C5700CD567D /* imastodon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = imastodon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAC55F2D1ED07C5700CD567D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EAC55F2F1ED07C5700CD567D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 				EAE218BA1ED1615A001209F2 /* MastodonKit.swift */,
 				EAE218B41ED15494001209F2 /* Store.swift */,
 				EAE218BE1ED176C4001209F2 /* StatusRow.swift */,
+				EA0EDB491EE41FC000280536 /* Stream.swift */,
 				EAC55F2F1ED07C5700CD567D /* ViewController.swift */,
 				EAE218B81ED15BB0001209F2 /* HomeViewController.swift */,
 				EAE218BC1ED176B4001209F2 /* LocalViewController.swift */,
@@ -232,6 +235,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA0EDB4A1EE41FC400280536 /* Stream.swift in Sources */,
 				EAE218B51ED15494001209F2 /* Store.swift in Sources */,
 				EAE218B31ED147E2001209F2 /* LoginViewController.swift in Sources */,
 				EAE218BF1ED176C4001209F2 /* StatusRow.swift in Sources */,

@@ -8,7 +8,16 @@ import Foundation
 
 enum AppError: Error {
     case mastodonKit(Error)
+    case eventstream(Error?)
     case mastodonKitNullPo
+
+    var localizedDescription: String {
+        switch self {
+        case let .mastodonKit(e): return "AppError.mastodonKit(\(e.localizedDescription))"
+        case let .eventstream(e): return "AppError.eventstream(\(e?.localizedDescription ?? ""))"
+        case .mastodonKitNullPo: return "AppError.mastodonKitNullPo"
+        }
+    }
 }
 
 struct InstanceAccout: CustomReadWriteElement {
