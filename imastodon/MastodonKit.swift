@@ -537,6 +537,30 @@ extension Client {
         }
         return promise.future
     }
+    
+    func boost(_ status: Status) -> Future<Void, AppError> {
+        return Future { complete in
+            run(Statuses.reblog(id: status.id)) { _, error in
+                if let error = error {
+                    complete(.failure(.mastodonKit(error)))
+                    return
+                }
+                complete(.success())
+            }
+        }
+    }
+    
+    func favorite(_ status: Status) -> Future<Void, AppError> {
+        return Future { complete in
+            run(Statuses.favourite(id: status.id)) { _, error in
+                if let error = error {
+                    complete(.failure(.mastodonKit(error)))
+                    return
+                }
+                complete(.success())
+            }
+        }
+    }
 }
 
 extension Client {

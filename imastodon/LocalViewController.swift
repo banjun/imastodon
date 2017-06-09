@@ -4,8 +4,10 @@ import MastodonKit
 import UserNotifications
 import Kingfisher
 
-class LocalViewController: TimelineViewController {
+class LocalViewController: TimelineViewController, ClientContainer {
     let instanceAccount: InstanceAccout
+    var client: Client {return Client(instanceAccount)}
+    
     private var localStream: Stream?
     private var userStream: Stream?
     private var streams: [Stream] {return [localStream, userStream].flatMap {$0}}
@@ -81,7 +83,7 @@ class LocalViewController: TimelineViewController {
 
     private func fetch() {
         SVProgressHUD.show()
-        Client(instanceAccount).local()
+        client.local()
             .onComplete {_ in SVProgressHUD.dismiss()}
             .onSuccess { statuses in
                 self.append(statuses)
@@ -102,7 +104,7 @@ class LocalViewController: TimelineViewController {
     }
 
     @objc private func showPost() {
-        let vc = PostViewController(client: Client(instanceAccount))
+        let vc = PostViewController(client: client)
         let nc = UINavigationController(rootViewController: vc)
         nc.modalPresentationStyle = .overCurrentContext
         present(nc, animated: true)

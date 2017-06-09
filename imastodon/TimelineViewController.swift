@@ -1,5 +1,4 @@
 import Foundation
-import Eureka
 import SVProgressHUD
 import MastodonKit
 import SafariServices
@@ -50,14 +49,10 @@ class TimelineViewController: UICollectionViewController {
     func status(_ indexPath: IndexPath) -> (Status, NSAttributedString?) {
         return statuses[indexPath.row]
     }
+}
 
-    private func didTap(status: Status, cell: BaseCell, row: BaseRow) {
-        let ac = UIAlertController(actionFor: status,
-                                   safari: {[unowned self] in self.show($0, sender: nil)},
-                                   boost: {},
-                                   favorite: {})
-        present(ac, animated: true)
-    }
+protocol ClientContainer {
+    var client: Client { get }
 }
 
 extension TimelineViewController {
@@ -80,9 +75,23 @@ extension TimelineViewController {
         let s = status(indexPath).0
         let ac = UIAlertController(actionFor: s,
                                    safari: {[unowned self] in self.show($0, sender: nil)},
-                                   boost: {},
-                                   favorite: {})
+                                   boost: {[unowned self] in self.boost(s)},
+                                   favorite: {[unowned self] in self.favorite(s)})
         present(ac, animated: true)
+    }
+    
+    func boost(_ s: Status) {
+        guard let client = (self as? ClientContainer)?.client else { return }
+        SVProgressHUD.show()
+        client.boost(s)
+            .onComplete {_ in SVProgressHUD.dismiss()}
+    }
+    
+    func favorite(_ s: Status) {
+        guard let client = (self as? ClientContainer)?.client else { return }
+        SVProgressHUD.show()
+        client.favorite(s)
+            .onComplete {_ in SVProgressHUD.dismiss()}
     }
 }
 

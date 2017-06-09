@@ -4,9 +4,10 @@ import SVProgressHUD
 import MastodonKit
 import UserNotifications
 
-class HomeViewController: TimelineViewController {
+class HomeViewController: TimelineViewController, ClientContainer {
     let instanceAccount: InstanceAccout
     private var userStream: Stream?
+    var client: Client {return Client(instanceAccount)}
 
     init(instanceAccount: InstanceAccout) {
         self.instanceAccount = instanceAccount
@@ -67,7 +68,7 @@ class HomeViewController: TimelineViewController {
 
     private func fetch() {
         SVProgressHUD.show()
-        Client(instanceAccount).home()
+        client.home()
             .onComplete {_ in SVProgressHUD.dismiss()}
             .onSuccess { statuses in
                 self.append(statuses)
@@ -78,16 +79,8 @@ class HomeViewController: TimelineViewController {
         }
     }
 
-    private func didTap(status: Status, cell: BaseCell, row: BaseRow) {
-        let ac = UIAlertController(actionFor: status,
-                                   safari: {[unowned self] in self.show($0, sender: nil)},
-                                   boost: {},
-                                   favorite: {})
-        present(ac, animated: true)
-    }
-
     @objc private func showPost() {
-        let vc = PostViewController(client: Client(instanceAccount))
+        let vc = PostViewController(client: client)
         let nc = UINavigationController(rootViewController: vc)
         nc.modalPresentationStyle = .overCurrentContext
         present(nc, animated: true)
