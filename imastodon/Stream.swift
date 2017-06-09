@@ -4,17 +4,23 @@ import ReactiveSwift
 
 struct Stream {
     let source: EventSource
-    let updateSignal: Signal<Status, AppError>
-    private let updateObserver: Observer<Status, AppError>
+    let updateSignal: Signal<Event, AppError>
+    private let updateObserver: Observer<Event, AppError>
     let notificationSignal: Signal<Notification, AppError>
     private let notificationObserver: Observer<Notification, AppError>
+    
+    enum Event {
+        case open
+        case update(Status)
+    }
 
     init(endpoint: URL, token: String) {
-        (updateSignal, updateObserver) = Signal<Status, AppError>.pipe()
+        (updateSignal, updateObserver) = Signal<Event, AppError>.pipe()
         (notificationSignal, notificationObserver) = Signal<Notification, AppError>.pipe()
         source = EventSource(url: endpoint.absoluteString, headers: ["Authorization": "Bearer \(token)"])
-        source.onOpen { [weak source] in
+        source.onOpen { [weak source, weak updateObserver] in
             NSLog("%@", "EventSource opened: \(String(describing: source))")
+            updateObserver?.send(value: .open)
         }
         source.onError { [weak source, weak updateObserver, weak notificationObserver] e in
             NSLog("%@", "EventSource error: \(String(describing: e))")
@@ -26,7 +32,7 @@ struct Stream {
             do {
                 let j = try JSONSerialization.jsonObject(with: data?.data(using: .utf8) ?? Data())
                 let status = try Status.decodeValue(j)
-                updateObserver?.send(value: status)
+                updateObserver?.send(value: .update(status))
             } catch {
                 NSLog("%@", "EventSource event update, failed to parse with error \(error): \(String(describing: id)), \(String(describing: event)), \(String(describing: data))")
                 updateObserver?.send(error: .eventstream(error))

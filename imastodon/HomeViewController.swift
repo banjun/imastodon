@@ -43,7 +43,8 @@ class HomeViewController: TimelineViewController {
         userStream?.updateSignal.observeResult { [weak self] r in
             DispatchQueue.main.async {
                 switch r {
-                case let .success(s): self?.append([s])
+                case .success(.open): break //self?.refreshControl.endRefreshing()
+                case let .success(.update(s)): self?.append([s])
                 case let .failure(e): self?.append([e.errorStatus])
                 }
             }

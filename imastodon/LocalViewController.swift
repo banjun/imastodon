@@ -9,6 +9,8 @@ class LocalViewController: TimelineViewController {
     private var localStream: Stream?
     private var userStream: Stream?
     private var streams: [Stream] {return [localStream, userStream].flatMap {$0}}
+    
+    private let refreshControl = UIRefreshControl()
 
     init(instanceAccount: InstanceAccout, statuses: [Status] = []) {
         self.instanceAccount = instanceAccount
@@ -20,6 +22,14 @@ class LocalViewController: TimelineViewController {
 
     deinit {
         streams.forEach {$0.close()}
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        collectionView?.addSubview(refreshControl)
+        collectionView?.alwaysBounceVertical = true
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -45,7 +55,8 @@ class LocalViewController: TimelineViewController {
         localStream?.updateSignal.observeResult { [weak self] r in
             DispatchQueue.main.async {
                 switch r {
-                case let .success(s): self?.append([s])
+                case .success(.open): self?.refreshControl.endRefreshing()
+                case let .success(.update(s)): self?.append([s])
                 case let .failure(e): self?.append([e.errorStatus])
                 }
             }
@@ -80,6 +91,14 @@ class LocalViewController: TimelineViewController {
                 ac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                 self.present(ac, animated: true)
         }
+    }
+    
+    @objc private func refresh() {
+        guard !(streams.contains {$0.source.readyState == .connecting}) else {
+            refreshControl.endRefreshing()
+            return
+        }
+        reconnectStream()
     }
 
     @objc private func showPost() {
