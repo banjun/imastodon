@@ -88,6 +88,7 @@ final class StatusCollectionViewCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         iconView.kf.cancelDownloadTask()
+        iconView.image = nil
     }
 
     override func layoutSubviews() {
