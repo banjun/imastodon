@@ -35,9 +35,11 @@ class TimelineViewController: UICollectionViewController {
     }
 
     func append(_ statuses: [Status]) {
-        statuses.reversed().forEach {
-            self.statuses.insert(($0, $0.attributedTextContent), at: 0)
-            self.collectionView?.insertItems(at: [IndexPath(item: 0, section: 0)])
+        statuses.reversed().forEach { s in
+            autoreleasepool {
+                self.statuses.insert((s, s.attributedTextContent), at: 0)
+                self.collectionView?.insertItems(at: [IndexPath(item: 0, section: 0)])
+            }
         }
 
         if self.statuses.count > 100 {
