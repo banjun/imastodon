@@ -7,12 +7,12 @@ import UserNotifications
 class HomeViewController: TimelineViewController, ClientContainer {
     let instanceAccount: InstanceAccout
     private var userStream: Stream?
-    var client: Client {return Client(instanceAccount)}
+    var client: Client {return Client(instanceAccount)!}
 
     init(instanceAccount: InstanceAccout) {
         self.instanceAccount = instanceAccount
         super.init(statuses: [], baseURL: instanceAccount.instance.baseURL)
-        title = "Home@\(instanceAccount.instance.title) \(instanceAccount.account.displayName)"
+        title = "Home@\(instanceAccount.instance.title) \(instanceAccount.account.display_name)"
         toolbarItems = [UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(showPost))]
     }
     required init?(coder aDecoder: NSCoder) {fatalError()}
@@ -56,7 +56,7 @@ class HomeViewController: TimelineViewController, ClientContainer {
                 case let .success(n):
                     // NSLog("%@", "notification: \(n.account), \(n.type), \(String(describing: n.status?.textContent))")
                     let content = UNMutableNotificationContent()
-                    content.title = "\(n.account.displayName) \(n.type)"
+                    content.title = "\(n.account.display_name) \(n.type)"
                     content.body = n.status?.textContent ?? "you"
                     UNUserNotificationCenter.current()
                         .add(UNNotificationRequest(identifier: "notification \(n.id)", content: content, trigger: nil))

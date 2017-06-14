@@ -1,23 +1,17 @@
 import Foundation
-import pencil
 
-struct Store: CustomReadWriteElement {
+struct Store: Codable {
     var instanceAccounts: [InstanceAccout]
 
-    static private var sharedURL: URL {return Directory.Documents!.append(path: "sharedStore.data")}
+    static private var sharedURL: URL {
+        return NSURL(fileURLWithPath: NSHomeDirectory())
+            .appendingPathComponent("Documents")!
+            .appendingPathComponent("sharedStore.json")
+    }
     static var shared: Store {
-        return Store.value(from: sharedURL) ?? Store(instanceAccounts: [])
+        return (try? JSONDecoder().decode(Store.self, from: Data(contentsOf: sharedURL))) ?? Store(instanceAccounts: [])
     }
     func writeToShared() {
-        write(to: Store.sharedURL)
-    }
-
-    static func read(from components: Components) -> Store? {
-        do {
-            return try Store(
-                instanceAccounts: components.component(for: "instanceAccounts"))
-        } catch {
-            return nil
-        }
+        _ = try? JSONEncoder().encode(self).write(to: Store.sharedURL)
     }
 }

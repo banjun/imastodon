@@ -12,4 +12,5 @@ target 'imastodon' do
   pod 'MastodonKit'
   pod 'IKEventSource', git: 'https://github.com/banjun/EventSource', branch: 'banjun'
   pod 'ReactiveSwift'
+  pod 'SwiftBeaker'
 end

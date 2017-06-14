@@ -6,7 +6,7 @@ import Kingfisher
 
 class LocalViewController: TimelineViewController, ClientContainer {
     let instanceAccount: InstanceAccout
-    var client: Client {return Client(instanceAccount)}
+    var client: Client {return Client(instanceAccount)!}
     
     private var localStream: Stream?
     private var userStream: Stream?
@@ -17,7 +17,7 @@ class LocalViewController: TimelineViewController, ClientContainer {
     init(instanceAccount: InstanceAccout, statuses: [Status] = []) {
         self.instanceAccount = instanceAccount
         super.init(statuses: statuses, baseURL: instanceAccount.instance.baseURL)
-        title = "Local@\(instanceAccount.instance.title) \(instanceAccount.account.displayName)"
+        title = "Local@\(instanceAccount.instance.title) \(instanceAccount.account.display_name)"
         toolbarItems = [UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(showPost))]
     }
     required init?(coder aDecoder: NSCoder) {fatalError()}
@@ -73,7 +73,7 @@ class LocalViewController: TimelineViewController, ClientContainer {
                 case let .success(n):
                     // NSLog("%@", "notification: \(n.account), \(n.type), \(String(describing: n.status?.textContent))")
                     let content = UNMutableNotificationContent()
-                    content.title = "\(n.account.displayName) \(n.type)"
+                    content.title = "\(n.account.display_name) \(n.type)"
                     content.body = n.status?.textContent ?? "you"
                     UNUserNotificationCenter.current()
                         .add(UNNotificationRequest(identifier: "notification \(n.id)", content: content, trigger: nil))

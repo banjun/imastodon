@@ -1,4 +1,6 @@
 PODS:
+  - APIKit (3.1.1):
+    - Result (~> 3.0)
   - BrightFutures (5.2.0):
     - Result (~> 3.2)
   - Eureka (3.0.0)
@@ -12,6 +14,11 @@ PODS:
     - Result (~> 3.2)
   - Result (3.2.2)
   - SVProgressHUD (2.1.2)
+  - SwiftBeaker (0.4.1):
+    - APIKit
+    - Himotoki
+    - URITemplate
+  - URITemplate (2.0.1)
   - "※ikemen (0.2.0)"
 
 DEPENDENCIES:
@@ -25,6 +32,7 @@ DEPENDENCIES:
   - pencil
   - ReactiveSwift
   - SVProgressHUD
+  - SwiftBeaker
   - "※ikemen"
 
 EXTERNAL SOURCES:
@@ -38,6 +46,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/banjun/EventSource
 
 SPEC CHECKSUMS:
+  APIKit: 7460983f490d3bde6aaaaa4164d18c9865a6f91d
   BrightFutures: 8681dbb9fa831b69b6e7dc4a498b9e081d5daeb5
   Eureka: f36fd440c3ebb7bfea0a4fbe6f16a05f1cb35906
   Himotoki: 85fda41d4d0e14f7228317a3b474175cdfb8f515
@@ -49,8 +58,10 @@ SPEC CHECKSUMS:
   ReactiveSwift: f54ba12c2e799003432930fa55495315ae44f32b
   Result: 4edd39003fdccf281d418ee1b006571f70123250
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
+  SwiftBeaker: 033f24921d35d71e9df360f8c402269475781203
+  URITemplate: 720b8a56a281494d7c2d31ee33183986eaed2c67
   "※ikemen": c04aecee4293a2b6deb2119f7e67e7a82c6dea06
 
-PODFILE CHECKSUM: bcac3635315de5370906b7a637bd944184727448
+PODFILE CHECKSUM: 0f7f5e9559c40431d33bda30b377105811bf852b
 
 COCOAPODS: 1.2.1
