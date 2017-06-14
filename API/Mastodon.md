@@ -113,7 +113,7 @@ FORMAT: 1A
 + title (string , required) - The instance's title
 + description (string , required) - A description for the instance
 + email (string , required) - An email address which can be used to contact the instance administrator
-+ version (string, required) - The Mastodon version used by instance
++ version (string, optional) - The Mastodon version used by instance
 
 ## Account
 

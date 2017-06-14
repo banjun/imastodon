@@ -43,18 +43,17 @@ class LoginViewController: FormViewController {
         var client = Client(baseURL: host, accessToken: nil)
         client.registerApp()
             .flatMap { app in
-                client.login(app: app, email: email, password: password).map { settings -> (ClientApplication, LoginSettings) in
-                    client.accessToken = settings.access_token
-                    return (app, settings)
+                client.login(app: app, email: email, password: password).onSuccess {
+                    client.accessToken = $0.access_token
                 }
             }
-            .flatMap { app, loginSettings in
+            .flatMap { loginSettings in
                 client.currentInstance().zip(client.currentUser())
-                    .map {(app, loginSettings, $0.0, $0.1)}
+                    .map {(loginSettings, $0.0, $0.1)}
             }
             .onComplete {_ in SVProgressHUD.dismiss()}
-            .onSuccess { arg in
-                let (app, loginSettings, instance, account) = arg
+            .onSuccess {
+                let (loginSettings, instance, account) = $0
                 self.onNewInstance?(InstanceAccout(instance: instance, account: account, accessToken: loginSettings.access_token))
             }.onFailure { e in
                 let ac = UIAlertController(title: "Error", message: e.localizedDescription, preferredStyle: .alert)

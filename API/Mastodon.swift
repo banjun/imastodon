@@ -353,7 +353,7 @@ struct Instance: Codable {
     /// An email address which can be used to contact the instance administrator
     var email: String
     /// The Mastodon version used by instance
-    var version: String
+    var version: String?
 }
 
 struct Account: Codable { 
