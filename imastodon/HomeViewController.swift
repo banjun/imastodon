@@ -1,7 +1,6 @@
 import Foundation
 import Eureka
 import SVProgressHUD
-import MastodonKit
 import UserNotifications
 
 class HomeViewController: TimelineViewController, ClientContainer {

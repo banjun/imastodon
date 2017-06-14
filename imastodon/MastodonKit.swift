@@ -1,11 +1,6 @@
-//import MastodonKit
 import BrightFutures
-import pencil
-import Himotoki
 import Foundation
 import APIKit
-
-// stupid wrapper for MastodonKit
 
 enum AppError: Error {
     case apikit(SessionTaskError)
@@ -35,51 +30,6 @@ extension Account {
         return URL(string: avatar, relativeTo: baseURL)
     }
 }
-
-// copy and paste -ed for visibility issue at MastodonKit
-
-let URLTransformer = Transformer<String, URL> { URLString throws -> URL in
-    if let URL = URL(string: URLString) {
-        return URL
-    }
-
-    throw customError("Invalid URL string: \(URLString)")
-}
-
-let DateTransformer = Transformer<String, Date> { dateString throws -> Date in
-    let formatter = ISO8601DateFormatter()
-    formatter.formatOptions = [.withFullDate, .withTime, .withDashSeparatorInDate, .withColonSeparatorInTime] // handle milliseconds
-    guard let date = formatter.date(from: dateString) else {
-        throw customError("Invalid date string: \(dateString)")
-    }
-    return date
-}
-
-//let VisibilityTransformer = Transformer<String, Visibility> { s throws -> Visibility in
-//    guard let v = Visibility(rawValue: s) else {
-//        throw customError("Invalid Visibility string: \(s)")
-//    }
-//    return v
-//}
-//
-//let AttachmentTypeTransformer = Transformer<String, AttachmentType> { s throws -> AttachmentType in
-//    switch s {
-//    case "image": return .image
-//    case "video": return .video
-//    case "gifv": return .gifv
-//    default: return .unknown
-//    }
-//}
-//
-//let NotificationTypeTransformer = Transformer<String, NotificationType> { s throws -> NotificationType in
-//    switch s {
-//    case "mention": return .mention
-//    case "reblog": return .reblog
-//    case "favourite": return .favourite
-//    case "follow": return .follow
-//    default: return .unknown
-//    }
-//}
 
 extension Status {
     var textContent: String {

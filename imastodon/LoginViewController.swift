@@ -1,7 +1,6 @@
 import Foundation
 import Eureka
 import SVProgressHUD
-import MastodonKit
 
 class LoginViewController: FormViewController {
     var onNewInstance: ((InstanceAccout) -> Void)?

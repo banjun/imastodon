@@ -1,4 +1,3 @@
-import MastodonKit
 import Kingfisher
 import Ikemen
 

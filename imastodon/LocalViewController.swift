@@ -1,6 +1,5 @@
 import Foundation
 import SVProgressHUD
-import MastodonKit
 import UserNotifications
 import Kingfisher
 
