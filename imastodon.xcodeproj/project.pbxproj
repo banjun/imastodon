@@ -16,6 +16,7 @@
 		EAC55F301ED07C5700CD567D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC55F2F1ED07C5700CD567D /* ViewController.swift */; };
 		EAC55F351ED07C5700CD567D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EAC55F341ED07C5700CD567D /* Assets.xcassets */; };
 		EAC55F381ED07C5700CD567D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EAC55F361ED07C5700CD567D /* LaunchScreen.storyboard */; };
+		EAD8AD961EF2ADE0002648F9 /* UnifiedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD8AD951EF2ADE0002648F9 /* UnifiedViewController.swift */; };
 		EAE218B11ED1460B001209F2 /* InstanceListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE218B01ED1460B001209F2 /* InstanceListViewController.swift */; };
 		EAE218B31ED147E2001209F2 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE218B21ED147E2001209F2 /* LoginViewController.swift */; };
 		EAE218B51ED15494001209F2 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE218B41ED15494001209F2 /* Store.swift */; };
@@ -41,6 +42,7 @@
 		EAC55F341ED07C5700CD567D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EAC55F371ED07C5700CD567D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EAC55F391ED07C5700CD567D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EAD8AD951EF2ADE0002648F9 /* UnifiedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedViewController.swift; sourceTree = "<group>"; };
 		EAE218B01ED1460B001209F2 /* InstanceListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstanceListViewController.swift; sourceTree = "<group>"; };
 		EAE218B21ED147E2001209F2 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		EAE218B41ED15494001209F2 /* Store.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 				EA0EDB4B1EE429A600280536 /* TimelineViewController.swift */,
 				EAE218B81ED15BB0001209F2 /* HomeViewController.swift */,
 				EAE218BC1ED176B4001209F2 /* LocalViewController.swift */,
+				EAD8AD951EF2ADE0002648F9 /* UnifiedViewController.swift */,
 				EAE3BC3F1ED3373300B31AF5 /* PostViewController.swift */,
 				EAE218B01ED1460B001209F2 /* InstanceListViewController.swift */,
 				EAE218B21ED147E2001209F2 /* LoginViewController.swift */,
@@ -266,6 +269,7 @@
 				EAC55F2E1ED07C5700CD567D /* AppDelegate.swift in Sources */,
 				EAE218B11ED1460B001209F2 /* InstanceListViewController.swift in Sources */,
 				EAE218B91ED15BB0001209F2 /* HomeViewController.swift in Sources */,
+				EAD8AD961EF2ADE0002648F9 /* UnifiedViewController.swift in Sources */,
 				EAE218BD1ED176B4001209F2 /* LocalViewController.swift in Sources */,
 				EAE218BB1ED1615A001209F2 /* Client.swift in Sources */,
 			);

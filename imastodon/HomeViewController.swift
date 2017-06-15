@@ -10,7 +10,7 @@ class HomeViewController: TimelineViewController, ClientContainer {
 
     init(instanceAccount: InstanceAccout) {
         self.instanceAccount = instanceAccount
-        super.init(statuses: [], baseURL: instanceAccount.instance.baseURL)
+        super.init(timelineEvents: [], baseURL: instanceAccount.instance.baseURL)
         title = "Home@\(instanceAccount.instance.title) \(instanceAccount.account.display_name)"
         toolbarItems = [UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(showPost))]
     }
@@ -28,7 +28,7 @@ class HomeViewController: TimelineViewController, ClientContainer {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        if statuses.isEmpty {
+        if timelineEvents.isEmpty {
             fetch()
         }
         if userStream == nil {
@@ -44,8 +44,8 @@ class HomeViewController: TimelineViewController, ClientContainer {
             DispatchQueue.main.async {
                 switch r {
                 case .success(.open): break //self?.refreshControl.endRefreshing()
-                case let .success(.update(s)): self?.append([s])
-                case let .failure(e): self?.append([e.errorStatus])
+                case let .success(.update(s)): self?.append([.home(s, nil)])
+                case let .failure(e): self?.append([.home(e.errorStatus, nil)])
                 }
             }
         }
@@ -59,7 +59,7 @@ class HomeViewController: TimelineViewController, ClientContainer {
                     content.body = n.status?.textContent ?? "you"
                     UNUserNotificationCenter.current()
                         .add(UNNotificationRequest(identifier: "notification \(n.id)", content: content, trigger: nil))
-                case let .failure(e): self?.append([e.errorStatus])
+                case let .failure(e): self?.append([.home(e.errorStatus, nil)])
                 }
             }
         }
@@ -70,7 +70,7 @@ class HomeViewController: TimelineViewController, ClientContainer {
         client.home()
             .onComplete {_ in SVProgressHUD.dismiss()}
             .onSuccess { statuses in
-                self.append(statuses)
+                self.append(statuses.map {.home($0, nil)})
             }.onFailure { e in
                 let ac = UIAlertController(title: "Error", message: e.localizedDescription, preferredStyle: .alert)
                 ac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))

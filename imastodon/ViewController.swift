@@ -44,13 +44,18 @@ class ViewController: FormViewController {
                 LabelRow {
                     $0.cellStyle = .subtitle
                     $0.title = "Home"
-                    $0.value = "\(i.instance.title) \(i.account.display_name)"
+                    $0.value = "\(i.instance.title) \(i.account.displayNameOrUserName)"
                     }.onCellSelection {[unowned self] _ in self.showHomeTimeline(i)},
                 LabelRow {
                     $0.cellStyle = .subtitle
                     $0.title = "Local"
-                    $0.value = "\(i.instance.title) \(i.account.display_name)"
-                    }.onCellSelection {[unowned self] _ in self.showLocalTimeline(i)}]
+                    $0.value = "\(i.instance.title) \(i.account.displayNameOrUserName)"
+                    }.onCellSelection {[unowned self] _ in self.showLocalTimeline(i)},
+                LabelRow {
+                    $0.cellStyle = .subtitle
+                    $0.title = "Unified"
+                    $0.value = "\(i.instance.title) \(i.account.displayNameOrUserName)"
+                    }.onCellSelection {[unowned self] _ in self.showUnifiedTimeline(i)}]
         })
     }
 
@@ -61,6 +66,11 @@ class ViewController: FormViewController {
 
     private func showLocalTimeline(_ instanceAccount: InstanceAccout) {
         let vc = LocalViewController(instanceAccount: instanceAccount)
+        show(vc, sender: self)
+    }
+
+    private func showUnifiedTimeline(_ instanceAccount: InstanceAccout) {
+        let vc = UnifiedViewController(instanceAccount: instanceAccount)
         show(vc, sender: self)
     }
 }

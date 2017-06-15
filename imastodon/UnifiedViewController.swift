@@ -2,21 +2,23 @@ import Foundation
 import SVProgressHUD
 import UserNotifications
 import Kingfisher
+import ReactiveSwift
 
-class LocalViewController: TimelineViewController, ClientContainer {
+class UnifiedViewController: TimelineViewController, ClientContainer {
     let instanceAccount: InstanceAccout
     var client: Client {return Client(instanceAccount)!}
-    
+
     private var localStream: Stream?
     private var userStream: Stream?
     private var streams: [Stream] {return [localStream, userStream].flatMap {$0}}
-    
+    private var unifiedSignal: Signal<(Stream.Event, TimelineEvent?), AppError>?
+
     private let refreshControl = UIRefreshControl()
 
     init(instanceAccount: InstanceAccout, timelineEvents: [TimelineEvent] = []) {
         self.instanceAccount = instanceAccount
         super.init(timelineEvents: timelineEvents, baseURL: instanceAccount.instance.baseURL)
-        title = "Local@\(instanceAccount.instance.title) \(instanceAccount.account.display_name)"
+        title = "\(instanceAccount.instance.title) \(instanceAccount.account.displayNameOrUserName)"
         toolbarItems = [UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(showPost))]
     }
     required init?(coder aDecoder: NSCoder) {fatalError()}
@@ -24,10 +26,10 @@ class LocalViewController: TimelineViewController, ClientContainer {
     deinit {
         streams.forEach {$0.close()}
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
         collectionView?.addSubview(refreshControl)
         collectionView?.alwaysBounceVertical = true
@@ -52,21 +54,34 @@ class LocalViewController: TimelineViewController, ClientContainer {
     private func reconnectStream() {
         streams.forEach {$0.close()}
 
-        localStream = Stream(localTimelineForHost: instanceAccount.instance.uri, token: instanceAccount.accessToken)
-        localStream?.updateSignal.observeResult { [weak self] r in
-            DispatchQueue.main.async {
+        let localStream = Stream(localTimelineForHost: instanceAccount.instance.uri, token: instanceAccount.accessToken)
+        self.localStream = localStream
+        let userStream = Stream(userTimelineForHost: instanceAccount.instance.uri, token: instanceAccount.accessToken)
+        self.userStream = userStream
+
+        var recents: [Status] = []
+        unifiedSignal = Signal.merge([
+            localStream.updateSignal.map {($0, $0.status.map {.local($0, nil)})},
+            userStream.updateSignal.map {($0, $0.status.map {.home($0, nil)})}])
+        unifiedSignal?
+            .filter { (ev, tev) in
+                guard let s = tev?.status else { return true }
+                guard !(recents.contains {$0.id == s.id}) else { return false }
+                recents.append(s)
+                recents.removeFirst(max(0, recents.count - 20))
+                return true
+            }
+            .observeResult { [weak self] r in
                 switch r {
-                case .success(.open): self?.refreshControl.endRefreshing()
-                case let .success(.update(s)): self?.append([.local(s, nil)])
+                case .success(.open, _): self?.refreshControl.endRefreshing()
+                case let .success(.update, tev): _ = tev.map {self?.append([$0])}
                 case let .failure(e):
                     self?.refreshControl.endRefreshing()
                     self?.append([.local(e.errorStatus, nil)])
                 }
-            }
         }
 
-        userStream = Stream(userTimelineForHost: instanceAccount.instance.uri, token: instanceAccount.accessToken)
-        userStream?.notificationSignal.observeResult { [weak self] r in
+        userStream.notificationSignal.observeResult { [weak self] r in
             DispatchQueue.main.async {
                 switch r {
                 case let .success(n):
@@ -85,9 +100,13 @@ class LocalViewController: TimelineViewController, ClientContainer {
     private func fetch() {
         SVProgressHUD.show()
         client.local(since: timelineEvents.flatMap {$0.status?.id}.first {$0 > 0})
+            .flatMap { ls in self.client.home().map {(ls, $0)}}
             .onComplete {_ in SVProgressHUD.dismiss()}
-            .onSuccess { statuses in
-                self.append(statuses.map {.local($0, nil)})
+            .onSuccess { ls, hs in
+                let events: [TimelineEvent] = ls.map {.local($0, nil)} + hs.map {.home($0, nil)}
+                self.append(events
+                    .filter {e in !self.timelineEvents.contains {$0.status == e.status}}
+                    .sorted {($0.status?.id ?? 0) < ($1.status?.id ?? 0)})
                 self.collectionView?.reloadData()
             }.onFailure { e in
                 let ac = UIAlertController(title: "Error", message: e.localizedDescription, preferredStyle: .alert)
@@ -95,7 +114,7 @@ class LocalViewController: TimelineViewController, ClientContainer {
                 self.present(ac, animated: true)
         }
     }
-    
+
     @objc private func refresh() {
         guard !(streams.contains {$0.source.readyState == .connecting}) else {
             refreshControl.endRefreshing()
@@ -112,3 +131,4 @@ class LocalViewController: TimelineViewController, ClientContainer {
         present(nc, animated: true)
     }
 }
+
