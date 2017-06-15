@@ -16,12 +16,14 @@ enum TimelineEvent {
         }
     }
 
-    static let statusCellID = "Status"
+    static let homeCellID = "Home"
+    static let localCellID = "Local"
     static let notificationCellID = "Notification"
 
     var cellID: String {
         switch self {
-        case .home, .local: return TimelineEvent.statusCellID
+        case .home: return TimelineEvent.homeCellID
+        case .local: return TimelineEvent.localCellID
         case .notification: return TimelineEvent.notificationCellID
         }
     }
@@ -56,7 +58,8 @@ class TimelineViewController: UICollectionViewController {
         super.viewDidLoad()
         collectionView?.backgroundColor = .white
         collectionView?.showsVerticalScrollIndicator = false
-        collectionView?.register(StatusCollectionViewCell.self, forCellWithReuseIdentifier: TimelineEvent.statusCellID)
+        collectionView?.register(StatusCollectionViewCell.self, forCellWithReuseIdentifier: TimelineEvent.homeCellID)
+        collectionView?.register(StatusCollectionViewCell.self, forCellWithReuseIdentifier: TimelineEvent.localCellID)
         collectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: TimelineEvent.notificationCellID)
     }
 
@@ -103,8 +106,10 @@ extension TimelineViewController {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: e.cellID, for: indexPath)
         switch e {
         case let .home(s, a):
+            (cell as? StatusCollectionViewCell)?.mode = .home
             (cell as? StatusCollectionViewCell)?.setStatus(s, attributedText: a, baseURL: baseURL)
         case let .local(s, a):
+            (cell as? StatusCollectionViewCell)?.mode = .local
             (cell as? StatusCollectionViewCell)?.setStatus(s, attributedText: a, baseURL: baseURL)
         case .notification:
             cell.contentView.backgroundColor = .blue
@@ -136,7 +141,7 @@ extension TimelineViewController {
     }
 }
 
-private let layoutCell = StatusCollectionViewCell(frame: .zero)
+private let layoutCell = StatusCollectionViewCell(frame: .zero) ※ {$0.mode = .home}
 
 extension TimelineViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
