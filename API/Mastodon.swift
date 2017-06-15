@@ -40,20 +40,22 @@ extension APIBlueprintRequest {
         return (urlResponse.allHeaderFields["Content-Type"] as? String)?.components(separatedBy: ";").first?.trimmingCharacters(in: .whitespaces)
     }
 
-    // convert object (Data) to expected type
-    public func intercept(object: Any, urlResponse: HTTPURLResponse) throws -> Any {
-        let contentType = contentMIMEType(in: urlResponse)
-        switch (object, contentType) {
-        case let (data as Data, "application/json"?): return data
-        case let (data as Data, "text/plain"?):
-            guard let s = String(data: data, encoding: .utf8) else { throw ResponseError.invalidData(urlResponse.statusCode, contentType) }
-            return s
-        case let (data as Data, "text/html"?):
-            guard let s = String(data: data, encoding: .utf8) else { throw ResponseError.invalidData(urlResponse.statusCode, contentType) }
-            return s
-        case let (data as Data, _): return data
-        default: return object
+    func data(from object: Any, urlResponse: HTTPURLResponse) throws -> Data {
+        guard let d = object as? Data else {
+            throw ResponseError.invalidData(urlResponse.statusCode, contentMIMEType(in: urlResponse))
         }
+        return d
+    }
+
+    func string(from object: Any, urlResponse: HTTPURLResponse) throws -> String {
+        guard let s = String(data: try data(from: object, urlResponse: urlResponse), encoding: .utf8) else {
+            throw ResponseError.invalidData(urlResponse.statusCode, contentMIMEType(in: urlResponse))
+        }
+        return s
+    }
+
+    func decodeJSON<T: Decodable>(from object: Any, urlResponse: HTTPURLResponse) throws -> T {
+        return try JSONDecoder().decode(T.self, from: data(from: object, urlResponse: urlResponse))
     }
 }
 
@@ -68,6 +70,23 @@ extension URITemplateRequest {
         var req = urlRequest
         req.url = URL(string: baseURL.absoluteString + type(of: self).pathTemplate.expand(pathVars.context))!
         return req
+    }
+}
+
+/// indirect Codable Box-like container for recursive data structure definitions
+public class Indirect<V: Codable>: Codable {
+    public var value: V
+
+    public init(_ value: V) {
+        self.value = value
+    }
+
+    public required init(from decoder: Decoder) throws {
+        self.value = try V(from: decoder)
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        try value.encode(to: encoder)
     }
 }
 
@@ -88,7 +107,7 @@ struct GetInstance: APIBlueprintRequest {
         let contentType = contentMIMEType(in: urlResponse)
         switch (urlResponse.statusCode, contentType) {
         case (200, _):
-            return .http200_(try JSONDecoder().decode(Instance.self, from: object as! Data))
+            return .http200_(try decodeJSON(from: object, urlResponse: urlResponse))
         default:
             throw ResponseError.undefined(urlResponse.statusCode, contentType)
         }
@@ -110,7 +129,7 @@ struct GetCurrentUser: APIBlueprintRequest {
         let contentType = contentMIMEType(in: urlResponse)
         switch (urlResponse.statusCode, contentType) {
         case (200, _):
-            return .http200_(try JSONDecoder().decode(Account.self, from: object as! Data))
+            return .http200_(try decodeJSON(from: object, urlResponse: urlResponse))
         default:
             throw ResponseError.undefined(urlResponse.statusCode, contentType)
         }
@@ -127,9 +146,12 @@ struct RegisterApp: APIBlueprintRequest, URITemplateRequest {
     var pathVars: PathVars
     struct PathVars: URITemplateContextConvertible {
         /// Name of your application
-        var client_name: String        /// Where the user should be redirected after authorization (for no redirect, use `urn:ietf:wg:oauth:2.0:oob`)
-        var redirect_uris: String        /// This can be a space-separated list of the following items: "read", "write" and "follow" (see [this page](OAuth-details.md) for details on what the scopes do)
-        var scopes: String        /// URL to the homepage of your app
+        var client_name: String
+        /// Where the user should be redirected after authorization (for no redirect, use `urn:ietf:wg:oauth:2.0:oob`)
+        var redirect_uris: String
+        /// This can be a space-separated list of the following items: "read", "write" and "follow" (see [this page](OAuth-details.md) for details on what the scopes do)
+        var scopes: String
+        /// URL to the homepage of your app
         var website: String?
     }
 
@@ -141,7 +163,7 @@ struct RegisterApp: APIBlueprintRequest, URITemplateRequest {
         let contentType = contentMIMEType(in: urlResponse)
         switch (urlResponse.statusCode, contentType) {
         case (200, _):
-            return .http200_(try JSONDecoder().decode(ClientApplication.self, from: object as! Data))
+            return .http200_(try decodeJSON(from: object, urlResponse: urlResponse))
         default:
             throw ResponseError.undefined(urlResponse.statusCode, contentType)
         }
@@ -183,7 +205,7 @@ struct LoginSilent: APIBlueprintRequest {
         let contentType = contentMIMEType(in: urlResponse)
         switch (urlResponse.statusCode, contentType) {
         case (200, _):
-            return .http200_(try JSONDecoder().decode(LoginSettings.self, from: object as! Data))
+            return .http200_(try decodeJSON(from: object, urlResponse: urlResponse))
         default:
             throw ResponseError.undefined(urlResponse.statusCode, contentType)
         }
@@ -200,8 +222,10 @@ struct GetHomeTimeline: APIBlueprintRequest, URITemplateRequest {
     var pathVars: PathVars
     struct PathVars: URITemplateContextConvertible {
         /// Get a list of timelines with ID less than this value
-        var max_id: String?        /// Get a list of timelines with ID greater than this value
-        var since_id: String?        /// Maximum number of statuses on the requested timeline to get (Default 20, Max 40)
+        var max_id: String?
+        /// Get a list of timelines with ID greater than this value
+        var since_id: String?
+        /// Maximum number of statuses on the requested timeline to get (Default 20, Max 40)
         var limit: String?
     }
 
@@ -213,7 +237,7 @@ struct GetHomeTimeline: APIBlueprintRequest, URITemplateRequest {
         let contentType = contentMIMEType(in: urlResponse)
         switch (urlResponse.statusCode, contentType) {
         case (200, _):
-            return .http200_(try JSONDecoder().decode(Timelines.self, from: object as! Data))
+            return .http200_(try decodeJSON(from: object, urlResponse: urlResponse))
         default:
             throw ResponseError.undefined(urlResponse.statusCode, contentType)
         }
@@ -230,9 +254,12 @@ struct GetPublicTimeline: APIBlueprintRequest, URITemplateRequest {
     var pathVars: PathVars
     struct PathVars: URITemplateContextConvertible {
         /// Only return statuses originating from this instance (public and tag timelines only)
-        var local: String?        /// Get a list of timelines with ID less than this value
-        var max_id: String?        /// Get a list of timelines with ID greater than this value
-        var since_id: String?        /// Maximum number of statuses on the requested timeline to get (Default 20, Max 40)
+        var local: String?
+        /// Get a list of timelines with ID less than this value
+        var max_id: String?
+        /// Get a list of timelines with ID greater than this value
+        var since_id: String?
+        /// Maximum number of statuses on the requested timeline to get (Default 20, Max 40)
         var limit: String?
     }
 
@@ -244,7 +271,7 @@ struct GetPublicTimeline: APIBlueprintRequest, URITemplateRequest {
         let contentType = contentMIMEType(in: urlResponse)
         switch (urlResponse.statusCode, contentType) {
         case (200, _):
-            return .http200_(try JSONDecoder().decode(Timelines.self, from: object as! Data))
+            return .http200_(try decodeJSON(from: object, urlResponse: urlResponse))
         default:
             throw ResponseError.undefined(urlResponse.statusCode, contentType)
         }
@@ -272,7 +299,7 @@ struct Boost: APIBlueprintRequest, URITemplateRequest {
         let contentType = contentMIMEType(in: urlResponse)
         switch (urlResponse.statusCode, contentType) {
         case (200, _):
-            return .http200_(try JSONDecoder().decode(Status.self, from: object as! Data))
+            return .http200_(try decodeJSON(from: object, urlResponse: urlResponse))
         default:
             throw ResponseError.undefined(urlResponse.statusCode, contentType)
         }
@@ -300,7 +327,7 @@ struct Favorite: APIBlueprintRequest, URITemplateRequest {
         let contentType = contentMIMEType(in: urlResponse)
         switch (urlResponse.statusCode, contentType) {
         case (200, _):
-            return .http200_(try JSONDecoder().decode(Status.self, from: object as! Data))
+            return .http200_(try decodeJSON(from: object, urlResponse: urlResponse))
         default:
             throw ResponseError.undefined(urlResponse.statusCode, contentType)
         }
@@ -317,11 +344,16 @@ struct PostStatus: APIBlueprintRequest, URITemplateRequest {
     var pathVars: PathVars
     struct PathVars: URITemplateContextConvertible {
         /// The text of the status
-        var status: String        /// local ID of the status you want to reply to
-        var in_reply_to_id: String?        /// Array of media IDs to attach to the status (maximum 4)
-        var media_ids: String?        /// Set this to mark the media of the status as NSFW
-        var sensitive: String?        /// Text to be shown as a warning before the actual content
-        var spoiler_text: String?        /// Either "direct", "private", "unlisted" or "public"
+        var status: String
+        /// local ID of the status you want to reply to
+        var in_reply_to_id: String?
+        /// Array of media IDs to attach to the status (maximum 4)
+        var media_ids: String?
+        /// Set this to mark the media of the status as NSFW
+        var sensitive: String?
+        /// Text to be shown as a warning before the actual content
+        var spoiler_text: String?
+        /// Either "direct", "private", "unlisted" or "public"
         var visibility: String?
     }
 
@@ -333,7 +365,7 @@ struct PostStatus: APIBlueprintRequest, URITemplateRequest {
         let contentType = contentMIMEType(in: urlResponse)
         switch (urlResponse.statusCode, contentType) {
         case (200, _):
-            return .http200_(try JSONDecoder().decode(Status.self, from: object as! Data))
+            return .http200_(try decodeJSON(from: object, urlResponse: urlResponse))
         default:
             throw ResponseError.undefined(urlResponse.statusCode, contentType)
         }

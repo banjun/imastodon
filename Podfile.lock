@@ -4,17 +4,15 @@ PODS:
   - BrightFutures (5.2.0):
     - Result (~> 3.2)
   - Eureka (3.0.0)
-  - Himotoki (3.0.1)
   - IKEventSource (2.0.0)
-  - Kingfisher (3.9.1)
+  - Kingfisher (3.10.1)
   - NorthLayout (3.0.0)
   - ReactiveSwift (1.1.3):
     - Result (~> 3.2)
-  - Result (3.2.2)
+  - Result (3.2.3)
   - SVProgressHUD (2.1.2)
-  - SwiftBeaker (0.4.1):
+  - SwiftBeaker (1.0.0-beta.1):
     - APIKit
-    - Himotoki
     - URITemplate
   - URITemplate (2.0.1)
   - "※ikemen (0.2.0)"
@@ -27,7 +25,7 @@ DEPENDENCIES:
   - NorthLayout
   - ReactiveSwift
   - SVProgressHUD
-  - SwiftBeaker
+  - SwiftBeaker (~> 1.0.0-beta.1)
   - "※ikemen"
 
 EXTERNAL SOURCES:
@@ -44,17 +42,16 @@ SPEC CHECKSUMS:
   APIKit: 7460983f490d3bde6aaaaa4164d18c9865a6f91d
   BrightFutures: 8681dbb9fa831b69b6e7dc4a498b9e081d5daeb5
   Eureka: f36fd440c3ebb7bfea0a4fbe6f16a05f1cb35906
-  Himotoki: 85fda41d4d0e14f7228317a3b474175cdfb8f515
   IKEventSource: 6526ddd3ecc340375a7d4c658eb47d82b92e7606
-  Kingfisher: 6729a0baaa458245bfb8cd5a1296c71c10d6eb6c
+  Kingfisher: 33a1b82140fcb14a9fc13f78dfde2a03ff8de8cb
   NorthLayout: 28db8bfa49b861b4e972cc8e7c683c8ba819ff88
   ReactiveSwift: f54ba12c2e799003432930fa55495315ae44f32b
-  Result: 4edd39003fdccf281d418ee1b006571f70123250
+  Result: 128640a6347e8d2ae48b142556739a2d13f90ce6
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
-  SwiftBeaker: 033f24921d35d71e9df360f8c402269475781203
+  SwiftBeaker: 1d56b0412e40205f5c2aed662a1dfef278f59fd2
   URITemplate: 720b8a56a281494d7c2d31ee33183986eaed2c67
   "※ikemen": c04aecee4293a2b6deb2119f7e67e7a82c6dea06
 
-PODFILE CHECKSUM: a9c3c5446a5212089c20e94c94a722e2cf57b156
+PODFILE CHECKSUM: 128358032056676ae4c2cb7680384e02ef60d78b
 
 COCOAPODS: 1.2.1
