@@ -141,7 +141,7 @@ FORMAT: 1A
 + account (Account, required) - The [Account](#account) which posted the status
 + in_reply_to_id (number, optional) - `null` or the ID of the status it replies to
 + in_reply_to_account_id (number, optional) - `null` or the ID of the account it replies to
-  // reblog (Status, optional) - `null` or the reblogged [Status](#status)
++ reblog (Status, optional) - `null` or the reblogged [Status](#status)
 + content (string, required) - Body of the status; this will contain HTML (remote HTML already sanitized)
 + created_at (string, required) - The time the status was created
 + reblogs_count (number, required) - The number of reblogs for the status

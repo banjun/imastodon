@@ -433,9 +433,9 @@ struct Status: Codable {
     /// `null` or the ID of the status it replies to
     var in_reply_to_id: Int?
     /// `null` or the ID of the account it replies to
-/// 
-/// // reblog (Status, optional) - `null` or the reblogged [Status](#status)
     var in_reply_to_account_id: Int?
+    /// `null` or the reblogged [Status](#status)  ex. Status
+    var reblog: Indirect<Status>?
     /// Body of the status; this will contain HTML (remote HTML already sanitized)
     var content: String
     /// The time the status was created

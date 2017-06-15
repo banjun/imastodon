@@ -25,13 +25,27 @@ extension Instance {
     var baseURL: URL? {return URL(string: "https://" + uri)}
 }
 
+extension String {
+    var emptyNullified: String? {
+        return isEmpty ? nil : self
+    }
+}
+
 extension Account {
-    func avatarURL(baseURL: URL) -> URL? {
-        return URL(string: avatar, relativeTo: baseURL)
+    func avatarURL(baseURL: URL?) -> URL? {
+        return URL(string: avatar, relativeTo: baseURL) ?? URL(string: avatar_static, relativeTo: baseURL)
+    }
+
+    var displayNameOrUserName: String {
+        return display_name.emptyNullified ?? username
     }
 }
 
 extension Status {
+    var mainContentStatus: Status {
+        return reblog?.value ?? self
+    }
+
     var textContent: String {
         return attributedTextContent?.string ?? content
     }

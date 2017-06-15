@@ -96,7 +96,9 @@ final class StatusCollectionViewCell: UICollectionViewCell {
     }
 
     func setStatus(_ status: Status, attributedText: NSAttributedString?, baseURL: URL?) {
-        if let avatarURL = (baseURL.map {status.account.avatarURL(baseURL: $0)} ?? URL(string: status.account.avatar) ?? URL(string: status.account.avatar_static)) {
+        let boosted = status.reblog?.value
+        let mainStatus = status.mainContentStatus
+        if let avatarURL = mainStatus.account.avatarURL(baseURL: baseURL) {
             iconView.kf.setImage(
                 with: avatarURL,
                 placeholder: stubIcon,
@@ -104,7 +106,7 @@ final class StatusCollectionViewCell: UICollectionViewCell {
                 progressBlock: nil,
                 completionHandler: nil)
         }
-        nameLabel.text = status.account.display_name
-        bodyLabel.attributedText = attributedText ?? NSMutableAttributedString(attributedString: status.attributedTextContent ?? NSAttributedString(string: status.textContent))
+        nameLabel.text = boosted.map {status.account.displayNameOrUserName + "🔁" + $0.account.displayNameOrUserName} ?? status.account.displayNameOrUserName
+        bodyLabel.attributedText = attributedText ?? mainStatus.attributedTextContent ?? NSAttributedString(string: mainStatus.textContent)
     }
 }
