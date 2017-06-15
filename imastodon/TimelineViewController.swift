@@ -6,12 +6,13 @@ import Ikemen
 enum TimelineEvent {
     case home(Status, NSAttributedString?) // as creating attributed text is heavy, cache it
     case local(Status, NSAttributedString?) // as creating attributed text is heavy, cache it
-    case notification(Notification)
+    case notification(Notification, String?) // as creating attributed text is buggy, cache it
 
     var cached: TimelineEvent {
         switch self {
         case let .home(s, nil): return .home(s, s.mainContentStatus.attributedTextContent)
         case let .local(s, nil): return .local(s, s.mainContentStatus.attributedTextContent)
+        case let .notification(n, nil) where n.status != nil: return .notification(n, n.status?.textContent)
         default: return self
         }
     }
@@ -60,7 +61,7 @@ class TimelineViewController: UICollectionViewController {
         collectionView?.showsVerticalScrollIndicator = false
         collectionView?.register(StatusCollectionViewCell.self, forCellWithReuseIdentifier: TimelineEvent.homeCellID)
         collectionView?.register(StatusCollectionViewCell.self, forCellWithReuseIdentifier: TimelineEvent.localCellID)
-        collectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: TimelineEvent.notificationCellID)
+        collectionView?.register(NotificationCell.self, forCellWithReuseIdentifier: TimelineEvent.notificationCellID)
     }
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -70,12 +71,24 @@ class TimelineViewController: UICollectionViewController {
     }
 
     func append(_ events: [TimelineEvent]) {
-        events.reversed().forEach { e in
-            autoreleasepool {
-                self.timelineEvents.insert(e.cached, at: 0)
-                self.collectionView?.insertItems(at: [IndexPath(item: 0, section: 0)])
+            events.reversed().forEach { e in
+                autoreleasepool {
+                    guard !(self.timelineEvents.enumerated().contains { old in
+                        guard e.status != nil else { return false }
+                        guard old.element.status == e.status else { return false }
+                        switch (old.element, e) {
+                        case (.home, .local):
+                            // upgrade from home to local. (more public)
+                            self.timelineEvents[old.offset] = e.cached
+                            self.collectionView?.reloadItems(at: [IndexPath(item: old.offset, section: 0)])
+                        default: break
+                        }
+                        return true
+                    }) else { return }
+                    self.timelineEvents.insert(e.cached, at: 0)
+                    self.collectionView?.insertItems(at: [IndexPath(item: 0, section: 0)])
+                }
             }
-        }
 
         if self.timelineEvents.count > 100 {
             self.timelineEvents.removeLast(self.timelineEvents.count - 80)
@@ -106,13 +119,11 @@ extension TimelineViewController {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: e.cellID, for: indexPath)
         switch e {
         case let .home(s, a):
-            (cell as? StatusCollectionViewCell)?.mode = .home
             (cell as? StatusCollectionViewCell)?.setStatus(s, attributedText: a, baseURL: baseURL)
         case let .local(s, a):
-            (cell as? StatusCollectionViewCell)?.mode = .local
             (cell as? StatusCollectionViewCell)?.setStatus(s, attributedText: a, baseURL: baseURL)
-        case .notification:
-            cell.contentView.backgroundColor = .blue
+        case let .notification(n, s):
+            (cell as? NotificationCell)?.setNotification(n, text: s, baseURL: baseURL)
         }
         return cell
     }
@@ -141,7 +152,8 @@ extension TimelineViewController {
     }
 }
 
-private let layoutCell = StatusCollectionViewCell(frame: .zero) ※ {$0.mode = .home}
+private let layoutCell = StatusCollectionViewCell(frame: .zero)
+private let notificationLayoutCell = NotificationCell(frame: .zero)
 
 extension TimelineViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -157,7 +169,10 @@ extension TimelineViewController: UICollectionViewDelegateFlowLayout {
         switch e {
         case let .home(s, a): return statusSize(s, a)
         case let .local(s, a): return statusSize(s, a)
-        case .notification: return CGSize(width: size.width, height: 25)
+        case let .notification(n, s):
+            notificationLayoutCell.setNotification(n, text: s, baseURL: nil)
+            let layoutSize = notificationLayoutCell.systemLayoutSizeFitting(size, withHorizontalFittingPriority: UILayoutPriorityRequired, verticalFittingPriority: UILayoutPriorityFittingSizeLevel)
+            return CGSize(width: collectionView.bounds.width, height: layoutSize.height)
         }
     }
 }

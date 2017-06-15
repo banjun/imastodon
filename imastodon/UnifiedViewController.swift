@@ -59,18 +59,10 @@ class UnifiedViewController: TimelineViewController, ClientContainer {
         let userStream = Stream(userTimelineForHost: instanceAccount.instance.uri, token: instanceAccount.accessToken)
         self.userStream = userStream
 
-        var recents: [Status] = []
         unifiedSignal = Signal.merge([
             localStream.updateSignal.map {($0, $0.status.map {.local($0, nil)})},
             userStream.updateSignal.map {($0, $0.status.map {.home($0, nil)})}])
         unifiedSignal?
-            .filter { (ev, tev) in
-                guard let s = tev?.status else { return true }
-                guard !(recents.contains {$0.id == s.id}) else { return false }
-                recents.append(s)
-                recents.removeFirst(max(0, recents.count - 20))
-                return true
-            }
             .observeResult { [weak self] r in
                 switch r {
                 case .success(.open, _): self?.refreshControl.endRefreshing()
@@ -80,33 +72,31 @@ class UnifiedViewController: TimelineViewController, ClientContainer {
                     self?.append([.local(e.errorStatus, nil)])
                 }
         }
-
+        
         userStream.notificationSignal.observeResult { [weak self] r in
-            DispatchQueue.main.async {
-                switch r {
-                case let .success(n):
-                    // NSLog("%@", "notification: \(n.account), \(n.type), \(String(describing: n.status?.textContent))")
-                    let content = UNMutableNotificationContent()
-                    content.title = "\(n.account.display_name) \(n.type)"
-                    content.body = n.status?.textContent ?? "you"
-                    UNUserNotificationCenter.current()
-                        .add(UNNotificationRequest(identifier: "notification \(n.id)", content: content, trigger: nil))
-                case let .failure(e): self?.append([.local(e.errorStatus, nil)])
-                }
+            switch r {
+            case let .success(n):
+                // NSLog("%@", "notification: \(n.account), \(n.type), \(String(describing: n.status?.textContent))")
+                let content = UNMutableNotificationContent()
+                content.title = "\(n.account.display_name) \(n.type)"
+                content.body = n.status?.textContent ?? "you"
+                UNUserNotificationCenter.current()
+                    .add(UNNotificationRequest(identifier: "notification \(n.id)", content: content, trigger: nil))
+                self?.append([.notification(n, nil)])
+            case let .failure(e): self?.append([.local(e.errorStatus, nil)])
             }
         }
     }
 
     private func fetch() {
         SVProgressHUD.show()
-        client.local(since: timelineEvents.flatMap {$0.status?.id}.first {$0 > 0})
-            .flatMap { ls in self.client.home().map {(ls, $0)}}
+        let since = timelineEvents.flatMap {$0.status?.id}.first {$0 > 0}
+        client.local(since: since)
+            .zip(client.home(since: since))
             .onComplete {_ in SVProgressHUD.dismiss()}
             .onSuccess { ls, hs in
                 let events: [TimelineEvent] = ls.map {.local($0, nil)} + hs.map {.home($0, nil)}
-                self.append(events
-                    .filter {e in !self.timelineEvents.contains {$0.status == e.status}}
-                    .sorted {($0.status?.id ?? 0) < ($1.status?.id ?? 0)})
+                self.append(events.sorted {($0.status?.id ?? 0) > ($1.status?.id ?? 0)})
                 self.collectionView?.reloadData()
             }.onFailure { e in
                 let ac = UIAlertController(title: "Error", message: e.localizedDescription, preferredStyle: .alert)
@@ -129,6 +119,19 @@ class UnifiedViewController: TimelineViewController, ClientContainer {
         let nc = UINavigationController(rootViewController: vc)
         nc.modalPresentationStyle = .overCurrentContext
         present(nc, animated: true)
+    }
+
+    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        // super.collectionView(collectionView, willDisplay: cell, forItemAt: indexPath)
+        let e = timelineEvent(indexPath)
+        switch e {
+        case .home:
+            cell.contentView.backgroundColor = UIColor(white: 0.95, alpha: 1.0)
+        case .local:
+            cell.contentView.backgroundColor = .white
+        case .notification:
+            cell.contentView.backgroundColor = UIColor(red: 0.16, green: 0.17, blue: 0.22, alpha: 1.0)
+        }
     }
 }
 

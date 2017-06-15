@@ -1,5 +1,6 @@
 import Kingfisher
 import Ikemen
+import NorthLayout
 
 extension Status: Equatable {
     public static func == (lhs: Status, rhs: Status) -> Bool {
@@ -43,8 +44,6 @@ extension UIAlertController {
     }
 }
 
-
-
 final class StatusCollectionViewCell: UICollectionViewCell {
     let iconView = UIImageView() ※ { iv in
         iv.clipsToBounds = true
@@ -63,36 +62,6 @@ final class StatusCollectionViewCell: UICollectionViewCell {
         l.lineBreakMode = .byTruncatingTail
     }
 
-    enum Mode {
-        case home, local
-    }
-    var mode: Mode? {
-        didSet {
-            guard oldValue == nil else { return }
-            let autolayout = northLayoutFormat(["s": 4, "p": 8], [
-                "icon": iconView,
-                "name": nameLabel,
-                "body": bodyLabel])
-            switch mode {
-            case .home?:
-                autolayout("H:|-p-[icon(==32)]")
-                autolayout("H:[icon]-s-[name]-p-|")
-                autolayout("H:[icon]-s-[body]-p-|")
-                nameLabel.textAlignment = .left
-            case .local?:
-                autolayout("H:[icon(==32)]-p-|")
-                autolayout("H:|-p-[name]-s-[icon]")
-                autolayout("H:|-(>=p)-[body]-s-[icon]")
-                nameLabel.textAlignment = .right
-            case nil:
-                break
-            }
-            autolayout("V:|-p-[icon(==32)]-(>=p)-|")
-            autolayout("V:|-s-[name]-2-[body]-p-|")
-            nameLabel.setContentHuggingPriority(UILayoutPriorityRequired, for: .vertical)
-        }
-    }
-
     override init(frame: CGRect) {
         super.init(frame: frame)
 
@@ -100,6 +69,16 @@ final class StatusCollectionViewCell: UICollectionViewCell {
         isOpaque = true
 
         contentView.translatesAutoresizingMaskIntoConstraints = false
+        let autolayout = northLayoutFormat(["s": 4, "p": 8], [
+            "icon": iconView,
+            "name": nameLabel,
+            "body": bodyLabel])
+        autolayout("H:|-p-[icon(==32)]")
+        autolayout("H:[icon]-s-[name]-p-|")
+        autolayout("H:[icon]-s-[body]-p-|")
+        autolayout("V:|-p-[icon(==32)]-(>=p)-|")
+        autolayout("V:|-p-[name]-2-[body]-p-|")
+        nameLabel.setContentHuggingPriority(UILayoutPriorityRequired, for: .vertical)
     }
 
     required init?(coder aDecoder: NSCoder) {fatalError()}
@@ -128,5 +107,80 @@ final class StatusCollectionViewCell: UICollectionViewCell {
         }
         nameLabel.text = boosted.map {status.account.displayNameOrUserName + "🔁" + $0.account.displayNameOrUserName} ?? status.account.displayNameOrUserName
         bodyLabel.attributedText = attributedText ?? mainStatus.attributedTextContent ?? NSAttributedString(string: mainStatus.textContent)
+    }
+}
+
+final class NotificationCell: UICollectionViewCell {
+    let iconView = UIImageView() ※ { iv in
+        iv.clipsToBounds = true
+        iv.layer.cornerRadius = 4
+    }
+    let nameLabel = UILabel() ※ { l in
+        l.font = .systemFont(ofSize: 12)
+        l.textColor = .white
+        l.lineBreakMode = .byTruncatingTail
+    }
+    let bodyLabel = UILabel() ※ { l in
+        l.font = .systemFont(ofSize: 16)
+        l.textColor = .white
+        l.lineBreakMode = .byTruncatingTail
+        l.textAlignment = .center
+    }
+    let targetLabel = UILabel() ※ { l in
+        l.font = .systemFont(ofSize: 16)
+        l.textColor = .white
+        l.lineBreakMode = .byTruncatingTail
+        l.textAlignment = .center
+    }
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        backgroundColor = .white
+        isOpaque = true
+
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        let autolayout = northLayoutFormat(["s": 4, "p": 8], [
+            "icon": iconView,
+            "name": nameLabel,
+            "body": bodyLabel,
+            "target": targetLabel,
+            "L": MinView(),
+            "R": MinView()])
+        autolayout("H:|[L][icon(==24)]-s-[name][R(==L)]|")
+        autolayout("H:|-p-[body]-p-|")
+        autolayout("H:|-p-[target]-p-|")
+        autolayout("V:|-p-[icon(==24)]-s-[body]-s-[target]-p-|")
+        autolayout("V:|-p-[name(==icon)]-s-[body]")
+        nameLabel.setContentHuggingPriority(UILayoutPriorityRequired, for: .horizontal)
+        bodyLabel.setContentCompressionResistancePriority(UILayoutPriorityRequired, for: .vertical)
+        targetLabel.setContentCompressionResistancePriority(UILayoutPriorityRequired, for: .vertical)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {fatalError()}
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        iconView.kf.cancelDownloadTask()
+        iconView.image = nil
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        contentView.frame = bounds
+    }
+
+    func setNotification(_ notification: Notification, text: String?, baseURL: URL?) {
+        if let avatarURL = notification.account.avatarURL(baseURL: baseURL) {
+            iconView.kf.setImage(
+                with: avatarURL,
+                placeholder: stubIcon,
+                options: [.scaleFactor(2), .processor(iconResizer)],
+                progressBlock: nil,
+                completionHandler: nil)
+        }
+        nameLabel.text = notification.account.displayNameOrUserName
+        bodyLabel.text = notification.type
+        targetLabel.text = text ?? notification.status?.textContent ?? "you"
     }
 }
