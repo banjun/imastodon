@@ -127,8 +127,10 @@ class UnifiedViewController: TimelineViewController, ClientContainer {
         switch e {
         case .home:
             cell.contentView.backgroundColor = UIColor(white: 0.95, alpha: 1.0)
+            (cell as? StatusCollectionViewCell)?.showInnerShadow = true
         case .local:
             cell.contentView.backgroundColor = .white
+            (cell as? StatusCollectionViewCell)?.showInnerShadow = false
         case .notification:
             cell.contentView.backgroundColor = UIColor(red: 0.16, green: 0.17, blue: 0.22, alpha: 1.0)
         }

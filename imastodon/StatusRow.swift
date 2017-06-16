@@ -44,6 +44,18 @@ extension UIAlertController {
     }
 }
 
+final class GradientView: UIView {
+    override class var layerClass: AnyClass {return CAGradientLayer.self}
+    var gradientLayer: CAGradientLayer {return layer as! CAGradientLayer}
+    init(colors: [UIColor]) {
+        super.init(frame: .zero)
+        gradientLayer.colors = colors.map {$0.cgColor}
+        gradientLayer.startPoint = CGPoint(x: 0, y: 0.5)
+        gradientLayer.endPoint = CGPoint(x: 1, y: 0.5)
+    }
+    required init?(coder aDecoder: NSCoder) {fatalError()}
+}
+
 final class StatusCollectionViewCell: UICollectionViewCell {
     let iconView = UIImageView() ※ { iv in
         iv.clipsToBounds = true
@@ -61,6 +73,12 @@ final class StatusCollectionViewCell: UICollectionViewCell {
         l.numberOfLines = 0
         l.lineBreakMode = .byTruncatingTail
     }
+    let leftShadow = GradientView(colors: [.init(white: 0, alpha: 0.3), .clear]) ※ {$0.isHidden = true}
+    let rightShadow = GradientView(colors: [.clear, .init(white: 0, alpha: 0.3)]) ※ {$0.isHidden = true}
+    var showInnerShadow: Bool {
+        get {return leftShadow.isHidden == false}
+        set {leftShadow.isHidden = !newValue; rightShadow.isHidden = !newValue}
+    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -72,13 +90,22 @@ final class StatusCollectionViewCell: UICollectionViewCell {
         let autolayout = northLayoutFormat(["s": 4, "p": 8], [
             "icon": iconView,
             "name": nameLabel,
-            "body": bodyLabel])
+            "body": bodyLabel,
+            "shadowL": leftShadow,
+            "shadowR": rightShadow])
         autolayout("H:|-p-[icon(==32)]")
         autolayout("H:[icon]-s-[name]-p-|")
         autolayout("H:[icon]-s-[body]-p-|")
         autolayout("V:|-p-[icon(==32)]-(>=p)-|")
         autolayout("V:|-p-[name]-2-[body]-p-|")
+        autolayout("H:|[shadowL(==8)]")
+        autolayout("H:[shadowR(==shadowL)]|")
+        autolayout("V:|[shadowL]|")
+        autolayout("V:|[shadowR]|")
         nameLabel.setContentHuggingPriority(UILayoutPriorityRequired, for: .vertical)
+        bringSubview(toFront: leftShadow)
+        bringSubview(toFront: rightShadow)
+        bringSubview(toFront: iconView)
     }
 
     required init?(coder aDecoder: NSCoder) {fatalError()}
