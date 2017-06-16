@@ -94,7 +94,7 @@ final class StatusCollectionViewCell: UICollectionViewCell {
         contentView.frame = bounds
     }
 
-    func setStatus(_ status: Status, attributedText: NSAttributedString?, baseURL: URL?) {
+    func setStatus(_ status: Status, text: String?, baseURL: URL?) {
         let boosted = status.reblog?.value
         let mainStatus = status.mainContentStatus
         if let avatarURL = mainStatus.account.avatarURL(baseURL: baseURL) {
@@ -106,7 +106,7 @@ final class StatusCollectionViewCell: UICollectionViewCell {
                 completionHandler: nil)
         }
         nameLabel.text = boosted.map {status.account.displayNameOrUserName + "🔁" + $0.account.displayNameOrUserName} ?? status.account.displayNameOrUserName
-        bodyLabel.attributedText = attributedText ?? mainStatus.attributedTextContent ?? NSAttributedString(string: mainStatus.textContent)
+        bodyLabel.text = text ?? mainStatus.textContent
     }
 }
 

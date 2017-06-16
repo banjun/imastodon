@@ -4,14 +4,14 @@ import SafariServices
 import Ikemen
 
 enum TimelineEvent {
-    case home(Status, NSAttributedString?) // as creating attributed text is heavy, cache it
-    case local(Status, NSAttributedString?) // as creating attributed text is heavy, cache it
+    case home(Status, String?) // as creating attributed text is heavy, cache it
+    case local(Status, String?) // as creating attributed text is heavy, cache it
     case notification(Notification, String?) // as creating attributed text is buggy, cache it
 
     var cached: TimelineEvent {
         switch self {
-        case let .home(s, nil): return .home(s, s.mainContentStatus.attributedTextContent)
-        case let .local(s, nil): return .local(s, s.mainContentStatus.attributedTextContent)
+        case let .home(s, nil): return .home(s, s.mainContentStatus.textContent)
+        case let .local(s, nil): return .local(s, s.mainContentStatus.textContent)
         case let .notification(n, nil) where n.status != nil: return .notification(n, n.status?.textContent)
         default: return self
         }
@@ -119,9 +119,9 @@ extension TimelineViewController {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: e.cellID, for: indexPath)
         switch e {
         case let .home(s, a):
-            (cell as? StatusCollectionViewCell)?.setStatus(s, attributedText: a, baseURL: baseURL)
+            (cell as? StatusCollectionViewCell)?.setStatus(s, text: a, baseURL: baseURL)
         case let .local(s, a):
-            (cell as? StatusCollectionViewCell)?.setStatus(s, attributedText: a, baseURL: baseURL)
+            (cell as? StatusCollectionViewCell)?.setStatus(s, text: a, baseURL: baseURL)
         case let .notification(n, s):
             (cell as? NotificationCell)?.setNotification(n, text: s, baseURL: baseURL)
         }
@@ -159,8 +159,8 @@ extension TimelineViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let size = collectionView.bounds.size
 
-        func statusSize(_ s: Status, _ a: NSAttributedString?) -> CGSize {
-            layoutCell.setStatus(s, attributedText: a, baseURL: nil)
+        func statusSize(_ s: Status, _ a: String?) -> CGSize {
+            layoutCell.setStatus(s, text: a, baseURL: nil)
             let layoutSize = layoutCell.systemLayoutSizeFitting(size, withHorizontalFittingPriority: UILayoutPriorityRequired, verticalFittingPriority: UILayoutPriorityFittingSizeLevel)
             return CGSize(width: collectionView.bounds.width, height: layoutSize.height)
         }
