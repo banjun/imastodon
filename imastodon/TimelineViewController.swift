@@ -10,8 +10,8 @@ enum TimelineEvent {
 
     var cached: TimelineEvent {
         switch self {
-        case let .home(s, nil): return .home(s, s.mainContentStatus.attributedTextContent)
-        case let .local(s, nil): return .local(s, s.mainContentStatus.attributedTextContent)
+        case let .home(s, nil): return .home(s, nil)//s.mainContentStatus.attributedTextContent)
+        case let .local(s, nil): return .local(s, nil)//s.mainContentStatus.attributedTextContent)
         case let .notification(n, nil) where n.status != nil: return .notification(n, n.status?.textContent)
         default: return self
         }

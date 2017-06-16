@@ -4,6 +4,7 @@ PODS:
   - BrightFutures (5.2.0):
     - Result (~> 3.2)
   - Eureka (3.0.0)
+  - Fuzi (1.0.1)
   - IKEventSource (2.0.0)
   - Kingfisher (3.10.1)
   - NorthLayout (3.0.0)
@@ -20,6 +21,7 @@ PODS:
 DEPENDENCIES:
   - BrightFutures
   - Eureka
+  - Fuzi
   - IKEventSource (from `https://github.com/banjun/EventSource`, branch `banjun`)
   - Kingfisher
   - NorthLayout
@@ -42,6 +44,7 @@ SPEC CHECKSUMS:
   APIKit: 7460983f490d3bde6aaaaa4164d18c9865a6f91d
   BrightFutures: 8681dbb9fa831b69b6e7dc4a498b9e081d5daeb5
   Eureka: f36fd440c3ebb7bfea0a4fbe6f16a05f1cb35906
+  Fuzi: 851403654bac55675aaeed815d0c8a1d3e3d3e8b
   IKEventSource: 6526ddd3ecc340375a7d4c658eb47d82b92e7606
   Kingfisher: 33a1b82140fcb14a9fc13f78dfde2a03ff8de8cb
   NorthLayout: 28db8bfa49b861b4e972cc8e7c683c8ba819ff88
@@ -52,6 +55,6 @@ SPEC CHECKSUMS:
   URITemplate: 720b8a56a281494d7c2d31ee33183986eaed2c67
   "※ikemen": c04aecee4293a2b6deb2119f7e67e7a82c6dea06
 
-PODFILE CHECKSUM: 128358032056676ae4c2cb7680384e02ef60d78b
+PODFILE CHECKSUM: 33b777f8d3af9c4a24c49c2fe23d972385570c96
 
 COCOAPODS: 1.2.1

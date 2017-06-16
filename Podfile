@@ -10,4 +10,5 @@ target 'imastodon' do
   pod 'IKEventSource', git: 'https://github.com/banjun/EventSource', branch: 'banjun'
   pod 'ReactiveSwift'
   pod 'SwiftBeaker', '~> 1.0.0-beta.1'
+  pod 'Fuzi'
 end

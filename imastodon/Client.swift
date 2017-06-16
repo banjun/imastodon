@@ -41,15 +41,19 @@ extension Account {
     }
 }
 
+import Fuzi
+
 extension Status {
     var mainContentStatus: Status {
         return reblog?.value ?? self
     }
 
     var textContent: String {
-        return attributedTextContent?.string ?? content
+        guard let nodeSet = (try? HTMLDocument(string: content))?.xpath(".") else { return content }
+        return nodeSet.flatMap {$0.stringValue}.joined()
     }
 
+    ///  too slow especially in iOS 11 b1 (WebCore)
     var attributedTextContent: NSAttributedString? {
         guard let data = ("<style>body{font-size: 16px;} p {margin:0;padding:0;display:inline;}</style>" + content).data(using: .utf8),
             let at = try? NSAttributedString(

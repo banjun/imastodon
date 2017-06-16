@@ -97,7 +97,6 @@ class UnifiedViewController: TimelineViewController, ClientContainer {
             .onSuccess { ls, hs in
                 let events: [TimelineEvent] = ls.map {.local($0, nil)} + hs.map {.home($0, nil)}
                 self.append(events.sorted {($0.status?.id ?? 0) > ($1.status?.id ?? 0)})
-                self.collectionView?.reloadData()
             }.onFailure { e in
                 let ac = UIAlertController(title: "Error", message: e.localizedDescription, preferredStyle: .alert)
                 ac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
