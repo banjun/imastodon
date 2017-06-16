@@ -131,7 +131,7 @@ extension TimelineViewController {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let s = timelineEvent(indexPath).status else { return }
         let ac = UIAlertController(actionFor: s,
-                                   safari: {[unowned self] in self.show($0, sender: nil)},
+                                   safari: {[unowned self] in self.present($0, animated: true)},
                                    boost: {[unowned self] in self.boost(s)},
                                    favorite: {[unowned self] in self.favorite(s)})
         present(ac, animated: true)
