@@ -119,9 +119,9 @@ extension TimelineViewController {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: e.cellID, for: indexPath)
         switch e {
         case let .home(s, a):
-            (cell as? StatusCollectionViewCell)?.setStatus(s, text: a, baseURL: baseURL)
+            (cell as? StatusCollectionViewCell)?.setStatus(s, text: a, baseURL: baseURL) { [weak self] a in self?.showAttachment(a) }
         case let .local(s, a):
-            (cell as? StatusCollectionViewCell)?.setStatus(s, text: a, baseURL: baseURL)
+            (cell as? StatusCollectionViewCell)?.setStatus(s, text: a, baseURL: baseURL) { [weak self] a in self?.showAttachment(a) }
         case let .notification(n, s):
             (cell as? NotificationCell)?.setNotification(n, text: s, baseURL: baseURL)
         }
@@ -154,6 +154,12 @@ extension TimelineViewController {
         SVProgressHUD.show()
         client.favorite(s)
             .onComplete {_ in SVProgressHUD.dismiss()}
+    }
+
+    func showAttachment(_ a: Attachment) {
+        guard let url = URL(string: a.url) else { return }
+        let vc = SFSafariViewController(url: url)
+        present(vc, animated: true)
     }
 }
 

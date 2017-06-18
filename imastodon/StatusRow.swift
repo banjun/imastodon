@@ -56,9 +56,12 @@ final class GradientView: UIView {
     required init?(coder aDecoder: NSCoder) {fatalError()}
 }
 
-final class ImageCollectionView: UIView, UICollectionViewDataSource, UICollectionViewDelegate {
-    var imageURLs: [URL] = [] {
-        didSet {collectionView.reloadData()}
+final class AttachmentsCollectionView: UIView, UICollectionViewDataSource, UICollectionViewDelegate {
+    var attachments: [Attachment] = [] {
+        didSet {
+            isHidden = attachments.isEmpty
+            collectionView.reloadData()
+        }
     }
     let collectionView: UICollectionView
     let layout = UICollectionViewFlowLayout() ※ { l in
@@ -66,6 +69,7 @@ final class ImageCollectionView: UIView, UICollectionViewDataSource, UICollectio
         l.minimumInteritemSpacing = 0
         l.scrollDirection = .horizontal
     }
+    var didSelect: ((Attachment) -> Void)?
     
     init() {
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -92,14 +96,19 @@ final class ImageCollectionView: UIView, UICollectionViewDataSource, UICollectio
         return 1
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return imageURLs.count
+        return attachments.count
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         return collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
     }
 
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        (cell as? ImageCell)?.setImageURL(imageURLs[indexPath.row])
+        guard let url = URL(string: attachments[indexPath.row].preview_url) else { return }
+        (cell as? ImageCell)?.setImageURL(url)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        didSelect?(attachments[indexPath.row])
     }
 }
 
@@ -158,7 +167,7 @@ final class StatusCollectionViewCell: UICollectionViewCell {
         l.numberOfLines = 0
         l.lineBreakMode = .byTruncatingTail
     }
-    let thumbnailView = ImageCollectionView()
+    let thumbnailView = AttachmentsCollectionView()
     var thumbnailViewHeight: NSLayoutConstraint?
 
     let leftShadow = GradientView(colors: [.init(white: 0, alpha: 0.3), .clear]) ※ {$0.isHidden = true}
@@ -213,7 +222,7 @@ final class StatusCollectionViewCell: UICollectionViewCell {
         iconView.image = nil
     }
 
-    func setStatus(_ status: Status, text: String?, baseURL: URL?) {
+    func setStatus(_ status: Status, text: String?, baseURL: URL?, didSelectAttachment: ((Attachment) -> Void)? = nil) {
         let boosted = status.reblog?.value
         let mainStatus = status.mainContentStatus
         if let avatarURL = mainStatus.account.avatarURL(baseURL: baseURL) {
@@ -227,16 +236,9 @@ final class StatusCollectionViewCell: UICollectionViewCell {
         nameLabel.text = boosted.map {status.account.displayNameOrUserName + "🔁" + $0.account.displayNameOrUserName} ?? status.account.displayNameOrUserName
         bodyLabel.text = text ?? mainStatus.textContent
 
-        let imageURLs = status.media_attachments.flatMap {URL(string: $0.preview_url)}
-        if !imageURLs.isEmpty {
-            thumbnailViewHeight?.constant = 128
-            thumbnailView.isHidden = false
-            thumbnailView.imageURLs = imageURLs
-        } else {
-            thumbnailViewHeight?.constant = 0
-            thumbnailView.isHidden = true
-            thumbnailView.imageURLs = []
-        }
+        thumbnailView.attachments = status.media_attachments
+        thumbnailViewHeight?.constant = status.media_attachments.isEmpty ? 0 : 128
+        thumbnailView.didSelect = didSelectAttachment
     }
 }
 
