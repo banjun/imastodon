@@ -229,7 +229,7 @@ final class StatusCollectionViewCell: UICollectionViewCell {
 
         let imageURLs = status.media_attachments.flatMap {URL(string: $0.preview_url)}
         if !imageURLs.isEmpty {
-            thumbnailViewHeight?.constant = 64
+            thumbnailViewHeight?.constant = 128
             thumbnailView.isHidden = false
             thumbnailView.imageURLs = imageURLs
         } else {
