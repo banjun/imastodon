@@ -62,8 +62,8 @@ final class ImageCollectionView: UIView, UICollectionViewDataSource, UICollectio
     }
     let collectionView: UICollectionView
     let layout = UICollectionViewFlowLayout() ※ { l in
-        l.minimumLineSpacing = 0
-        l.minimumInteritemSpacing = 4
+        l.minimumLineSpacing = 4
+        l.minimumInteritemSpacing = 0
         l.scrollDirection = .horizontal
     }
     
@@ -79,6 +79,7 @@ final class ImageCollectionView: UIView, UICollectionViewDataSource, UICollectio
         autolayout("V:|[cv]|")
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 40, bottom: 0, right: 0)
         collectionView.alwaysBounceHorizontal = true
+        collectionView.showsHorizontalScrollIndicator = false
     }
     required init?(coder aDecoder: NSCoder) {fatalError()}
 
@@ -94,9 +95,11 @@ final class ImageCollectionView: UIView, UICollectionViewDataSource, UICollectio
         return imageURLs.count
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! ImageCell
-        cell.setImageURL(imageURLs[indexPath.row])
-        return cell
+        return collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        (cell as? ImageCell)?.setImageURL(imageURLs[indexPath.row])
     }
 }
 
