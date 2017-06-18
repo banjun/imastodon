@@ -4,7 +4,7 @@ import NorthLayout
 
 extension Status: Equatable {
     public static func == (lhs: Status, rhs: Status) -> Bool {
-        return lhs.id == rhs.id
+        return lhs.id == rhs.id && lhs.reblog?.value.id == rhs.reblog?.value.id
     }
 }
 
