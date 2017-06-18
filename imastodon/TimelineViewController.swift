@@ -157,8 +157,7 @@ extension TimelineViewController {
     }
 
     func showAttachment(_ a: Attachment) {
-        guard let url = URL(string: a.url) else { return }
-        let vc = SFSafariViewController(url: url)
+        let vc = AttachmentViewController(attachment: a)
         present(vc, animated: true)
     }
 }

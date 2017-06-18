@@ -8,7 +8,7 @@ extension Status: Equatable {
     }
 }
 
-private func stubImage(_ size: CGSize = CGSize(width: 44, height: 44), _ color: UIColor = .lightGray) -> UIImage {
+func stubImage(_ size: CGSize = CGSize(width: 44, height: 44), _ color: UIColor = .lightGray) -> UIImage {
     UIGraphicsBeginImageContextWithOptions(size, false, 0)
     defer {UIGraphicsEndImageContext()}
     color.setFill()
@@ -144,7 +144,7 @@ final class ImageCell: UICollectionViewCell {
         imageView.kf.setImage(
             with: url,
             placeholder: stubIcon,
-            options: [.scaleFactor(2), .processor(resizer)],
+            options: [.scaleFactor(2), .processor(resizer), .cacheOriginalImage],
             progressBlock: nil,
             completionHandler: nil)
     }
