@@ -134,6 +134,11 @@ extension TimelineViewController {
                                    safari: {[unowned self] in self.present($0, animated: true)},
                                    boost: {[unowned self] in self.boost(s)},
                                    favorite: {[unowned self] in self.favorite(s)})
+        ac.popoverPresentationController?.sourceView = collectionView
+        ac.popoverPresentationController?.permittedArrowDirections = .any
+        if let cell = collectionView.cellForItem(at: indexPath) as? StatusCollectionViewCell {
+            ac.popoverPresentationController?.sourceRect = collectionView.convert(cell.iconView.bounds, from: cell.iconView)
+        }
         present(ac, animated: true)
     }
     
