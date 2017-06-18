@@ -166,7 +166,7 @@ extension TimelineViewController: UICollectionViewDelegateFlowLayout {
 
         func statusSize(_ s: Status, _ a: String?, constraint: CGSize) -> CGSize {
             layoutCell.setStatus(s, text: a, baseURL: nil)
-            if let a = a, a.characters.count < 16 && constraint == UILayoutFittingCompressedSize {
+            if let a = a, a.characters.count < 16 && constraint.width < size.width {
                 layoutCell.bodyLabel.preferredMaxLayoutWidth = size.width / 2 - 42
                 let layoutSize = layoutCell.systemLayoutSizeFitting(constraint, withHorizontalFittingPriority: UILayoutPriorityFittingSizeLevel, verticalFittingPriority: UILayoutPriorityFittingSizeLevel)
                 return CGSize(width: layoutSize.width, height: layoutSize.height)

@@ -56,6 +56,88 @@ final class GradientView: UIView {
     required init?(coder aDecoder: NSCoder) {fatalError()}
 }
 
+final class ImageCollectionView: UIView, UICollectionViewDataSource, UICollectionViewDelegate {
+    var imageURLs: [URL] = [] {
+        didSet {collectionView.reloadData()}
+    }
+    let collectionView: UICollectionView
+    let layout = UICollectionViewFlowLayout() ※ { l in
+        l.minimumLineSpacing = 0
+        l.minimumInteritemSpacing = 4
+        l.scrollDirection = .horizontal
+    }
+    
+    init() {
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        super.init(frame: .zero)
+        collectionView.backgroundColor = .clear
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.register(ImageCell.self, forCellWithReuseIdentifier: "Cell")
+        let autolayout = northLayoutFormat([:], ["cv": collectionView])
+        autolayout("H:|[cv]|")
+        autolayout("V:|[cv]|")
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 40, bottom: 0, right: 0)
+        collectionView.alwaysBounceHorizontal = true
+    }
+    required init?(coder aDecoder: NSCoder) {fatalError()}
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        layout.itemSize = CGSize(width: (bounds.width - collectionView.contentInset.left) * 0.9, height: bounds.height)
+    }
+
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return imageURLs.count
+    }
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! ImageCell
+        cell.setImageURL(imageURLs[indexPath.row])
+        return cell
+    }
+}
+
+final class ImageCell: UICollectionViewCell {
+    let imageView = UIImageView() ※ { iv in
+        iv.contentMode = .scaleAspectFill
+        iv.clipsToBounds = true
+        iv.layer.cornerRadius = 4
+    }
+    private lazy var resizer: ResizingImageProcessor = ResizingImageProcessor(referenceSize: self.frame.size, mode: .aspectFill)
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        let autolayout = contentView.northLayoutFormat([:], ["image": imageView])
+        autolayout("H:|[image]|")
+        autolayout("V:|[image]|")
+    }
+    required init?(coder aDecoder: NSCoder) {fatalError()}
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        imageView.kf.cancelDownloadTask()
+        imageView.image = nil
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        resizer = ResizingImageProcessor(referenceSize: frame.size, mode: .aspectFill)
+    }
+
+    func setImageURL(_ url: URL) {
+        imageView.kf.setImage(
+            with: url,
+            placeholder: stubIcon,
+            options: [.scaleFactor(2), .processor(resizer)],
+            progressBlock: nil,
+            completionHandler: nil)
+    }
+}
+
 final class StatusCollectionViewCell: UICollectionViewCell {
     let iconView = UIImageView() ※ { iv in
         iv.clipsToBounds = true
@@ -73,6 +155,9 @@ final class StatusCollectionViewCell: UICollectionViewCell {
         l.numberOfLines = 0
         l.lineBreakMode = .byTruncatingTail
     }
+    let thumbnailView = ImageCollectionView()
+    var thumbnailViewHeight: NSLayoutConstraint?
+
     let leftShadow = GradientView(colors: [.init(white: 0, alpha: 0.3), .clear]) ※ {$0.isHidden = true}
     let rightShadow = GradientView(colors: [.clear, .init(white: 0, alpha: 0.3)]) ※ {$0.isHidden = true}
     var showInnerShadow: Bool {
@@ -86,26 +171,35 @@ final class StatusCollectionViewCell: UICollectionViewCell {
         backgroundColor = .white
         isOpaque = true
 
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        let autolayout = northLayoutFormat(["s": 4, "p": 8], [
+        contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        contentView.frame = self.bounds
+
+        let autolayout = contentView.northLayoutFormat(["s": 4, "p": 8], [
             "icon": iconView,
             "name": nameLabel,
             "body": bodyLabel,
+            "thumbs": thumbnailView,
             "shadowL": leftShadow,
             "shadowR": rightShadow])
         autolayout("H:|-p-[icon(==32)]")
         autolayout("H:[icon]-s-[name]-p-|")
         autolayout("H:[icon]-s-[body]-p-|")
+        autolayout("H:|[thumbs]|")
         autolayout("V:|-p-[icon(==32)]-(>=p)-|")
-        autolayout("V:|-p-[name]-2-[body]-p-|")
+        autolayout("V:|-p-[name]-2-[body]-s-[thumbs]-s-|")
         autolayout("H:|[shadowL(==8)]")
         autolayout("H:[shadowR(==shadowL)]|")
         autolayout("V:|[shadowL]|")
         autolayout("V:|[shadowR]|")
         nameLabel.setContentHuggingPriority(UILayoutPriorityRequired, for: .vertical)
+        let thumbnailViewHeight = NSLayoutConstraint(item: thumbnailView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
+        self.thumbnailViewHeight = thumbnailViewHeight
+        thumbnailViewHeight.priority = UILayoutPriorityRequired
+        thumbnailView.addConstraint(thumbnailViewHeight)
         bringSubview(toFront: leftShadow)
         bringSubview(toFront: rightShadow)
         bringSubview(toFront: iconView)
+        thumbnailView.isHidden = true
     }
 
     required init?(coder aDecoder: NSCoder) {fatalError()}
@@ -114,11 +208,6 @@ final class StatusCollectionViewCell: UICollectionViewCell {
         super.prepareForReuse()
         iconView.kf.cancelDownloadTask()
         iconView.image = nil
-    }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        contentView.frame = bounds
     }
 
     func setStatus(_ status: Status, text: String?, baseURL: URL?) {
@@ -134,6 +223,17 @@ final class StatusCollectionViewCell: UICollectionViewCell {
         }
         nameLabel.text = boosted.map {status.account.displayNameOrUserName + "🔁" + $0.account.displayNameOrUserName} ?? status.account.displayNameOrUserName
         bodyLabel.text = text ?? mainStatus.textContent
+
+        let imageURLs = status.media_attachments.flatMap {URL(string: $0.preview_url)}
+        if !imageURLs.isEmpty {
+            thumbnailViewHeight?.constant = 64
+            thumbnailView.isHidden = false
+            thumbnailView.imageURLs = imageURLs
+        } else {
+            thumbnailViewHeight?.constant = 0
+            thumbnailView.isHidden = true
+            thumbnailView.imageURLs = []
+        }
     }
 }
 
