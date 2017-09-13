@@ -164,16 +164,23 @@ extension TimelineViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let size = collectionView.bounds.size
 
-        func statusSize(_ s: Status, _ a: String?) -> CGSize {
+        func statusSize(_ s: Status, _ a: String?, constraint: CGSize) -> CGSize {
             layoutCell.setStatus(s, text: a, baseURL: nil)
-            let layoutSize = layoutCell.systemLayoutSizeFitting(size, withHorizontalFittingPriority: UILayoutPriorityRequired, verticalFittingPriority: UILayoutPriorityFittingSizeLevel)
-            return CGSize(width: collectionView.bounds.width, height: layoutSize.height)
+            if let a = a, a.characters.count < 16 && constraint == UILayoutFittingCompressedSize {
+                layoutCell.bodyLabel.preferredMaxLayoutWidth = size.width / 2 - 42
+                let layoutSize = layoutCell.systemLayoutSizeFitting(constraint, withHorizontalFittingPriority: UILayoutPriorityFittingSizeLevel, verticalFittingPriority: UILayoutPriorityFittingSizeLevel)
+                return CGSize(width: layoutSize.width, height: layoutSize.height)
+            } else {
+                layoutCell.bodyLabel.preferredMaxLayoutWidth = size.width - 42
+                let layoutSize = layoutCell.systemLayoutSizeFitting(constraint, withHorizontalFittingPriority: UILayoutPriorityRequired, verticalFittingPriority: UILayoutPriorityFittingSizeLevel)
+                return CGSize(width: size.width, height: layoutSize.height)
+            }
         }
 
         let e = timelineEvent(indexPath)
         switch e {
-        case let .home(s, a): return statusSize(s, a)
-        case let .local(s, a): return statusSize(s, a)
+        case let .home(s, a): return statusSize(s, a, constraint: size)
+        case let .local(s, a): return statusSize(s, a, constraint: UILayoutFittingCompressedSize)
         case let .notification(n, s):
             notificationLayoutCell.setNotification(n, text: s, baseURL: nil)
             let layoutSize = notificationLayoutCell.systemLayoutSizeFitting(size, withHorizontalFittingPriority: UILayoutPriorityRequired, verticalFittingPriority: UILayoutPriorityFittingSizeLevel)
