@@ -222,7 +222,12 @@ final class StatusCollectionViewCell: UICollectionViewCell {
         iconView.image = nil
     }
 
-    func setStatus(_ status: Status, text: String?, baseURL: URL?, didSelectAttachment: ((Attachment) -> Void)? = nil) {
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        contentView.frame = bounds
+    }
+
+    func setStatus(_ status: Status, attributedText: NSAttributedString?, baseURL: URL?, didSelectAttachment: ((Attachment) -> Void)? = nil) {
         let boosted = status.reblog?.value
         let mainStatus = status.mainContentStatus
         if let avatarURL = mainStatus.account.avatarURL(baseURL: baseURL) {
@@ -234,7 +239,7 @@ final class StatusCollectionViewCell: UICollectionViewCell {
                 completionHandler: nil)
         }
         nameLabel.text = boosted.map {status.account.displayNameOrUserName + "🔁" + $0.account.displayNameOrUserName} ?? status.account.displayNameOrUserName
-        bodyLabel.text = text ?? mainStatus.textContent
+        bodyLabel.attributedText = attributedText ?? mainStatus.attributedTextContent ?? NSAttributedString(string: mainStatus.textContent)
 
         thumbnailView.attachments = status.media_attachments
         thumbnailViewHeight?.constant = status.media_attachments.isEmpty ? 0 : 128
