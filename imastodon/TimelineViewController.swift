@@ -4,14 +4,14 @@ import SafariServices
 import Ikemen
 
 enum TimelineEvent {
-    case home(Status, String?) // as creating attributed text is heavy, cache it
-    case local(Status, String?) // as creating attributed text is heavy, cache it
+    case home(Status, NSAttributedString?) // as creating attributed text is heavy, cache it
+    case local(Status, NSAttributedString?) // as creating attributed text is heavy, cache it
     case notification(Notification, String?) // as creating attributed text is buggy, cache it
 
     var cached: TimelineEvent {
         switch self {
-        case let .home(s, nil): return .home(s, s.mainContentStatus.textContent)
-        case let .local(s, nil): return .local(s, s.mainContentStatus.textContent)
+        case let .home(s, nil): return .home(s, s.mainContentStatus.attributedTextContent)
+        case let .local(s, nil): return .local(s, s.mainContentStatus.attributedTextContent)
         case let .notification(n, nil) where n.status != nil: return .notification(n, n.status?.textContent)
         default: return self
         }
@@ -119,9 +119,9 @@ extension TimelineViewController {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: e.cellID, for: indexPath)
         switch e {
         case let .home(s, a):
-            (cell as? StatusCollectionViewCell)?.setStatus(s, text: a, baseURL: baseURL)
+            (cell as? StatusCollectionViewCell)?.setStatus(s, attributedText: a, baseURL: baseURL) { [weak self] a in self?.showAttachment(a) }
         case let .local(s, a):
-            (cell as? StatusCollectionViewCell)?.setStatus(s, text: a, baseURL: baseURL)
+            (cell as? StatusCollectionViewCell)?.setStatus(s, attributedText: a, baseURL: baseURL) { [weak self] a in self?.showAttachment(a) }
         case let .notification(n, s):
             (cell as? NotificationCell)?.setNotification(n, text: s, baseURL: baseURL)
         }
@@ -155,6 +155,11 @@ extension TimelineViewController {
         client.favorite(s)
             .onComplete {_ in SVProgressHUD.dismiss()}
     }
+
+    func showAttachment(_ a: Attachment) {
+        let vc = AttachmentViewController(attachment: a)
+        present(vc, animated: true)
+    }
 }
 
 private let layoutCell = StatusCollectionViewCell(frame: .zero)
@@ -164,9 +169,9 @@ extension TimelineViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let size = collectionView.bounds.size
 
-        func statusSize(_ s: Status, _ a: String?, constraint: CGSize) -> CGSize {
-            layoutCell.setStatus(s, text: a, baseURL: nil)
-            if let a = a, a.characters.count < 16 && constraint == UILayoutFittingCompressedSize {
+        func statusSize(_ s: Status, _ a: NSAttributedString?, constraint: CGSize) -> CGSize {
+            layoutCell.setStatus(s, attributedText: a, baseURL: nil)
+            if let a = a, a.length < 16 && constraint.width < size.width {
                 layoutCell.bodyLabel.preferredMaxLayoutWidth = size.width / 2 - 42
                 let layoutSize = layoutCell.systemLayoutSizeFitting(constraint, withHorizontalFittingPriority: UILayoutPriorityFittingSizeLevel, verticalFittingPriority: UILayoutPriorityFittingSizeLevel)
                 return CGSize(width: layoutSize.width, height: layoutSize.height)
