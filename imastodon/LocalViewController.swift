@@ -13,9 +13,9 @@ class LocalViewController: TimelineViewController, ClientContainer {
     
     private let refreshControl = UIRefreshControl()
 
-    init(instanceAccount: InstanceAccout, statuses: [Status] = []) {
+    init(instanceAccount: InstanceAccout, timelineEvents: [TimelineEvent] = []) {
         self.instanceAccount = instanceAccount
-        super.init(statuses: statuses, baseURL: instanceAccount.instance.baseURL)
+        super.init(timelineEvents: timelineEvents, baseURL: instanceAccount.instance.baseURL)
         title = "Local@\(instanceAccount.instance.title) \(instanceAccount.account.display_name)"
         toolbarItems = [UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(showPost))]
     }
@@ -41,7 +41,7 @@ class LocalViewController: TimelineViewController, ClientContainer {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        if statuses.isEmpty {
+        if timelineEvents.isEmpty {
             fetch()
         }
         if localStream == nil || userStream == nil {
@@ -57,10 +57,10 @@ class LocalViewController: TimelineViewController, ClientContainer {
             DispatchQueue.main.async {
                 switch r {
                 case .success(.open): self?.refreshControl.endRefreshing()
-                case let .success(.update(s)): self?.append([s])
+                case let .success(.update(s)): self?.append([.local(s, nil)])
                 case let .failure(e):
                     self?.refreshControl.endRefreshing()
-                    self?.append([e.errorStatus])
+                    self?.append([.local(e.errorStatus, nil)])
                 }
             }
         }
@@ -76,7 +76,7 @@ class LocalViewController: TimelineViewController, ClientContainer {
                     content.body = n.status?.textContent ?? "you"
                     UNUserNotificationCenter.current()
                         .add(UNNotificationRequest(identifier: "notification \(n.id)", content: content, trigger: nil))
-                case let .failure(e): self?.append([e.errorStatus])
+                case let .failure(e): self?.append([.local(e.errorStatus, nil)])
                 }
             }
         }
@@ -84,10 +84,10 @@ class LocalViewController: TimelineViewController, ClientContainer {
 
     private func fetch() {
         SVProgressHUD.show()
-        client.local(since: statuses.map {$0.0.id}.first {$0 > 0})
+        client.local(since: timelineEvents.flatMap {$0.status?.id}.first {$0 > 0})
             .onComplete {_ in SVProgressHUD.dismiss()}
             .onSuccess { statuses in
-                self.append(statuses)
+                self.append(statuses.map {.local($0, nil)})
                 self.collectionView?.reloadData()
             }.onFailure { e in
                 let ac = UIAlertController(title: "Error", message: e.localizedDescription, preferredStyle: .alert)

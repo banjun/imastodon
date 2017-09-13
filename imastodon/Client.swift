@@ -52,7 +52,7 @@ extension Status {
 
     var attributedTextContent: NSAttributedString? {
         guard let data = ("<style>body{font-size: 16px;} p {margin:0;padding:0;display:inline;}</style>" + content).data(using: .utf8),
-            let at = try? NSMutableAttributedString(
+            let at = try? NSAttributedString(
                 data: data,
                 options: [
                     NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
@@ -144,8 +144,8 @@ extension Client {
 }
 
 extension Client {
-    func home() -> Future<[Status], AppError> {
-        return run(GetHomeTimeline(baseURL: baseURL, pathVars: .init(max_id: nil, since_id: nil, limit: nil))).map { r in
+    func home(since: Int? = nil) -> Future<[Status], AppError> {
+        return run(GetHomeTimeline(baseURL: baseURL, pathVars: .init(max_id: nil, since_id: since.map {String($0)}, limit: nil))).map { r in
             switch r {
             case let .http200_(statuses): return statuses
             }

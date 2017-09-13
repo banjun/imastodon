@@ -12,6 +12,13 @@ struct Stream {
     enum Event {
         case open
         case update(Status)
+
+        var status: Status? {
+            switch self {
+            case .open: return nil
+            case let .update(s): return s
+            }
+        }
     }
 
     init(endpoint: URL, token: String) {
