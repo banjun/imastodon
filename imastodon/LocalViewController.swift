@@ -59,7 +59,9 @@ class LocalViewController: TimelineViewController, ClientContainer {
                 switch r {
                 case .success(.open): self?.refreshControl.endRefreshing()
                 case let .success(.update(s)): self?.append([s])
-                case let .failure(e): self?.append([e.errorStatus])
+                case let .failure(e):
+                    self?.refreshControl.endRefreshing()
+                    self?.append([e.errorStatus])
                 }
             }
         }
@@ -83,7 +85,7 @@ class LocalViewController: TimelineViewController, ClientContainer {
 
     private func fetch() {
         SVProgressHUD.show()
-        client.local()
+        client.local(since: statuses.map {$0.0.id}.first {$0 > 0})
             .onComplete {_ in SVProgressHUD.dismiss()}
             .onSuccess { statuses in
                 self.append(statuses)
@@ -100,6 +102,7 @@ class LocalViewController: TimelineViewController, ClientContainer {
             refreshControl.endRefreshing()
             return
         }
+        fetch()
         reconnectStream()
     }
 

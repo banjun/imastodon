@@ -522,9 +522,9 @@ extension Client {
         return promise.future
     }
 
-    func local() -> Future<[Status], AppError> {
+    func local(since: Int? = nil) -> Future<[Status], AppError> {
         let promise = Promise<[Status], AppError>()
-        run(Timelines.public(local: true)) { statuses, error in
+        run(Timelines.public(local: true, range: since.map {.since(id: $0, limit: 20)} ?? .default)) { statuses, error in
             if let error = error {
                 promise.failure(.mastodonKit(error))
                 return
