@@ -44,12 +44,12 @@ class ViewController: FormViewController {
                 LabelRow {
                     $0.cellStyle = .subtitle
                     $0.title = "Home"
-                    $0.value = "\(i.instance.title) \(i.account.displayName)"
+                    $0.value = "\(i.instance.title) \(i.account.display_name)"
                     }.onCellSelection {[unowned self] _ in self.showHomeTimeline(i)},
                 LabelRow {
                     $0.cellStyle = .subtitle
                     $0.title = "Local"
-                    $0.value = "\(i.instance.title) \(i.account.displayName)"
+                    $0.value = "\(i.instance.title) \(i.account.display_name)"
                     }.onCellSelection {[unowned self] _ in self.showLocalTimeline(i)}]
         })
     }

@@ -1,6 +1,5 @@
 import Foundation
 import SVProgressHUD
-import MastodonKit
 import SafariServices
 import Ikemen
 
@@ -16,7 +15,7 @@ class TimelineViewController: UICollectionViewController {
 
     init(statuses: [Status] = [], baseURL: URL? = nil) {
         self.baseURL = baseURL
-        self.statuses = statuses.map {($0, $0.attributedTextContent)}
+        self.statuses = statuses.map {($0, $0.mainContentStatus.attributedTextContent)}
         super.init(collectionViewLayout: layout)
     }
     required init?(coder aDecoder: NSCoder) {fatalError()}
@@ -37,7 +36,7 @@ class TimelineViewController: UICollectionViewController {
     func append(_ statuses: [Status]) {
         statuses.reversed().forEach { s in
             autoreleasepool {
-                self.statuses.insert((s, s.attributedTextContent), at: 0)
+                self.statuses.insert((s, s.mainContentStatus.attributedTextContent), at: 0)
                 self.collectionView?.insertItems(at: [IndexPath(item: 0, section: 0)])
             }
         }

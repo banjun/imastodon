@@ -1,7 +1,6 @@
 import Foundation
 import Eureka
 import SVProgressHUD
-import MastodonKit
 
 class LoginViewController: FormViewController {
     var onNewInstance: ((InstanceAccout) -> Void)?
@@ -41,21 +40,24 @@ class LoginViewController: FormViewController {
             let password = passwordRow.value else { return }
 
         SVProgressHUD.show()
-        let client = Client(baseURL: host.absoluteString)
+        var client = Client(baseURL: host, accessToken: nil)
         client.registerApp()
             .flatMap { app in
-                client.login(app: app, email: email, password: password)
-                    .map {(app, $0)}
+                client.login(app: app, email: email, password: password).onSuccess {
+                    client.accessToken = $0.access_token
+                }
             }
-            .flatMap { app, loginSettings in
+            .flatMap { loginSettings in
                 client.currentInstance().zip(client.currentUser())
-                    .map {(app, loginSettings, $0.0, $0.1)}
+                    .map {(loginSettings, $0.0, $0.1)}
             }
             .onComplete {_ in SVProgressHUD.dismiss()}
-            .onSuccess { app, loginSettings, instance, account in
-                self.onNewInstance?(InstanceAccout(instance: instance, account: account, accessToken: loginSettings.accessToken))
+            .onSuccess {
+                let (loginSettings, instance, account) = $0
+                self.onNewInstance?(InstanceAccout(instance: instance, account: account, accessToken: loginSettings.access_token))
             }.onFailure { e in
                 let ac = UIAlertController(title: "Error", message: e.localizedDescription, preferredStyle: .alert)
+                ac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                 self.present(ac, animated: true)
         }
     }

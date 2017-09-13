@@ -30,8 +30,7 @@ struct Stream {
         }
         source.addEventListener("update") { [weak updateObserver] id, event, data in
             do {
-                let j = try JSONSerialization.jsonObject(with: data?.data(using: .utf8) ?? Data())
-                let status = try Status.decodeValue(j)
+                let status = try JSONDecoder().decode(Status.self, from: data?.data(using: .utf8) ?? Data())
                 updateObserver?.send(value: .update(status))
             } catch {
                 NSLog("%@", "EventSource event update, failed to parse with error \(error): \(String(describing: id)), \(String(describing: event)), \(String(describing: data))")
@@ -40,8 +39,7 @@ struct Stream {
         }
         source.addEventListener("notification") { [weak notificationObserver] id, event, data in
             do {
-                let j = try JSONSerialization.jsonObject(with: data?.data(using: .utf8) ?? Data())
-                let notification = try Notification.decodeValue(j)
+                let notification = try JSONDecoder().decode(Notification.self, from: data?.data(using: .utf8) ?? Data())
                 notificationObserver?.send(value: notification)
             } catch {
                 NSLog("%@", "EventSource event update, failed to parse with error \(error): \(String(describing: id)), \(String(describing: event)), \(String(describing: data))")
@@ -76,7 +74,7 @@ extension Stream {
 
 extension AppError {
     var errorStatus: Status {
-        let errorAccount = Account(id: 0, username: "", acct: "", displayName: "imastodon.AppError", note: "", url: "", avatar: "", avatarStatic: "", header: "", headerStatic: "", locked: false, createdAt: Date(), followersCount: 0, followingCount: 0, statusesCount: 0)
-        return Status(id: 0, uri: "", url: URL(string: "https://localhost/")!, account: errorAccount, inReplyToID: nil, inReplyToAccountID: nil, content: localizedDescription, createdAt: Date(), reblogsCount: 0, favouritesCount: 0, reblogged: nil, favourited: nil, sensitive: nil, spoilerText: "", visibility: .public, mediaAttachments: [], mentions: [], tags: [], application: nil, reblogWrapper: [])
+        let errorAccount = Account(id: 0, username: "", acct: "", display_name: "imastodon.AppError", locked: false, created_at: ISO8601DateFormatter().string(from: Date()), followers_count: 0, following_count: 0, statuses_count: 0, note: "", url: "", avatar: "", avatar_static: "", header: "", header_static: "")
+        return Status(id: 0, uri: "", url: "https://localhost/", account: errorAccount, in_reply_to_id: nil, in_reply_to_account_id: nil, reblog: nil, content: localizedDescription, created_at: ISO8601DateFormatter().string(from: Date()), reblogs_count: 0, favourites_count: 0, reblogged: nil, favourited: nil, sensitive: nil, spoiler_text: "", visibility: "public", media_attachments: [], mentions: [], tags: [], application: nil, language: "")
     }
 }

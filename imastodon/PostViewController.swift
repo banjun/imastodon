@@ -1,7 +1,6 @@
 import Foundation
 import NorthLayout
 import Ikemen
-import MastodonKit
 import SVProgressHUD
 
 class PostViewController: UIViewController {
