@@ -53,8 +53,8 @@ FORMAT: 1A
 ## GetHomeTimeline [GET /api/v1/timelines/home{?max_id,since_id,limit}]
 
 + Parameters
-    + max_id (number, optional) - Get a list of timelines with ID less than this value
-    + since_id (number, optional) - Get a list of timelines with ID greater than this value
+    + max_id (ID, optional) - Get a list of timelines with ID less than this value
+    + since_id (ID, optional) - Get a list of timelines with ID greater than this value
     + limit (number, optional) - Maximum number of statuses on the requested timeline to get (Default 20, Max 40)
 
 + Response 200
@@ -64,8 +64,8 @@ FORMAT: 1A
 
 + Parameters
     + local (string, optional) - Only return statuses originating from this instance (public and tag timelines only)
-    + max_id (number, optional) - Get a list of timelines with ID less than this value
-    + since_id (number, optional) - Get a list of timelines with ID greater than this value
+    + max_id (ID, optional) - Get a list of timelines with ID less than this value
+    + since_id (ID, optional) - Get a list of timelines with ID greater than this value
     + limit (number, optional) - Maximum number of statuses on the requested timeline to get (Default 20, Max 40)
 
 + Response 200
@@ -76,7 +76,7 @@ FORMAT: 1A
 ## Boost [POST]
 
 + Parameters
-    + id (number, required)
+    + id (ID, required)
 
 + Response 200
     + Attributes (Status)
@@ -86,7 +86,7 @@ FORMAT: 1A
 ## Favorite [POST]
 
 + Parameters
-    + id (number, required)
+    + id (ID, required)
 
 + Response 200
     + Attributes (Status)
@@ -117,7 +117,7 @@ FORMAT: 1A
 
 ## Account
 
-+ id (number, required) - The ID of the account
++ id (ID, required) - The ID of the account
 + username (string, required) - The username of the account
 + acct (string, required) - Equals `username` for local users, includes `@domain` for remote ones
 + display_name (string, required) - The account's display name
@@ -135,12 +135,12 @@ FORMAT: 1A
 
 ## Status
 
-+ id (number, required) - The ID of the status
++ id (ID, required) - The ID of the status
 + uri (string, required) - A Fediverse-unique resource ID
 + url (string, required) - URL to the status page (can be remote)
 + account (Account, required) - The [Account](#account) which posted the status
-+ in_reply_to_id (number, optional) - `null` or the ID of the status it replies to
-+ in_reply_to_account_id (number, optional) - `null` or the ID of the account it replies to
++ in_reply_to_id (ID, optional) - `null` or the ID of the status it replies to
++ in_reply_to_account_id (ID, optional) - `null` or the ID of the account it replies to
 + reblog (Status, optional) - `null` or the reblogged [Status](#status)
 + content (string, required) - Body of the status; this will contain HTML (remote HTML already sanitized)
 + created_at (string, required) - The time the status was created
@@ -172,11 +172,11 @@ FORMAT: 1A
 + url (string, required) - URL of user's profile (can be remote)
 + username (string, required) - The username of the account
 + acct (string, required)-  Equals `username` for local users, includes `@domain` for remote ones
-+ id (number, required) - Account ID
++ id (ID, required) - Account ID
 
 ### Attachment
 
-+ id (number, required) - ID of the attachment
++ id (ID, required) - ID of the attachment
 + type (string, required) - One of: "image", "video", "gifv"
 + url (string, required) - URL of the locally hosted version of the image
 + remote_url (string, optional) - For remote images, the remote URL of the original image
@@ -185,14 +185,14 @@ FORMAT: 1A
 
 ### Notification
 
-+ id (number, required) - The notification ID
++ id (ID, required) - The notification ID
 + type (string, required) - One of: "mention", "reblog", "favourite", "follow"
 + created_at (string, required) - The time the notification was created
 + account (Account, required) - The [Account](#account) sending the notification to the user
 + status (Status, optional) - The [Status](#status) associated with the notification, if applicable
 
 ### ClientApplication
-+ id (number, required)
++ id (ID, required)
 + redirect_uri (string, required)
 + client_id (string, required)
 + client_secret (string, required)
@@ -203,3 +203,5 @@ FORMAT: 1A
 + scope (string, required)
 + created_at (number, required) - only here: UNIX timestamp
 
+### ID
++ value (string, required) - actual id value

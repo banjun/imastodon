@@ -389,7 +389,7 @@ struct Instance: Codable {
 }
 
 struct Account: Codable { 
-    /// The ID of the account
+    /// The ID of the account  ex. ID
     var id: ID
     /// The username of the account
     var username: String
@@ -422,7 +422,7 @@ struct Account: Codable {
 }
 
 struct Status: Codable { 
-    /// The ID of the status
+    /// The ID of the status  ex. ID
     var id: ID
     /// A Fediverse-unique resource ID
     var uri: String
@@ -430,9 +430,9 @@ struct Status: Codable {
     var url: String
     /// The [Account](#account) which posted the status  ex. Account
     var account: Account
-    /// `null` or the ID of the status it replies to
+    /// `null` or the ID of the status it replies to  ex. ID
     var in_reply_to_id: ID?
-    /// `null` or the ID of the account it replies to
+    /// `null` or the ID of the account it replies to  ex. ID
     var in_reply_to_account_id: ID?
     /// `null` or the reblogged [Status](#status)  ex. Status
     var reblog: Indirect<Status>?
@@ -487,12 +487,12 @@ struct Mention: Codable {
     var username: String
     /// Equals `username` for local users, includes `@domain` for remote ones
     var acct: String
-    /// Account ID
+    /// Account ID  ex. ID
     var id: ID
 }
 
 struct Attachment: Codable { 
-    /// ID of the attachment
+    /// ID of the attachment  ex. ID
     var id: ID
     /// One of: "image", "video", "gifv"
     var type: String
@@ -507,7 +507,7 @@ struct Attachment: Codable {
 }
 
 struct Notification: Codable { 
-    /// The notification ID
+    /// The notification ID  ex. ID
     var id: ID
     /// One of: "mention", "reblog", "favourite", "follow"
     var type: String
@@ -520,7 +520,7 @@ struct Notification: Codable {
 }
 
 struct ClientApplication: Codable { 
-    /// 
+    ///  ex. ID
     var id: ID
     /// 
     var redirect_uri: String
@@ -539,5 +539,10 @@ struct LoginSettings: Codable {
     var scope: String
     /// only here: UNIX timestamp
     var created_at: Int
+}
+
+struct ID: Codable { 
+    /// actual id value
+    var value: String
 }
 

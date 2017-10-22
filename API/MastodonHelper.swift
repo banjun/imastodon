@@ -3,11 +3,8 @@ typealias Timelines = [Status]
 
 import APIKit
 
-struct ID {
-    let value: String
-}
-
-extension ID: Codable {
+// Codable
+extension ID {
     init(from decoder: Decoder) throws {
         // v2: String, v1: Int
         do {
