@@ -426,8 +426,8 @@ struct Status: Codable {
     var id: ID
     /// A Fediverse-unique resource ID
     var uri: String
-    /// URL to the status page (can be remote)
-    var url: String
+    /// URL to the status page (can be remote). NOTE: non-optional. occasionaly null in real world (around mastodon 2?). should be fatal bug in server.
+    var url: String?
     /// The [Account](#account) which posted the status  ex. Account
     var account: Account
     /// `null` or the ID of the status it replies to  ex. ID

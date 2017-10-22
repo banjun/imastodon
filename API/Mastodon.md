@@ -137,7 +137,7 @@ FORMAT: 1A
 
 + id (ID, required) - The ID of the status
 + uri (string, required) - A Fediverse-unique resource ID
-+ url (string, required) - URL to the status page (can be remote)
++ url (string, optional) - URL to the status page (can be remote). NOTE: non-optional. occasionaly null in real world (around mastodon 2?). should be fatal bug in server.
 + account (Account, required) - The [Account](#account) which posted the status
 + in_reply_to_id (ID, optional) - `null` or the ID of the status it replies to
 + in_reply_to_account_id (ID, optional) - `null` or the ID of the account it replies to
