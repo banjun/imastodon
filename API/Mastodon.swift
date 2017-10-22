@@ -389,8 +389,8 @@ struct Instance: Codable {
 }
 
 struct Account: Codable { 
-    /// The ID of the account
-    var id: Int
+    /// The ID of the account  ex. ID
+    var id: ID
     /// The username of the account
     var username: String
     /// Equals `username` for local users, includes `@domain` for remote ones
@@ -422,18 +422,18 @@ struct Account: Codable {
 }
 
 struct Status: Codable { 
-    /// The ID of the status
-    var id: Int
+    /// The ID of the status  ex. ID
+    var id: ID
     /// A Fediverse-unique resource ID
     var uri: String
-    /// URL to the status page (can be remote)
-    var url: String
+    /// URL to the status page (can be remote). NOTE: non-optional. occasionaly null in real world (around mastodon 2?). should be fatal bug in server.
+    var url: String?
     /// The [Account](#account) which posted the status  ex. Account
     var account: Account
-    /// `null` or the ID of the status it replies to
-    var in_reply_to_id: Int?
-    /// `null` or the ID of the account it replies to
-    var in_reply_to_account_id: Int?
+    /// `null` or the ID of the status it replies to  ex. ID
+    var in_reply_to_id: ID?
+    /// `null` or the ID of the account it replies to  ex. ID
+    var in_reply_to_account_id: ID?
     /// `null` or the reblogged [Status](#status)  ex. Status
     var reblog: Indirect<Status>?
     /// Body of the status; this will contain HTML (remote HTML already sanitized)
@@ -487,13 +487,13 @@ struct Mention: Codable {
     var username: String
     /// Equals `username` for local users, includes `@domain` for remote ones
     var acct: String
-    /// Account ID
-    var id: Int
+    /// Account ID  ex. ID
+    var id: ID
 }
 
 struct Attachment: Codable { 
-    /// ID of the attachment
-    var id: Int
+    /// ID of the attachment  ex. ID
+    var id: ID
     /// One of: "image", "video", "gifv"
     var type: String
     /// URL of the locally hosted version of the image
@@ -507,8 +507,8 @@ struct Attachment: Codable {
 }
 
 struct Notification: Codable { 
-    /// The notification ID
-    var id: Int
+    /// The notification ID  ex. ID
+    var id: ID
     /// One of: "mention", "reblog", "favourite", "follow"
     var type: String
     /// The time the notification was created
@@ -520,8 +520,8 @@ struct Notification: Codable {
 }
 
 struct ClientApplication: Codable { 
-    /// 
-    var id: Int
+    ///  ex. ID
+    var id: ID
     /// 
     var redirect_uri: String
     /// 
@@ -539,5 +539,10 @@ struct LoginSettings: Codable {
     var scope: String
     /// only here: UNIX timestamp
     var created_at: Int
+}
+
+struct ID: Codable { 
+    /// actual id value
+    var value: String
 }
 

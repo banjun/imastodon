@@ -90,13 +90,13 @@ class UnifiedViewController: TimelineViewController, ClientContainer {
 
     private func fetch() {
         SVProgressHUD.show()
-        let since = timelineEvents.flatMap {$0.status?.id}.first {$0 > 0}
+        let since = timelineEvents.flatMap {$0.status?.id}.first {$0 != "0"}
         client.local(since: since)
             .zip(client.home(since: since))
             .onComplete {_ in SVProgressHUD.dismiss()}
             .onSuccess { ls, hs in
                 let events: [TimelineEvent] = ls.map {.local($0, nil)} + hs.map {.home($0, nil)}
-                self.append(events.sorted {($0.status?.id ?? 0) > ($1.status?.id ?? 0)})
+                self.append(events.sorted {($0.status?.createdAt?.timeIntervalSinceReferenceDate ?? 0) > ($1.status?.createdAt?.timeIntervalSinceReferenceDate ?? 0)})
                 self.collectionView?.reloadData()
             }.onFailure { e in
                 let ac = UIAlertController(title: "Error", message: e.localizedDescription, preferredStyle: .alert)

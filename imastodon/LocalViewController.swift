@@ -84,7 +84,7 @@ class LocalViewController: TimelineViewController, ClientContainer {
 
     private func fetch() {
         SVProgressHUD.show()
-        client.local(since: timelineEvents.flatMap {$0.status?.id}.first {$0 > 0})
+        client.local(since: timelineEvents.flatMap {$0.status?.id}.first {$0 != "0"})
             .onComplete {_ in SVProgressHUD.dismiss()}
             .onSuccess { statuses in
                 self.append(statuses.map {.local($0, nil)})

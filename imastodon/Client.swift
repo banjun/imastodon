@@ -144,16 +144,16 @@ extension Client {
 }
 
 extension Client {
-    func home(since: Int? = nil) -> Future<[Status], AppError> {
-        return run(GetHomeTimeline(baseURL: baseURL, pathVars: .init(max_id: nil, since_id: since.map {String($0)}, limit: nil))).map { r in
+    func home(since: ID? = nil) -> Future<[Status], AppError> {
+        return run(GetHomeTimeline(baseURL: baseURL, pathVars: .init(max_id: nil, since_id: since?.value, limit: nil))).map { r in
             switch r {
             case let .http200_(statuses): return statuses
             }
         }
     }
 
-    func local(since: Int? = nil) -> Future<[Status], AppError> {
-        return run(GetPublicTimeline(baseURL: baseURL, pathVars: .init(local: "true", max_id: nil, since_id: since.map {String($0)}, limit: nil))).map { r in
+    func local(since: ID? = nil) -> Future<[Status], AppError> {
+        return run(GetPublicTimeline(baseURL: baseURL, pathVars: .init(local: "true", max_id: nil, since_id: since?.value, limit: nil))).map { r in
             switch r {
             case let .http200_(statuses): return statuses
             }
@@ -161,11 +161,11 @@ extension Client {
     }
     
     func boost(_ status: Status) -> Future<Void, AppError> {
-        return run(Boost(baseURL: baseURL, pathVars: .init(id: String(status.id)))).asVoid()
+        return run(Boost(baseURL: baseURL, pathVars: .init(id: status.id.value))).asVoid()
     }
     
     func favorite(_ status: Status) -> Future<Void, AppError> {
-        return run(Favorite(baseURL: baseURL, pathVars: .init(id: String(status.id)))).asVoid()
+        return run(Favorite(baseURL: baseURL, pathVars: .init(id: status.id.value))).asVoid()
     }
 }
 
