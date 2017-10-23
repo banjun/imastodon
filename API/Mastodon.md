@@ -11,6 +11,14 @@ FORMAT: 1A
 
 # Accounts [/api/v1/accounts]
 
+## GetAccount [GET /api/v1/accounts/{id}]
+
++ Parameters
+    + id (string, required)
+
++ Response 200
+    + Attributes (Account)
+
 ## GetCurrentUser [GET /api/v1/accounts/verify_credentials]
 
 + Response 200

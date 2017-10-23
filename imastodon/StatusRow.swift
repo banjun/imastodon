@@ -19,6 +19,19 @@ func stubImage(_ size: CGSize = CGSize(width: 44, height: 44), _ color: UIColor 
 private let stubIcon = stubImage(CGSize(width: 32, height: 32))
 private let iconResizer = ResizingImageProcessor(referenceSize: stubIcon.size, mode: .aspectFill)
 
+extension Kingfisher where Base: UIImageView {
+    func setImageWithStub(_ url: URL) {
+        let size = base.frame.size
+        let resizer = ResizingImageProcessor(referenceSize: size.width * size.height > 0 ? size : stubIcon.size, mode: .aspectFill)
+        setImage(
+            with: url,
+            placeholder: stubIcon,
+            options: [.scaleFactor(2), .processor(resizer), .cacheOriginalImage],
+            progressBlock: nil,
+            completionHandler: nil)
+    }
+}
+
 import SafariServices
 
 extension UIAlertController {
@@ -141,12 +154,7 @@ final class ImageCell: UICollectionViewCell {
     }
 
     func setImageURL(_ url: URL) {
-        imageView.kf.setImage(
-            with: url,
-            placeholder: stubIcon,
-            options: [.scaleFactor(2), .processor(resizer), .cacheOriginalImage],
-            progressBlock: nil,
-            completionHandler: nil)
+        imageView.kf.setImageWithStub(url)
     }
 }
 
@@ -231,12 +239,7 @@ final class StatusCollectionViewCell: UICollectionViewCell {
         let boosted = status.reblog?.value
         let mainStatus = status.mainContentStatus
         if let avatarURL = mainStatus.account.avatarURL(baseURL: baseURL) {
-            iconView.kf.setImage(
-                with: avatarURL,
-                placeholder: stubIcon,
-                options: [.scaleFactor(2), .processor(iconResizer)],
-                progressBlock: nil,
-                completionHandler: nil)
+            iconView.kf.setImageWithStub(avatarURL)
         }
         nameLabel.text = boosted.map {status.account.displayNameOrUserName + "🔁" + $0.account.displayNameOrUserName} ?? status.account.displayNameOrUserName
         bodyLabel.attributedText = attributedText ?? mainStatus.attributedTextContent ?? NSAttributedString(string: mainStatus.textContent)
@@ -309,12 +312,7 @@ final class NotificationCell: UICollectionViewCell {
 
     func setNotification(_ notification: Notification, text: String?, baseURL: URL?) {
         if let avatarURL = notification.account.avatarURL(baseURL: baseURL) {
-            iconView.kf.setImage(
-                with: avatarURL,
-                placeholder: stubIcon,
-                options: [.scaleFactor(2), .processor(iconResizer)],
-                progressBlock: nil,
-                completionHandler: nil)
+            iconView.kf.setImageWithStub(avatarURL)
         }
         nameLabel.text = notification.account.displayNameOrUserName
         bodyLabel.text = notification.type
