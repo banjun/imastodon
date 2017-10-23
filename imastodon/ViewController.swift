@@ -80,7 +80,7 @@ class ViewController: FormViewController {
     }
 
     private func showMe(_ instanceAccount: InstanceAccout) {
-        let vc = UserViewController(instanceAccount: instanceAccount)
+        let vc = UserViewController(fetcher: .fetch(client: Client(instanceAccount)!, account: instanceAccount.account.id))
         show(vc, sender: self)
     }
 }

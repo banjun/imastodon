@@ -35,7 +35,7 @@ extension Kingfisher where Base: UIImageView {
 import SafariServices
 
 extension UIAlertController {
-    convenience init(actionFor status: Status, safari: @escaping (SFSafariViewController) -> Void, boost: @escaping () -> Void, favorite: @escaping () -> Void) {
+    convenience init(actionFor status: Status, safari: @escaping (SFSafariViewController) -> Void, showAccount: @escaping () -> Void, boost: @escaping () -> Void, favorite: @escaping () -> Void) {
         self.init(title: "Action to \(status.visibility) toot", message: String(status.textContent.characters.prefix(20)), preferredStyle: .actionSheet)
 
         if let at = status.attributedTextContent {
@@ -51,6 +51,7 @@ extension UIAlertController {
             }
         }
 
+        addAction(UIAlertAction(title: "Show \(status.mainContentStatus.account.display_name)", style: .default) {_ in showAccount()})
         addAction(UIAlertAction(title: "🔁", style: .default) {_ in boost()})
         addAction(UIAlertAction(title: "⭐️", style: .default) {_ in favorite()})
         addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))

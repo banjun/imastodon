@@ -132,6 +132,7 @@ extension TimelineViewController {
         guard let s = timelineEvent(indexPath).status else { return }
         let ac = UIAlertController(actionFor: s,
                                    safari: {[unowned self] in self.present($0, animated: true)},
+                                   showAccount: {[unowned self] in _ = self.baseURL.map {self.show(UserViewController(fetcher: .account(baseURL: $0, account: s.mainContentStatus.account)), sender: nil)}},
                                    boost: {[unowned self] in self.boost(s)},
                                    favorite: {[unowned self] in self.favorite(s)})
         ac.popoverPresentationController?.sourceView = collectionView

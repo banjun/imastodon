@@ -3,18 +3,12 @@ import Ikemen
 import NorthLayout
 import Kingfisher
 
-final class UserViewController: UIViewController, ClientContainer {
-    let client: Client
-    var account: Account {
-        didSet {
-            _ = URL(string: account.header).map {headerView.kf.setImage(with: $0)}
-
-            _ = account.avatarURL(baseURL: client.baseURL).map {iconView.kf.setImageWithStub($0)}
-            displayNameLabel.text = account.display_name
-            usernameLabel.text = "@" + account.acct
-            bioLabel.attributedText = account.note.data(using: .utf8).flatMap {try? NSAttributedString(data: $0, options: [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType, NSCharacterEncodingDocumentAttribute: String.Encoding.utf8.rawValue], documentAttributes: nil)}
-        }
+final class UserViewController: UIViewController {
+    enum Fetcher {
+        case fetch(client: Client, account: ID)
+        case account(baseURL: URL, account: Account)
     }
+    let fetcher: Fetcher
 
     private let headerView = UIImageView() ※ {
         $0.contentMode = .scaleAspectFill
@@ -42,9 +36,8 @@ final class UserViewController: UIViewController, ClientContainer {
         $0.textAlignment = .center
     }
 
-    init(instanceAccount: InstanceAccout) {
-        self.client = Client(instanceAccount)!
-        self.account = instanceAccount.account // initial value to load
+    init(fetcher: Fetcher) {
+        self.fetcher = fetcher
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -54,18 +47,23 @@ final class UserViewController: UIViewController, ClientContainer {
         view.backgroundColor = .white
         bioLabel.text = "Loading..."
 
-        let bg = MinView() ※ {$0.backgroundColor = UIColor(white: 0, alpha: 0.8)}
-
-        client.run(GetAccount(baseURL: client.baseURL, pathVars: .init(id: account.id.value)))
-            .onSuccess {
-                switch $0 {
-                case let .http200_(a):
-                    UIView.animate(withDuration: 0.2) {
-                        self.account = a
-                        self.view.layoutIfNeeded()
+        switch fetcher {
+        case let .fetch(client, id):
+            client.run(GetAccount(baseURL: client.baseURL, pathVars: .init(id: id.value)))
+                .onSuccess {
+                    switch $0 {
+                    case let .http200_(a):
+                        UIView.animate(withDuration: 0.2) {
+                            self.setAccount(client.baseURL, a)
+                            self.view.layoutIfNeeded()
+                        }
                     }
-                }
+            }
+        case let .account(baseURL, account):
+            setAccount(baseURL, account)
         }
+
+        let bg = MinView() ※ {$0.backgroundColor = UIColor(white: 0, alpha: 0.8)}
 
         let autolayout = northLayoutFormat(["p": 8], [
             "header": headerView,
@@ -102,6 +100,14 @@ final class UserViewController: UIViewController, ClientContainer {
         bg.bringSubview(toFront: displayNameLabel)
         bg.bringSubview(toFront: usernameLabel)
         view.bringSubview(toFront: bioLabel)
+    }
+
+    private func setAccount(_ baseURL: URL, _ account: Account) {
+        _ = URL(string: account.header).map {headerView.kf.setImage(with: $0)}
+        _ = account.avatarURL(baseURL: baseURL).map {iconView.kf.setImageWithStub($0)}
+        displayNameLabel.text = account.display_name
+        usernameLabel.text = "@" + account.acct
+        bioLabel.attributedText = account.note.data(using: .utf8).flatMap {try? NSAttributedString(data: $0, options: [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType, NSCharacterEncodingDocumentAttribute: String.Encoding.utf8.rawValue], documentAttributes: nil)}
     }
 
     required init?(coder aDecoder: NSCoder) {fatalError()}
