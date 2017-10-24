@@ -174,11 +174,11 @@ extension TimelineViewController: UICollectionViewDelegateFlowLayout {
             layoutCell.setStatus(s, attributedText: a, baseURL: nil)
             if let a = a, a.length < 16 && constraint.width < size.width {
                 layoutCell.bodyLabel.preferredMaxLayoutWidth = size.width / 2 - 42
-                let layoutSize = layoutCell.systemLayoutSizeFitting(constraint, withHorizontalFittingPriority: UILayoutPriorityFittingSizeLevel, verticalFittingPriority: UILayoutPriorityFittingSizeLevel)
+                let layoutSize = layoutCell.systemLayoutSizeFitting(constraint, withHorizontalFittingPriority: UILayoutPriority.fittingSizeLevel, verticalFittingPriority: UILayoutPriority.fittingSizeLevel)
                 return CGSize(width: layoutSize.width, height: layoutSize.height)
             } else {
                 layoutCell.bodyLabel.preferredMaxLayoutWidth = size.width - 42
-                let layoutSize = layoutCell.systemLayoutSizeFitting(constraint, withHorizontalFittingPriority: UILayoutPriorityRequired, verticalFittingPriority: UILayoutPriorityFittingSizeLevel)
+                let layoutSize = layoutCell.systemLayoutSizeFitting(constraint, withHorizontalFittingPriority: UILayoutPriority.required, verticalFittingPriority: UILayoutPriority.fittingSizeLevel)
                 return CGSize(width: size.width, height: layoutSize.height)
             }
         }
@@ -189,7 +189,7 @@ extension TimelineViewController: UICollectionViewDelegateFlowLayout {
         case let .local(s, a): return statusSize(s, a, constraint: UILayoutFittingCompressedSize)
         case let .notification(n, s):
             notificationLayoutCell.setNotification(n, text: s, baseURL: nil)
-            let layoutSize = notificationLayoutCell.systemLayoutSizeFitting(size, withHorizontalFittingPriority: UILayoutPriorityRequired, verticalFittingPriority: UILayoutPriorityFittingSizeLevel)
+            let layoutSize = notificationLayoutCell.systemLayoutSizeFitting(size, withHorizontalFittingPriority: UILayoutPriority.required, verticalFittingPriority: UILayoutPriority.fittingSizeLevel)
             return CGSize(width: collectionView.bounds.width, height: layoutSize.height)
         }
     }

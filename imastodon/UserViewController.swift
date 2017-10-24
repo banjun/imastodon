@@ -10,9 +10,7 @@ final class UserViewController: UIViewController {
     }
     let fetcher: Fetcher
 
-    private let headerView = UIImageView() ※ {
-        $0.contentMode = .scaleAspectFill
-        $0.clipsToBounds = true
+    private let headerView = HeaderImageView() ※ {
         $0.backgroundColor = .lightGray
     }
     private let iconView = UIImageView() ※ {
@@ -21,11 +19,13 @@ final class UserViewController: UIViewController {
     }
     private let displayNameLabel = UILabel() ※ {
         $0.font = .systemFont(ofSize: UIFont.smallSystemFontSize)
+        $0.numberOfLines = 0
         $0.textAlignment = .center
         $0.textColor = .white
     }
     private let usernameLabel = UILabel() ※ {
         $0.font = .systemFont(ofSize: UIFont.smallSystemFontSize)
+        $0.numberOfLines = 0
         $0.textAlignment = .center
         $0.textColor = .white
     }
@@ -65,16 +65,18 @@ final class UserViewController: UIViewController {
 
         let bg = MinView() ※ {$0.backgroundColor = UIColor(white: 0, alpha: 0.8)}
 
+        let headerLayout = view.northLayoutFormat([:], ["header": headerView])
+        headerLayout("H:|[header]|")
+        headerLayout("V:|[header(>=144)]")
+
         let autolayout = northLayoutFormat(["p": 8], [
-            "header": headerView,
             "bg": bg,
             "bio": bioLabel,
             ])
-        autolayout("H:|[header]|")
         autolayout("H:[bg]|")
-        autolayout("V:|[header(>=144)]")
-        autolayout("V:|[bg(==header)]-p-[bio]-(>=p)-|")
+        autolayout("V:|[bg]-p-[bio]-(>=p)-|")
         autolayout("H:|-p-[bio]-p-|")
+        view.addConstraint(NSLayoutConstraint(item: bg, attribute: .bottom, relatedBy: .equal, toItem: headerView, attribute: .bottom, multiplier: 1, constant: 0))
         view.addConstraint(NSLayoutConstraint(item: bg, attribute: .width, relatedBy: .lessThanOrEqual, toItem: view, attribute: .width, multiplier: 0.4, constant: 0))
         view.bringSubview(toFront: bg)
 
@@ -91,10 +93,10 @@ final class UserViewController: UIViewController {
         bgLayout("V:|-p-[icon(==iconWidth)]-p-[dname]-p-[uname]-(>=p)-|")
         bg.addConstraint(NSLayoutConstraint(item: iconView, attribute: .centerX, relatedBy: .equal, toItem: bg, attribute: .centerX, multiplier: 1, constant: 0))
 
-        headerView.setContentCompressionResistancePriority(UILayoutPriorityFittingSizeLevel, for: .vertical)
-        displayNameLabel.setContentCompressionResistancePriority(UILayoutPriorityRequired, for: .vertical)
-        usernameLabel.setContentCompressionResistancePriority(UILayoutPriorityRequired, for: .vertical)
-        bioLabel.setContentCompressionResistancePriority(UILayoutPriorityRequired, for: .vertical)
+        headerView.setContentCompressionResistancePriority(.fittingSizeLevel, for: .vertical)
+        displayNameLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+        usernameLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+        bioLabel.setContentCompressionResistancePriority(.required, for: .vertical)
 
         bg.bringSubview(toFront: iconView)
         bg.bringSubview(toFront: displayNameLabel)
@@ -103,11 +105,11 @@ final class UserViewController: UIViewController {
     }
 
     private func setAccount(_ baseURL: URL, _ account: Account) {
-        _ = URL(string: account.header).map {headerView.kf.setImage(with: $0)}
+        _ = URL(string: account.header).map {headerView.imageView.kf.setImage(with: $0)}
         _ = account.avatarURL(baseURL: baseURL).map {iconView.kf.setImageWithStub($0)}
         displayNameLabel.text = account.display_name
         usernameLabel.text = "@" + account.acct
-        bioLabel.attributedText = account.note.data(using: .utf8).flatMap {try? NSAttributedString(data: $0, options: [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType, NSCharacterEncodingDocumentAttribute: String.Encoding.utf8.rawValue], documentAttributes: nil)}
+        bioLabel.attributedText = account.note.data(using: .utf8).flatMap {try? NSAttributedString(data: $0, options: [.documentType: NSAttributedString.DocumentType.html, .characterEncoding: String.Encoding.utf8.rawValue], documentAttributes: nil)}
     }
 
     required init?(coder aDecoder: NSCoder) {fatalError()}

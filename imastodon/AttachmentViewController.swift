@@ -78,7 +78,7 @@ final class AttachmentViewController: UIViewController, UIGestureRecognizerDeleg
         return gestureRecognizer === pinchGestureRecognizer && otherGestureRecognizer === panGestureRecognizer
     }
 
-    func scale() {
+    @objc func scale() {
         guard pinchGestureRecognizer.state == .changed || panGestureRecognizer.state == .changed else {
             if imageView.transform.a < 1 {
                 UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: [], animations: {
@@ -96,7 +96,7 @@ final class AttachmentViewController: UIViewController, UIGestureRecognizerDeleg
         pinchGestureRecognizer.scale = 1
     }
 
-    func done() {
+    @objc func done() {
         dismiss(animated: true)
     }
 }

@@ -11,6 +11,7 @@
 		EA0EDB4A1EE41FC400280536 /* Stream.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0EDB491EE41FC000280536 /* Stream.swift */; };
 		EA0EDB4C1EE429A600280536 /* TimelineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0EDB4B1EE429A600280536 /* TimelineViewController.swift */; };
 		EA65F7C21F9E2AFE00071B4D /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65F7C11F9E2AFE00071B4D /* UserViewController.swift */; };
+		EA65F7C41F9F68F700071B4D /* HeaderImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65F7C31F9F68F700071B4D /* HeaderImageView.swift */; };
 		EA72DC751EF14E3A00B5A7CD /* Mastodon.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA72DC741EF14E2B00B5A7CD /* Mastodon.swift */; };
 		EAB623AD1EF16AA500F7BE80 /* MastodonHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB623AC1EF16AA500F7BE80 /* MastodonHelper.swift */; };
 		EAB868271EF6B4A700B38879 /* AttachmentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB868261EF6B4A700B38879 /* AttachmentViewController.swift */; };
@@ -36,6 +37,7 @@
 		EA0EDB491EE41FC000280536 /* Stream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stream.swift; sourceTree = "<group>"; };
 		EA0EDB4B1EE429A600280536 /* TimelineViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineViewController.swift; sourceTree = "<group>"; };
 		EA65F7C11F9E2AFE00071B4D /* UserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
+		EA65F7C31F9F68F700071B4D /* HeaderImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderImageView.swift; sourceTree = "<group>"; };
 		EA72DC721EF14E2B00B5A7CD /* Mastodon.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Mastodon.md; sourceTree = "<group>"; };
 		EA72DC741EF14E2B00B5A7CD /* Mastodon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mastodon.swift; sourceTree = "<group>"; };
 		EAB623AC1EF16AA500F7BE80 /* MastodonHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonHelper.swift; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 				EAE218B21ED147E2001209F2 /* LoginViewController.swift */,
 				EAB868261EF6B4A700B38879 /* AttachmentViewController.swift */,
 				EA65F7C11F9E2AFE00071B4D /* UserViewController.swift */,
+				EA65F7C31F9F68F700071B4D /* HeaderImageView.swift */,
 				EAC55F341ED07C5700CD567D /* Assets.xcassets */,
 				EAC55F361ED07C5700CD567D /* LaunchScreen.storyboard */,
 				EAC55F391ED07C5700CD567D /* Info.plist */,
@@ -272,6 +275,7 @@
 				EAB623AD1EF16AA500F7BE80 /* MastodonHelper.swift in Sources */,
 				EA72DC751EF14E3A00B5A7CD /* Mastodon.swift in Sources */,
 				EAC55F301ED07C5700CD567D /* ViewController.swift in Sources */,
+				EA65F7C41F9F68F700071B4D /* HeaderImageView.swift in Sources */,
 				EA0EDB4C1EE429A600280536 /* TimelineViewController.swift in Sources */,
 				EAE3BC401ED3373300B31AF5 /* PostViewController.swift in Sources */,
 				EAC55F2E1ED07C5700CD567D /* AppDelegate.swift in Sources */,
@@ -339,7 +343,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -385,7 +389,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -404,7 +408,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = jp.banjun.imastodon;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -418,7 +422,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = jp.banjun.imastodon;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};

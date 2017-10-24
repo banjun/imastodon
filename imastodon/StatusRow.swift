@@ -39,7 +39,7 @@ extension UIAlertController {
         self.init(title: "Action to \(status.visibility) toot", message: String(status.textContent.characters.prefix(20)), preferredStyle: .actionSheet)
 
         if let at = status.attributedTextContent {
-            status.attributedTextContent?.enumerateAttribute(NSLinkAttributeName, in: NSRange(location: 0, length: at.length), options: []) { value, _, _ in
+            status.attributedTextContent?.enumerateAttribute(.link, in: NSRange(location: 0, length: at.length), options: []) { value, _, _ in
                 switch value {
                 case let url as URL:
                     addAction(UIAlertAction(title: url.absoluteString, style: .default) { _ in
@@ -212,10 +212,10 @@ final class StatusCollectionViewCell: UICollectionViewCell {
         autolayout("H:[shadowR(==shadowL)]|")
         autolayout("V:|[shadowL]|")
         autolayout("V:|[shadowR]|")
-        nameLabel.setContentHuggingPriority(UILayoutPriorityRequired, for: .vertical)
+        nameLabel.setContentHuggingPriority(.required, for: .vertical)
         let thumbnailViewHeight = NSLayoutConstraint(item: thumbnailView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
         self.thumbnailViewHeight = thumbnailViewHeight
-        thumbnailViewHeight.priority = UILayoutPriorityRequired
+        thumbnailViewHeight.priority = .required
         thumbnailView.addConstraint(thumbnailViewHeight)
         bringSubview(toFront: leftShadow)
         bringSubview(toFront: rightShadow)
@@ -293,9 +293,9 @@ final class NotificationCell: UICollectionViewCell {
         autolayout("H:|-p-[target]-p-|")
         autolayout("V:|-p-[icon(==24)]-s-[body]-s-[target]-p-|")
         autolayout("V:|-p-[name(==icon)]-s-[body]")
-        nameLabel.setContentHuggingPriority(UILayoutPriorityRequired, for: .horizontal)
-        bodyLabel.setContentCompressionResistancePriority(UILayoutPriorityRequired, for: .vertical)
-        targetLabel.setContentCompressionResistancePriority(UILayoutPriorityRequired, for: .vertical)
+        nameLabel.setContentHuggingPriority(UILayoutPriority.required, for: .horizontal)
+        bodyLabel.setContentCompressionResistancePriority(UILayoutPriority.required, for: .vertical)
+        targetLabel.setContentCompressionResistancePriority(UILayoutPriority.required, for: .vertical)
     }
     
     required init?(coder aDecoder: NSCoder) {fatalError()}

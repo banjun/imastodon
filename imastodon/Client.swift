@@ -55,8 +55,8 @@ extension Status {
             let at = try? NSAttributedString(
                 data: data,
                 options: [
-                    NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
-                    NSCharacterEncodingDocumentAttribute: String.Encoding.utf8.rawValue],
+                    .documentType: NSAttributedString.DocumentType.html,
+                    .characterEncoding: String.Encoding.utf8.rawValue],
                 documentAttributes: nil) else { return nil }
         return at
     }
