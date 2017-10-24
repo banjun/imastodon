@@ -87,7 +87,7 @@ final class UserViewController: UIViewController {
             "dname": displayNameLabel,
             "uname": usernameLabel,
             ])
-        bgLayout("H:[icon(==iconWidth)]")
+        bgLayout("H:|-(>=p)-[icon(==iconWidth)]-(>=p)-|")
         bgLayout("H:|-p-[dname]-p-|")
         bgLayout("H:|-p-[uname]-p-|")
         bgLayout("V:|-p-[icon(==iconWidth)]-p-[dname]-p-[uname]-(>=p)-|")
