@@ -5,9 +5,9 @@ import ReactiveSwift
 struct Stream {
     let source: EventSource
     let updateSignal: Signal<Event, AppError>
-    private let updateObserver: Observer<Event, AppError>
+    private let updateObserver: Signal<Event, AppError>.Observer
     let notificationSignal: Signal<Notification, AppError>
-    private let notificationObserver: Observer<Notification, AppError>
+    private let notificationObserver: Signal<Notification, AppError>.Observer
     
     enum Event {
         case open
