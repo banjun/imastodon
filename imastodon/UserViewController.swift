@@ -2,6 +2,7 @@ import UIKit
 import Ikemen
 import NorthLayout
 import Kingfisher
+import Eureka
 
 final class UserViewController: UIViewController, ClientContainer {
     var client: Client {
@@ -14,16 +15,56 @@ final class UserViewController: UIViewController, ClientContainer {
         case account(client: Client, account: Account)
     }
     let fetcher: Fetcher
+    private var account: Account? {
+        didSet {
+            _ = account.flatMap {URL(string: $0.header)}.map {headerView.imageView.imageView.kf.setImage(with: $0)}
+            _ = account?.avatarURL(baseURL: client.baseURL).map {headerView.iconView.kf.setImageWithStub($0)}
+            headerView.displayNameLabel.text = account?.display_name
+            headerView.usernameLabel.text = account.map {"@" + $0.acct}
+            headerView.bioLabel.attributedText = account?.note.data(using: .utf8).flatMap {try? NSAttributedString(data: $0, options: [.documentType: NSAttributedString.DocumentType.html, .characterEncoding: String.Encoding.utf8.rawValue], documentAttributes: nil)}
+
+            currentUserSection?.removeAll()
+            currentUserSection?.append(LabelRow {
+                $0.title = (account.map {String($0.following_count)} ?? "-") + " Followings"
+                $0.cell.accessoryType = .disclosureIndicator
+                $0.onCellSelection {[weak self] _, _ in self?.show(UIViewController(), sender: nil)}
+            })
+            currentUserSection?.append(LabelRow {
+                $0.title = (account.map {String($0.followers_count)} ?? "-") + " Followers"
+                $0.cell.accessoryType = .disclosureIndicator
+                $0.onCellSelection {[weak self] _, _ in self?.show(UIViewController(), sender: nil)}
+            })
+            currentUserSection?.append(LabelRow {
+                $0.title = "⭐️ Favorites"
+                $0.cell.accessoryType = .disclosureIndicator
+                $0.onCellSelection {[weak self] _, _ in self?.show(UIViewController(), sender: nil)}
+            })
+
+            timelineView.layoutTableHeaderView()
+        }
+    }
+    var isCurrentUser: Bool {return currentUserSection != nil}
+    private var currentUserSection: Section?
 
     private let headerView: UserHeaderView
     private let timelineView: UITableView
     private var toots: [(Status, NSAttributedString?)] = [] // cache heavy attributed strings
 
-    init(fetcher: Fetcher) {
+    init(fetcher: Fetcher, isCurrentUser: Bool = false) {
         self.fetcher = fetcher
+        self.currentUserSection = isCurrentUser ? Section {
+            $0.header = HeaderFooterView(title: " ")
+            $0.footer = HeaderFooterView(title: " ")
+            } : nil
         self.headerView = UserHeaderView()
         self.timelineView = UITableView(frame: .zero, style: .plain)
         super.init(nibName: nil, bundle: nil)
+    }
+
+    convenience init?(_ instanceAccount: InstanceAccout) {
+        guard let client = Client(instanceAccount) else { return nil }
+        self.init(fetcher: .fetch(client: client, account: instanceAccount.account.id),
+                  isCurrentUser: true)
     }
 
     override func loadView() {
@@ -35,7 +76,7 @@ final class UserViewController: UIViewController, ClientContainer {
             fetchAccount(client: client, id: id)
             fetchAccountStatuses(client: client, id: id)
         case let .account(client, account):
-            setAccount(client.baseURL, account)
+            self.account = account
             fetchAccountStatuses(client: client, id: account.id)
         }
     }
@@ -50,22 +91,13 @@ final class UserViewController: UIViewController, ClientContainer {
         timelineView.layoutTableHeaderView()
     }
 
-    private func setAccount(_ baseURL: URL, _ account: Account) {
-        _ = URL(string: account.header).map {headerView.imageView.imageView.kf.setImage(with: $0)}
-        _ = account.avatarURL(baseURL: baseURL).map {headerView.iconView.kf.setImageWithStub($0)}
-        headerView.displayNameLabel.text = account.display_name
-        headerView.usernameLabel.text = "@" + account.acct
-        headerView.bioLabel.attributedText = account.note.data(using: .utf8).flatMap {try? NSAttributedString(data: $0, options: [.documentType: NSAttributedString.DocumentType.html, .characterEncoding: String.Encoding.utf8.rawValue], documentAttributes: nil)}
-        timelineView.layoutTableHeaderView()
-    }
-
     private func fetchAccount(client: Client, id: ID) -> Void {
         client.run(GetAccount(baseURL: client.baseURL, pathVars: .init(id: id.value)))
             .onSuccess {
                 switch $0 {
                 case let .http200_(a):
                     UIView.animate(withDuration: 0.2) {
-                        self.setAccount(client.baseURL, a)
+                        self.account = a
                         self.view.layoutIfNeeded()
                     }
                 }
@@ -102,11 +134,29 @@ extension UserViewController: UITableViewDataSource, UITableViewDelegate {
         }
     }
 
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return currentUserSection != nil ? 2 : 1
+    }
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if let currentUserSection = currentUserSection, section == 0 { return currentUserSection.count }
         return toots.count
     }
 
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if let currentUserSection = currentUserSection, section == 0 { return currentUserSection.header?.title }
+        return nil
+    }
+
+    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        if let currentUserSection = currentUserSection, section == 0 { return currentUserSection.footer?.title }
+        return nil
+    }
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if let currentUserSection = currentUserSection, indexPath.section == 0 {
+            return currentUserSection[indexPath.row].baseCell ※ {$0.update()}
+        }
         let cell = timelineView.dequeueReusableCell(withIdentifier: "StatusTableViewCell", for: indexPath) as! StatusTableViewCell
         let status = toots[indexPath.row]
         cell.statusView.setStatus(status.0, attributedText: status.1, baseURL: nil)
@@ -115,6 +165,11 @@ extension UserViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        if isCurrentUser, indexPath.section == 0 {
+            let vc = UIViewController()
+            show(vc, sender: nil)
+            return
+        }
         let s = toots[indexPath.row].0
         let ac = UIAlertController(actionFor: s,
                                    safari: {[unowned self] in self.present($0, animated: true)},
