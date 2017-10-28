@@ -93,6 +93,7 @@ extension UserViewController: UITableViewDataSource, UITableViewDelegate {
         timelineView.register(StatusTableViewCell.self, forCellReuseIdentifier: "StatusTableViewCell")
 
         timelineView.separatorStyle = .none
+        timelineView.showsVerticalScrollIndicator = false
         timelineView.tableHeaderView = headerView
         timelineView.backgroundView = UILabel() ※ {
             $0.text = "Loading..."
