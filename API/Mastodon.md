@@ -11,6 +11,8 @@ FORMAT: 1A
 
 # Accounts [/api/v1/accounts]
 
++ Attributes (array[Account])
+
 ## GetAccount [GET /api/v1/accounts/{id}]
 
 + Parameters
@@ -36,6 +38,18 @@ FORMAT: 1A
 
 + Response 200
     + Attributes (Timelines)
+
+
+## GetFollowings [GET /api/v1/accounts/{id}/following{?max_id,since_id,limit}]
+
++ Parameters
+    + id (string, required)
+    + max_id (string, optional) - Get a list of followings with ID less than this value
+    + since_id (string, optional) - Get a list of followings with ID greater than this value
+    + limit (number, optional) - Maximum number of followings to get (Default 40, Max 80)
+
++ Response 200
+    + Attributes (Accounts)
 
 
 # Apps [/api/v1/apps{?client_name,redirect_uris,scopes,website}]

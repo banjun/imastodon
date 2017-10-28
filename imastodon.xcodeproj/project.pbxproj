@@ -11,6 +11,8 @@
 		EA0EDB4A1EE41FC400280536 /* Stream.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0EDB491EE41FC000280536 /* Stream.swift */; };
 		EA0EDB4C1EE429A600280536 /* TimelineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0EDB4B1EE429A600280536 /* TimelineViewController.swift */; };
 		EA6429EC1FA50B18006A67C0 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6429EB1FA50B18006A67C0 /* FavoritesViewController.swift */; };
+		EA6429EE1FA5110D006A67C0 /* FollowingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6429ED1FA5110D006A67C0 /* FollowingsViewController.swift */; };
+		EA6429F01FA51738006A67C0 /* AccountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6429EF1FA51738006A67C0 /* AccountCell.swift */; };
 		EA65F7C21F9E2AFE00071B4D /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65F7C11F9E2AFE00071B4D /* UserViewController.swift */; };
 		EA65F7C41F9F68F700071B4D /* HeaderImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65F7C31F9F68F700071B4D /* HeaderImageView.swift */; };
 		EA72DC751EF14E3A00B5A7CD /* Mastodon.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA72DC741EF14E2B00B5A7CD /* Mastodon.swift */; };
@@ -38,6 +40,8 @@
 		EA0EDB491EE41FC000280536 /* Stream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stream.swift; sourceTree = "<group>"; };
 		EA0EDB4B1EE429A600280536 /* TimelineViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineViewController.swift; sourceTree = "<group>"; };
 		EA6429EB1FA50B18006A67C0 /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
+		EA6429ED1FA5110D006A67C0 /* FollowingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowingsViewController.swift; sourceTree = "<group>"; };
+		EA6429EF1FA51738006A67C0 /* AccountCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCell.swift; sourceTree = "<group>"; };
 		EA65F7C11F9E2AFE00071B4D /* UserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
 		EA65F7C31F9F68F700071B4D /* HeaderImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderImageView.swift; sourceTree = "<group>"; };
 		EA72DC721EF14E2B00B5A7CD /* Mastodon.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Mastodon.md; sourceTree = "<group>"; };
@@ -138,7 +142,9 @@
 				EAB868261EF6B4A700B38879 /* AttachmentViewController.swift */,
 				EA65F7C11F9E2AFE00071B4D /* UserViewController.swift */,
 				EA65F7C31F9F68F700071B4D /* HeaderImageView.swift */,
+				EA6429ED1FA5110D006A67C0 /* FollowingsViewController.swift */,
 				EA6429EB1FA50B18006A67C0 /* FavoritesViewController.swift */,
+				EA6429EF1FA51738006A67C0 /* AccountCell.swift */,
 				EAC55F341ED07C5700CD567D /* Assets.xcassets */,
 				EAC55F361ED07C5700CD567D /* LaunchScreen.storyboard */,
 				EAC55F391ED07C5700CD567D /* Info.plist */,
@@ -303,6 +309,8 @@
 				EAB868271EF6B4A700B38879 /* AttachmentViewController.swift in Sources */,
 				EAE218B51ED15494001209F2 /* Store.swift in Sources */,
 				EAE218B31ED147E2001209F2 /* LoginViewController.swift in Sources */,
+				EA6429EE1FA5110D006A67C0 /* FollowingsViewController.swift in Sources */,
+				EA6429F01FA51738006A67C0 /* AccountCell.swift in Sources */,
 				EAE218BF1ED176C4001209F2 /* StatusRow.swift in Sources */,
 				EA65F7C21F9E2AFE00071B4D /* UserViewController.swift in Sources */,
 				EAB623AD1EF16AA500F7BE80 /* MastodonHelper.swift in Sources */,
