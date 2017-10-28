@@ -133,8 +133,8 @@ extension TimelineViewController {
         let ac = UIAlertController(actionFor: s,
                                    safari: {[unowned self] in self.present($0, animated: true)},
                                    showAccount: {[unowned self] in _ = (self as? ClientContainer).map {self.show(UserViewController(fetcher: .account(client: $0.client, account: s.mainContentStatus.account)), sender: nil)}},
-                                   boost: {[unowned self] in self.boost(s)},
-                                   favorite: {[unowned self] in self.favorite(s)})
+                                   boost: {[unowned self] in (self as? ClientContainer & UIViewController)?.boost(s)},
+                                   favorite: {[unowned self] in (self as? ClientContainer & UIViewController)?.favorite(s)})
         ac.popoverPresentationController?.sourceView = collectionView
         ac.popoverPresentationController?.permittedArrowDirections = .any
         if let cell = collectionView.cellForItem(at: indexPath) as? StatusCollectionViewCell {
@@ -142,24 +142,24 @@ extension TimelineViewController {
         }
         present(ac, animated: true)
     }
-    
+
+    func showAttachment(_ a: Attachment) {
+        let vc = AttachmentViewController(attachment: a)
+        present(vc, animated: true)
+    }
+}
+
+extension ClientContainer where Self: UIViewController {
     func boost(_ s: Status) {
-        guard let client = (self as? ClientContainer)?.client else { return }
         SVProgressHUD.show()
         client.boost(s)
             .onComplete {_ in SVProgressHUD.dismiss()}
     }
     
     func favorite(_ s: Status) {
-        guard let client = (self as? ClientContainer)?.client else { return }
         SVProgressHUD.show()
         client.favorite(s)
             .onComplete {_ in SVProgressHUD.dismiss()}
-    }
-
-    func showAttachment(_ a: Attachment) {
-        let vc = AttachmentViewController(attachment: a)
-        present(vc, animated: true)
     }
 }
 
