@@ -51,6 +51,22 @@ FORMAT: 1A
 + Response 200
     + Attributes (ClientApplication)
 
+# Favourites [/api/v1/favourites{?max_id,since_id,limit}]
+
+## GetFavourites [GET]
+
+Fetching a user's favourites
+
+> Note: max_id and since_id for next and previous pages are provided in the Link header. It is not possible to use the id of the returned objects to construct your own URLs, because the results are sorted by an internal key.
+
++ Parameters
+    + max_id (string, optional) - Get a list of favourites with ID less than this value
+    + since_id (string, optional) - Get a list of favourites with ID greater than this value
+    + limit (number, optional) - Maximum number of favourites to get (Default 20, Max 40)
+
++ Response 200
+    + Attributes (Timelines)
+
 # Login [/oauth/token]
 
 ## LoginSilent [POST]

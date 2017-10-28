@@ -236,6 +236,40 @@ struct RegisterApp: APIBlueprintRequest, URITemplateRequest {
     }
 }
 
+/// Fetching a user's favourites
+/// 
+/// > Note: max_id and since_id for next and previous pages are provided in the Link header. It is not possible to use the id of the returned objects to construct your own URLs, because the results are sorted by an internal key.
+struct GetFavourites: APIBlueprintRequest, URITemplateRequest {
+    let baseURL: URL
+    var method: HTTPMethod {return .get}
+
+    let path = "" // see intercept(urlRequest:)
+    static let pathTemplate: URITemplate = "/api/v1/favourites{?max_id,since_id,limit}"
+    var pathVars: PathVars
+    struct PathVars: URITemplateContextConvertible {
+        /// Get a list of favourites with ID less than this value
+        var max_id: String?
+        /// Get a list of favourites with ID greater than this value
+        var since_id: String?
+        /// Maximum number of favourites to get (Default 20, Max 40)
+        var limit: String?
+    }
+
+    enum Responses {
+        case http200_(Timelines)
+    }
+
+    func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Responses {
+        let contentType = contentMIMEType(in: urlResponse)
+        switch (urlResponse.statusCode, contentType) {
+        case (200, _):
+            return .http200_(try decodeJSON(from: object, urlResponse: urlResponse))
+        default:
+            throw ResponseError.undefined(urlResponse.statusCode, contentType)
+        }
+    }
+}
+
 
 struct LoginSilent: APIBlueprintRequest {
     let baseURL: URL

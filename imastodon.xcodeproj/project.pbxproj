@@ -10,6 +10,7 @@
 		1AA9E5D5D16230C8EA09FCAE /* Pods_imastodon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF693483815FAE1CC3AB6956 /* Pods_imastodon.framework */; };
 		EA0EDB4A1EE41FC400280536 /* Stream.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0EDB491EE41FC000280536 /* Stream.swift */; };
 		EA0EDB4C1EE429A600280536 /* TimelineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0EDB4B1EE429A600280536 /* TimelineViewController.swift */; };
+		EA6429EC1FA50B18006A67C0 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6429EB1FA50B18006A67C0 /* FavoritesViewController.swift */; };
 		EA65F7C21F9E2AFE00071B4D /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65F7C11F9E2AFE00071B4D /* UserViewController.swift */; };
 		EA65F7C41F9F68F700071B4D /* HeaderImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65F7C31F9F68F700071B4D /* HeaderImageView.swift */; };
 		EA72DC751EF14E3A00B5A7CD /* Mastodon.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA72DC741EF14E2B00B5A7CD /* Mastodon.swift */; };
@@ -36,6 +37,7 @@
 		CF693483815FAE1CC3AB6956 /* Pods_imastodon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_imastodon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA0EDB491EE41FC000280536 /* Stream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stream.swift; sourceTree = "<group>"; };
 		EA0EDB4B1EE429A600280536 /* TimelineViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineViewController.swift; sourceTree = "<group>"; };
+		EA6429EB1FA50B18006A67C0 /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
 		EA65F7C11F9E2AFE00071B4D /* UserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
 		EA65F7C31F9F68F700071B4D /* HeaderImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderImageView.swift; sourceTree = "<group>"; };
 		EA72DC721EF14E2B00B5A7CD /* Mastodon.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Mastodon.md; sourceTree = "<group>"; };
@@ -136,6 +138,7 @@
 				EAB868261EF6B4A700B38879 /* AttachmentViewController.swift */,
 				EA65F7C11F9E2AFE00071B4D /* UserViewController.swift */,
 				EA65F7C31F9F68F700071B4D /* HeaderImageView.swift */,
+				EA6429EB1FA50B18006A67C0 /* FavoritesViewController.swift */,
 				EAC55F341ED07C5700CD567D /* Assets.xcassets */,
 				EAC55F361ED07C5700CD567D /* LaunchScreen.storyboard */,
 				EAC55F391ED07C5700CD567D /* Info.plist */,
@@ -306,6 +309,7 @@
 				EA72DC751EF14E3A00B5A7CD /* Mastodon.swift in Sources */,
 				EAC55F301ED07C5700CD567D /* ViewController.swift in Sources */,
 				EA65F7C41F9F68F700071B4D /* HeaderImageView.swift in Sources */,
+				EA6429EC1FA50B18006A67C0 /* FavoritesViewController.swift in Sources */,
 				EA0EDB4C1EE429A600280536 /* TimelineViewController.swift in Sources */,
 				EAE3BC401ED3373300B31AF5 /* PostViewController.swift in Sources */,
 				EAC55F2E1ED07C5700CD567D /* AppDelegate.swift in Sources */,

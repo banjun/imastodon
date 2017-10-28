@@ -37,7 +37,9 @@ final class UserViewController: UIViewController, ClientContainer {
             currentUserSection?.append(LabelRow {
                 $0.title = "⭐️ Favorites"
                 $0.cell.accessoryType = .disclosureIndicator
-                $0.onCellSelection {[weak self] _, _ in self?.show(UIViewController(), sender: nil)}
+                $0.onCellSelection {[weak self] _, _ in
+                    guard let `self` = self else { return }
+                    self.show(FavoritesViewController(client: self.client), sender: nil)}
             })
 
             timelineView.layoutTableHeaderView()
@@ -165,9 +167,8 @@ extension UserViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        if isCurrentUser, indexPath.section == 0 {
-            let vc = UIViewController()
-            show(vc, sender: nil)
+        if let currentUserSection = currentUserSection, indexPath.section == 0 {
+            currentUserSection[indexPath.row].didSelect()
             return
         }
         let s = toots[indexPath.row].0
