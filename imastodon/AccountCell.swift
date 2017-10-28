@@ -1,5 +1,6 @@
 import UIKit
 import Ikemen
+import NorthLayout
 
 final class AccountCell: UITableViewCell {
     let iconView = UIImageView() ※ { iv in
@@ -27,12 +28,14 @@ final class AccountCell: UITableViewCell {
         let autolayout = northLayoutFormat(["p": 8], [
             "icon": iconView,
             "dname": displayNameLabel,
-            "uname": userNameLabel])
+            "uname": userNameLabel,
+            "spacerT": MinView(),
+            "spacerB": MinView()])
         autolayout("H:|-p-[icon(==32)]")
         autolayout("H:[icon]-p-[dname]-p-|")
         autolayout("H:[icon]-p-[uname]-p-|")
         autolayout("V:|-p-[icon(==32)]-(>=p)-|")
-        autolayout("V:|-2-[dname][uname]-2-|")
+        autolayout("V:|[spacerT][dname][uname][spacerB(==spacerT)]|")
         displayNameLabel.setContentHuggingPriority(.required, for: .vertical)
         userNameLabel.setContentHuggingPriority(.required, for: .vertical)
     }
