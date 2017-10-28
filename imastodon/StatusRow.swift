@@ -185,9 +185,6 @@ final class StatusView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        backgroundColor = .white
-        isOpaque = true
-
         let autolayout = northLayoutFormat(["s": 4, "p": 8], [
             "icon": iconView,
             "name": nameLabel,
@@ -244,6 +241,8 @@ final class StatusCollectionViewCell: UICollectionViewCell {
         self.statusView = StatusView(frame: frame)
         super.init(frame: frame)
 
+        isOpaque = true
+
         contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         contentView.frame = self.bounds
 
@@ -257,8 +256,8 @@ final class StatusCollectionViewCell: UICollectionViewCell {
         autolayout("H:[shadowR(==shadowL)]|")
         autolayout("V:|[shadowL]|")
         autolayout("V:|[shadowR]|")
-        bringSubview(toFront: leftShadow)
-        bringSubview(toFront: rightShadow)
+        contentView.bringSubview(toFront: leftShadow)
+        contentView.bringSubview(toFront: rightShadow)
     }
 
     required init?(coder aDecoder: NSCoder) {fatalError()}
