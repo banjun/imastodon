@@ -35,11 +35,11 @@ extension Kingfisher where Base: UIImageView {
 import SafariServices
 
 extension UIAlertController {
-    convenience init(actionFor status: Status, safari: @escaping (SFSafariViewController) -> Void, showAccount: @escaping () -> Void, boost: @escaping () -> Void, favorite: @escaping () -> Void) {
+    convenience init(actionFor status: Status, safari: @escaping (SFSafariViewController) -> Void, showAccount: (() -> Void)?, boost: (() -> Void)? = nil, favorite: (() -> Void)? = nil) {
         self.init(title: "Action to \(status.visibility) toot", message: String(status.textContent.characters.prefix(20)), preferredStyle: .actionSheet)
 
-        if let at = status.attributedTextContent {
-            status.attributedTextContent?.enumerateAttribute(.link, in: NSRange(location: 0, length: at.length), options: []) { value, _, _ in
+        if let at = status.mainContentStatus.attributedTextContent {
+            at.enumerateAttribute(.link, in: NSRange(location: 0, length: at.length), options: []) { value, _, _ in
                 switch value {
                 case let url as URL:
                     addAction(UIAlertAction(title: url.absoluteString, style: .default) { _ in
@@ -51,9 +51,12 @@ extension UIAlertController {
             }
         }
 
-        addAction(UIAlertAction(title: "Show \(status.mainContentStatus.account.display_name)", style: .default) {_ in showAccount()})
-        addAction(UIAlertAction(title: "🔁", style: .default) {_ in boost()})
-        addAction(UIAlertAction(title: "⭐️", style: .default) {_ in favorite()})
+        [("Show \(status.mainContentStatus.account.display_name)", showAccount),
+         ("🔁", boost),
+         ("⭐️", favorite)]
+            .flatMap {r in r.1.map {(r.0, $0)}}.forEach { title, action in
+                addAction(UIAlertAction(title: title, style: .default) {_ in action()})
+        }
         addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
     }
 }
@@ -159,7 +162,7 @@ final class ImageCell: UICollectionViewCell {
     }
 }
 
-final class StatusCollectionViewCell: UICollectionViewCell {
+final class StatusView: UIView {
     let iconView = UIImageView() ※ { iv in
         iv.clipsToBounds = true
         iv.layer.cornerRadius = 4
@@ -176,15 +179,8 @@ final class StatusCollectionViewCell: UICollectionViewCell {
         l.numberOfLines = 0
         l.lineBreakMode = .byTruncatingTail
     }
-    let thumbnailView = AttachmentsCollectionView()
-    var thumbnailViewHeight: NSLayoutConstraint?
-
-    let leftShadow = GradientView(colors: [.init(white: 0, alpha: 0.3), .clear]) ※ {$0.isHidden = true}
-    let rightShadow = GradientView(colors: [.clear, .init(white: 0, alpha: 0.3)]) ※ {$0.isHidden = true}
-    var showInnerShadow: Bool {
-        get {return leftShadow.isHidden == false}
-        set {leftShadow.isHidden = !newValue; rightShadow.isHidden = !newValue}
-    }
+    private let thumbnailView = AttachmentsCollectionView()
+    private var thumbnailViewHeight: NSLayoutConstraint?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -192,48 +188,31 @@ final class StatusCollectionViewCell: UICollectionViewCell {
         backgroundColor = .white
         isOpaque = true
 
-        contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        contentView.frame = self.bounds
-
-        let autolayout = contentView.northLayoutFormat(["s": 4, "p": 8], [
+        let autolayout = northLayoutFormat(["s": 4, "p": 8], [
             "icon": iconView,
             "name": nameLabel,
             "body": bodyLabel,
-            "thumbs": thumbnailView,
-            "shadowL": leftShadow,
-            "shadowR": rightShadow])
+            "thumbs": thumbnailView])
         autolayout("H:|-p-[icon(==32)]")
         autolayout("H:[icon]-s-[name]-p-|")
         autolayout("H:[icon]-s-[body]-p-|")
         autolayout("H:|[thumbs]|")
         autolayout("V:|-p-[icon(==32)]-(>=p)-|")
         autolayout("V:|-p-[name]-2-[body]-s-[thumbs]-s-|")
-        autolayout("H:|[shadowL(==8)]")
-        autolayout("H:[shadowR(==shadowL)]|")
-        autolayout("V:|[shadowL]|")
-        autolayout("V:|[shadowR]|")
         nameLabel.setContentHuggingPriority(.required, for: .vertical)
         let thumbnailViewHeight = NSLayoutConstraint(item: thumbnailView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
         self.thumbnailViewHeight = thumbnailViewHeight
         thumbnailViewHeight.priority = .required
         thumbnailView.addConstraint(thumbnailViewHeight)
-        bringSubview(toFront: leftShadow)
-        bringSubview(toFront: rightShadow)
         bringSubview(toFront: iconView)
         thumbnailView.isHidden = true
     }
 
     required init?(coder aDecoder: NSCoder) {fatalError()}
 
-    override func prepareForReuse() {
-        super.prepareForReuse()
+    func prepareForReuse() {
         iconView.kf.cancelDownloadTask()
         iconView.image = nil
-    }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        contentView.frame = bounds
     }
 
     func setStatus(_ status: Status, attributedText: NSAttributedString?, baseURL: URL?, didSelectAttachment: ((Attachment) -> Void)? = nil) {
@@ -248,6 +227,74 @@ final class StatusCollectionViewCell: UICollectionViewCell {
         thumbnailView.attachments = status.media_attachments
         thumbnailViewHeight?.constant = status.media_attachments.isEmpty ? 0 : 128
         thumbnailView.didSelect = didSelectAttachment
+    }
+}
+
+final class StatusCollectionViewCell: UICollectionViewCell {
+    let statusView: StatusView
+
+    private let leftShadow = GradientView(colors: [.init(white: 0, alpha: 0.3), .clear]) ※ {$0.isHidden = true}
+    private let rightShadow = GradientView(colors: [.clear, .init(white: 0, alpha: 0.3)]) ※ {$0.isHidden = true}
+    var showInnerShadow: Bool {
+        get {return leftShadow.isHidden == false}
+        set {leftShadow.isHidden = !newValue; rightShadow.isHidden = !newValue}
+    }
+
+    override init(frame: CGRect) {
+        self.statusView = StatusView(frame: frame)
+        super.init(frame: frame)
+
+        contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        contentView.frame = self.bounds
+
+        let autolayout = contentView.northLayoutFormat(["s": 4, "p": 8], [
+            "shadowL": leftShadow,
+            "shadowR": rightShadow,
+            "status": statusView])
+        autolayout("H:|[status]|")
+        autolayout("V:|[status]|")
+        autolayout("H:|[shadowL(==8)]")
+        autolayout("H:[shadowR(==shadowL)]|")
+        autolayout("V:|[shadowL]|")
+        autolayout("V:|[shadowR]|")
+        bringSubview(toFront: leftShadow)
+        bringSubview(toFront: rightShadow)
+    }
+
+    required init?(coder aDecoder: NSCoder) {fatalError()}
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        statusView.prepareForReuse()
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        contentView.frame = bounds
+    }
+}
+
+final class StatusTableViewCell: UITableViewCell {
+    let statusView: StatusView
+
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        self.statusView = StatusView(frame: .zero)
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        contentView.frame = self.bounds
+
+        let autolayout = contentView.northLayoutFormat([:], [
+            "status": statusView])
+        autolayout("H:|[status]|")
+        autolayout("V:|[status]|")
+    }
+
+    required init?(coder aDecoder: NSCoder) {fatalError()}
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        statusView.prepareForReuse()
     }
 }
 

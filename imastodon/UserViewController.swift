@@ -3,10 +3,15 @@ import Ikemen
 import NorthLayout
 import Kingfisher
 
-final class UserViewController: UIViewController {
+final class UserViewController: UIViewController, ClientContainer {
+    var client: Client {
+        switch fetcher {
+        case let .fetch(c, _), let .account(c, _): return c
+        }
+    }
     enum Fetcher {
         case fetch(client: Client, account: ID)
-        case account(baseURL: URL, account: Account)
+        case account(client: Client, account: Account)
     }
     let fetcher: Fetcher
 
@@ -36,13 +41,18 @@ final class UserViewController: UIViewController {
         $0.textAlignment = .center
     }
 
+    private let timelineView: UITableView
+    private var toots: [(Status, NSAttributedString?)] = [] // cache heavy attributed strings
+
     init(fetcher: Fetcher) {
         self.fetcher = fetcher
+        self.timelineView = UITableView(frame: .zero, style: .plain)
         super.init(nibName: nil, bundle: nil)
     }
 
     override func loadView() {
         super.loadView()
+        loadTimelineView()
 
         view.backgroundColor = .white
         bioLabel.text = "Loading..."
@@ -59,8 +69,10 @@ final class UserViewController: UIViewController {
                         }
                     }
             }
-        case let .account(baseURL, account):
-            setAccount(baseURL, account)
+            fetchAccountStatuses(client: client, id: id)
+        case let .account(client, account):
+            setAccount(client.baseURL, account)
+            fetchAccountStatuses(client: client, id: account.id)
         }
 
         let bg = MinView() ※ {$0.backgroundColor = UIColor(white: 0, alpha: 0.8)}
@@ -72,10 +84,12 @@ final class UserViewController: UIViewController {
         let autolayout = northLayoutFormat(["p": 8], [
             "bg": bg,
             "bio": bioLabel,
+            "toots": timelineView,
             ])
         autolayout("H:[bg]|")
-        autolayout("V:|[bg]-p-[bio]-(>=p)-|")
+        autolayout("V:|[bg]-p-[bio]-p-[toots]|")
         autolayout("H:|-p-[bio]-p-|")
+        autolayout("H:|[toots]|")
         view.addConstraint(NSLayoutConstraint(item: bg, attribute: .bottom, relatedBy: .equal, toItem: headerView, attribute: .bottom, multiplier: 1, constant: 0))
         view.addConstraint(NSLayoutConstraint(item: bg, attribute: .width, relatedBy: .lessThanOrEqual, toItem: view, attribute: .width, multiplier: 0.4, constant: 0))
         view.bringSubview(toFront: bg)
@@ -104,6 +118,11 @@ final class UserViewController: UIViewController {
         view.bringSubview(toFront: bioLabel)
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setToolbarHidden(true, animated: animated)
+    }
+
     private func setAccount(_ baseURL: URL, _ account: Account) {
         _ = URL(string: account.header).map {headerView.imageView.kf.setImage(with: $0)}
         _ = account.avatarURL(baseURL: baseURL).map {iconView.kf.setImageWithStub($0)}
@@ -112,5 +131,51 @@ final class UserViewController: UIViewController {
         bioLabel.attributedText = account.note.data(using: .utf8).flatMap {try? NSAttributedString(data: $0, options: [.documentType: NSAttributedString.DocumentType.html, .characterEncoding: String.Encoding.utf8.rawValue], documentAttributes: nil)}
     }
 
+    private func fetchAccountStatuses(client: Client, id: ID) -> Void {
+        client.run(GetAccountsStatuses(baseURL: client.baseURL,pathVars: .init(id: id.value, only_media: nil, exclude_replies: nil, max_id: nil, since_id: nil, limit: nil)))
+            .onSuccess {
+                switch $0 {
+                case let .http200_(toots):
+                    self.toots = toots.map {($0, $0.mainContentStatus.attributedTextContent)}
+                    self.timelineView.reloadData()
+                }
+        }
+    }
+
     required init?(coder aDecoder: NSCoder) {fatalError()}
+}
+
+extension UserViewController: UITableViewDataSource, UITableViewDelegate {
+    fileprivate func loadTimelineView() {
+        timelineView.dataSource = self
+        timelineView.delegate = self
+        timelineView.register(StatusTableViewCell.self, forCellReuseIdentifier: "StatusTableViewCell")
+
+        timelineView.separatorStyle = .none
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return toots.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = timelineView.dequeueReusableCell(withIdentifier: "StatusTableViewCell", for: indexPath) as! StatusTableViewCell
+        let status = toots[indexPath.row]
+        cell.statusView.setStatus(status.0, attributedText: status.1, baseURL: nil)
+        return cell
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let s = toots[indexPath.row].0
+        let ac = UIAlertController(actionFor: s,
+                                   safari: {[unowned self] in self.present($0, animated: true)},
+                                   showAccount: {[unowned self] in _ = self.show(UserViewController(fetcher: .account(client: self.client, account: s.mainContentStatus.account)), sender: nil)})
+        ac.popoverPresentationController?.sourceView = tableView
+        ac.popoverPresentationController?.permittedArrowDirections = .any
+        if let cell = tableView.cellForRow(at: indexPath) as? StatusTableViewCell {
+            ac.popoverPresentationController?.sourceRect = tableView.convert(cell.statusView.iconView.bounds, from: cell.statusView.iconView)
+        }
+        present(ac, animated: true)
+    }
 }
