@@ -34,7 +34,9 @@ final class UserViewController: UIViewController, ClientContainer {
             currentUserSection?.append(LabelRow {
                 $0.title = (account.map {String($0.followers_count)} ?? "-") + " Followers"
                 $0.cell.accessoryType = .disclosureIndicator
-                $0.onCellSelection {[weak self] _, _ in self?.show(UIViewController(), sender: nil)}
+                $0.onCellSelection {[weak self] _, _ in
+                    guard let `self` = self, let account = self.account else { return }
+                    self.show(FollowersViewController(client: self.client, subject: account), sender: nil)}
             })
             currentUserSection?.append(LabelRow {
                 $0.title = "⭐️ Favorites"

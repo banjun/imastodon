@@ -203,6 +203,40 @@ struct GetAccountsStatuses: APIBlueprintRequest, URITemplateRequest {
 }
 
 
+struct GetFollowers: APIBlueprintRequest, URITemplateRequest {
+    let baseURL: URL
+    var method: HTTPMethod {return .get}
+
+    let path = "" // see intercept(urlRequest:)
+    static let pathTemplate: URITemplate = "/api/v1/accounts/{id}/followers{?max_id,since_id,limit}"
+    var pathVars: PathVars
+    struct PathVars: URITemplateContextConvertible {
+        /// 
+        var id: String
+        /// Get a list of followings with ID less than this value
+        var max_id: String?
+        /// Get a list of followings with ID greater than this value
+        var since_id: String?
+        /// Maximum number of followings to get (Default 40, Max 80)
+        var limit: String?
+    }
+
+    enum Responses {
+        case http200_(Accounts)
+    }
+
+    func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Responses {
+        let contentType = contentMIMEType(in: urlResponse)
+        switch (urlResponse.statusCode, contentType) {
+        case (200, _):
+            return .http200_(try decodeJSON(from: object, urlResponse: urlResponse))
+        default:
+            throw ResponseError.undefined(urlResponse.statusCode, contentType)
+        }
+    }
+}
+
+
 struct GetFollowings: APIBlueprintRequest, URITemplateRequest {
     let baseURL: URL
     var method: HTTPMethod {return .get}
