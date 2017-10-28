@@ -224,8 +224,8 @@ final class StatusView: UIView {
         nameLabel.text = boosted.map {status.account.displayNameOrUserName + "🔁" + $0.account.displayNameOrUserName} ?? status.account.displayNameOrUserName
         bodyLabel.attributedText = attributedText ?? mainStatus.attributedTextContent ?? NSAttributedString(string: mainStatus.textContent)
 
-        thumbnailView.attachments = status.media_attachments
-        thumbnailViewHeight?.constant = status.media_attachments.isEmpty ? 0 : 128
+        thumbnailView.attachments = mainStatus.media_attachments
+        thumbnailViewHeight?.constant = mainStatus.media_attachments.isEmpty ? 0 : 128
         thumbnailView.didSelect = didSelectAttachment
     }
 }
