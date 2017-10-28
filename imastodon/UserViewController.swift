@@ -55,7 +55,6 @@ final class UserViewController: UIViewController, ClientContainer {
         loadTimelineView()
 
         view.backgroundColor = .white
-        bioLabel.text = "Loading..."
 
         switch fetcher {
         case let .fetch(client, id):
@@ -158,6 +157,11 @@ extension UserViewController: UITableViewDataSource, UITableViewDelegate {
         timelineView.register(StatusTableViewCell.self, forCellReuseIdentifier: "StatusTableViewCell")
 
         timelineView.separatorStyle = .none
+        timelineView.backgroundView = UILabel() ※ {
+            $0.text = "Loading..."
+            $0.font = .systemFont(ofSize: UIFont.smallSystemFontSize)
+            $0.textAlignment = .center
+        }
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
