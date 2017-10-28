@@ -119,9 +119,9 @@ extension TimelineViewController {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: e.cellID, for: indexPath)
         switch e {
         case let .home(s, a):
-            (cell as? StatusCollectionViewCell)?.setStatus(s, attributedText: a, baseURL: baseURL) { [weak self] a in self?.showAttachment(a) }
+            (cell as? StatusCollectionViewCell)?.statusView.setStatus(s, attributedText: a, baseURL: baseURL) { [weak self] a in self?.showAttachment(a) }
         case let .local(s, a):
-            (cell as? StatusCollectionViewCell)?.setStatus(s, attributedText: a, baseURL: baseURL) { [weak self] a in self?.showAttachment(a) }
+            (cell as? StatusCollectionViewCell)?.statusView.setStatus(s, attributedText: a, baseURL: baseURL) { [weak self] a in self?.showAttachment(a) }
         case let .notification(n, s):
             (cell as? NotificationCell)?.setNotification(n, text: s, baseURL: baseURL)
         }
@@ -132,33 +132,34 @@ extension TimelineViewController {
         guard let s = timelineEvent(indexPath).status else { return }
         let ac = UIAlertController(actionFor: s,
                                    safari: {[unowned self] in self.present($0, animated: true)},
-                                   boost: {[unowned self] in self.boost(s)},
-                                   favorite: {[unowned self] in self.favorite(s)})
+                                   showAccount: {[unowned self] in _ = (self as? ClientContainer).map {self.show(UserViewController(fetcher: .account(client: $0.client, account: s.mainContentStatus.account)), sender: nil)}},
+                                   boost: {[unowned self] in (self as? ClientContainer & UIViewController)?.boost(s)},
+                                   favorite: {[unowned self] in (self as? ClientContainer & UIViewController)?.favorite(s)})
         ac.popoverPresentationController?.sourceView = collectionView
         ac.popoverPresentationController?.permittedArrowDirections = .any
         if let cell = collectionView.cellForItem(at: indexPath) as? StatusCollectionViewCell {
-            ac.popoverPresentationController?.sourceRect = collectionView.convert(cell.iconView.bounds, from: cell.iconView)
+            ac.popoverPresentationController?.sourceRect = collectionView.convert(cell.statusView.iconView.bounds, from: cell.statusView.iconView)
         }
         present(ac, animated: true)
     }
-    
+
+    func showAttachment(_ a: Attachment) {
+        let vc = AttachmentViewController(attachment: a)
+        present(vc, animated: true)
+    }
+}
+
+extension ClientContainer where Self: UIViewController {
     func boost(_ s: Status) {
-        guard let client = (self as? ClientContainer)?.client else { return }
         SVProgressHUD.show()
         client.boost(s)
             .onComplete {_ in SVProgressHUD.dismiss()}
     }
     
     func favorite(_ s: Status) {
-        guard let client = (self as? ClientContainer)?.client else { return }
         SVProgressHUD.show()
         client.favorite(s)
             .onComplete {_ in SVProgressHUD.dismiss()}
-    }
-
-    func showAttachment(_ a: Attachment) {
-        let vc = AttachmentViewController(attachment: a)
-        present(vc, animated: true)
     }
 }
 
@@ -170,14 +171,14 @@ extension TimelineViewController: UICollectionViewDelegateFlowLayout {
         let size = collectionView.bounds.size
 
         func statusSize(_ s: Status, _ a: NSAttributedString?, constraint: CGSize) -> CGSize {
-            layoutCell.setStatus(s, attributedText: a, baseURL: nil)
+            layoutCell.statusView.setStatus(s, attributedText: a, baseURL: nil)
             if let a = a, a.length < 16 && constraint.width < size.width {
-                layoutCell.bodyLabel.preferredMaxLayoutWidth = size.width / 2 - 42
-                let layoutSize = layoutCell.systemLayoutSizeFitting(constraint, withHorizontalFittingPriority: UILayoutPriorityFittingSizeLevel, verticalFittingPriority: UILayoutPriorityFittingSizeLevel)
+                layoutCell.statusView.bodyLabel.preferredMaxLayoutWidth = size.width / 2 - 42
+                let layoutSize = layoutCell.systemLayoutSizeFitting(constraint, withHorizontalFittingPriority: UILayoutPriority.fittingSizeLevel, verticalFittingPriority: UILayoutPriority.fittingSizeLevel)
                 return CGSize(width: layoutSize.width, height: layoutSize.height)
             } else {
-                layoutCell.bodyLabel.preferredMaxLayoutWidth = size.width - 42
-                let layoutSize = layoutCell.systemLayoutSizeFitting(constraint, withHorizontalFittingPriority: UILayoutPriorityRequired, verticalFittingPriority: UILayoutPriorityFittingSizeLevel)
+                layoutCell.statusView.bodyLabel.preferredMaxLayoutWidth = size.width - 42
+                let layoutSize = layoutCell.systemLayoutSizeFitting(constraint, withHorizontalFittingPriority: UILayoutPriority.required, verticalFittingPriority: UILayoutPriority.fittingSizeLevel)
                 return CGSize(width: size.width, height: layoutSize.height)
             }
         }
@@ -188,7 +189,7 @@ extension TimelineViewController: UICollectionViewDelegateFlowLayout {
         case let .local(s, a): return statusSize(s, a, constraint: UILayoutFittingCompressedSize)
         case let .notification(n, s):
             notificationLayoutCell.setNotification(n, text: s, baseURL: nil)
-            let layoutSize = notificationLayoutCell.systemLayoutSizeFitting(size, withHorizontalFittingPriority: UILayoutPriorityRequired, verticalFittingPriority: UILayoutPriorityFittingSizeLevel)
+            let layoutSize = notificationLayoutCell.systemLayoutSizeFitting(size, withHorizontalFittingPriority: UILayoutPriority.required, verticalFittingPriority: UILayoutPriority.fittingSizeLevel)
             return CGSize(width: collectionView.bounds.width, height: layoutSize.height)
         }
     }

@@ -45,17 +45,22 @@ class ViewController: FormViewController {
                     $0.cellStyle = .subtitle
                     $0.title = "Home"
                     $0.value = "\(i.instance.title) \(i.account.displayNameOrUserName)"
-                    }.onCellSelection {[unowned self] _ in self.showHomeTimeline(i)},
+                    }.onCellSelection {[unowned self] _, _ in self.showHomeTimeline(i)},
                 LabelRow {
                     $0.cellStyle = .subtitle
                     $0.title = "Local"
                     $0.value = "\(i.instance.title) \(i.account.displayNameOrUserName)"
-                    }.onCellSelection {[unowned self] _ in self.showLocalTimeline(i)},
+                    }.onCellSelection {[unowned self] _, _ in self.showLocalTimeline(i)},
                 LabelRow {
                     $0.cellStyle = .subtitle
                     $0.title = "Unified"
                     $0.value = "\(i.instance.title) \(i.account.displayNameOrUserName)"
-                    }.onCellSelection {[unowned self] _ in self.showUnifiedTimeline(i)}]
+                    }.onCellSelection {[unowned self] _, _ in self.showUnifiedTimeline(i)},
+                LabelRow {
+                    $0.cellStyle = .subtitle
+                    $0.title = "Me"
+                    $0.value = "\(i.instance.title) \(i.account.displayNameOrUserName)"
+                    }.onCellSelection {[unowned self] _, _ in self.showMe(i)}]
         })
     }
 
@@ -71,6 +76,11 @@ class ViewController: FormViewController {
 
     private func showUnifiedTimeline(_ instanceAccount: InstanceAccout) {
         let vc = UnifiedViewController(instanceAccount: instanceAccount)
+        show(vc, sender: self)
+    }
+
+    private func showMe(_ instanceAccount: InstanceAccout) {
+        let vc = UserViewController(fetcher: .fetch(client: Client(instanceAccount)!, account: instanceAccount.account.id))
         show(vc, sender: self)
     }
 }

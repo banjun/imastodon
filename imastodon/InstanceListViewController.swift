@@ -14,7 +14,7 @@ class InstanceListViewController: FormViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done))
         form +++ instancesSection +++ Section()
             <<< ButtonRow() {$0.title = "Login to Another Instance"}
-                .onCellSelection {[unowned self] _ in self.login()}
+                .onCellSelection {[unowned self] _, _ in self.login()}
         reload()
     }
     required init?(coder aDecoder: NSCoder) {fatalError()}

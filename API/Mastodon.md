@@ -11,10 +11,31 @@ FORMAT: 1A
 
 # Accounts [/api/v1/accounts]
 
+## GetAccount [GET /api/v1/accounts/{id}]
+
++ Parameters
+    + id (string, required)
+
++ Response 200
+    + Attributes (Account)
+
 ## GetCurrentUser [GET /api/v1/accounts/verify_credentials]
 
 + Response 200
     + Attributes (Account)
+
+## GetAccountsStatuses [GET /api/v1/accounts/{id}/statuses{?only_media,exclude_replies,max_id,since_id,limit}]
+
++ Parameters
+    + id (string, required)
+    + only_media (boolean, optional) - Only return statuses that have media attachments
+    + exclude_replies (boolean, optional) - Skip statuses that reply to other statuses
+    + max_id (string, optional) - Get a list of statuses with ID less than this value
+    + since_id (string, optional) - Get a list of statuses with ID greater than this value
+    + limit (number, optional) - Maximum number of statuses to get (Default 20, Max 40)
+
++ Response 200
+    + Attributes (Timelines)
 
 
 # Apps [/api/v1/apps{?client_name,redirect_uris,scopes,website}]

@@ -115,6 +115,34 @@ struct GetInstance: APIBlueprintRequest {
 }
 
 
+struct GetAccount: APIBlueprintRequest, URITemplateRequest {
+    let baseURL: URL
+    var method: HTTPMethod {return .get}
+
+    let path = "" // see intercept(urlRequest:)
+    static let pathTemplate: URITemplate = "/api/v1/accounts/{id}"
+    var pathVars: PathVars
+    struct PathVars: URITemplateContextConvertible {
+        /// 
+        var id: String
+    }
+
+    enum Responses {
+        case http200_(Account)
+    }
+
+    func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Responses {
+        let contentType = contentMIMEType(in: urlResponse)
+        switch (urlResponse.statusCode, contentType) {
+        case (200, _):
+            return .http200_(try decodeJSON(from: object, urlResponse: urlResponse))
+        default:
+            throw ResponseError.undefined(urlResponse.statusCode, contentType)
+        }
+    }
+}
+
+
 struct GetCurrentUser: APIBlueprintRequest {
     let baseURL: URL
     var method: HTTPMethod {return .get}
@@ -123,6 +151,44 @@ struct GetCurrentUser: APIBlueprintRequest {
 
     enum Responses {
         case http200_(Account)
+    }
+
+    func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Responses {
+        let contentType = contentMIMEType(in: urlResponse)
+        switch (urlResponse.statusCode, contentType) {
+        case (200, _):
+            return .http200_(try decodeJSON(from: object, urlResponse: urlResponse))
+        default:
+            throw ResponseError.undefined(urlResponse.statusCode, contentType)
+        }
+    }
+}
+
+
+struct GetAccountsStatuses: APIBlueprintRequest, URITemplateRequest {
+    let baseURL: URL
+    var method: HTTPMethod {return .get}
+
+    let path = "" // see intercept(urlRequest:)
+    static let pathTemplate: URITemplate = "/api/v1/accounts/{id}/statuses{?only_media,exclude_replies,max_id,since_id,limit}"
+    var pathVars: PathVars
+    struct PathVars: URITemplateContextConvertible {
+        /// 
+        var id: String
+        /// Only return statuses that have media attachments
+        var only_media: String?
+        /// Skip statuses that reply to other statuses
+        var exclude_replies: String?
+        /// Get a list of statuses with ID less than this value
+        var max_id: String?
+        /// Get a list of statuses with ID greater than this value
+        var since_id: String?
+        /// Maximum number of statuses to get (Default 20, Max 40)
+        var limit: String?
+    }
+
+    enum Responses {
+        case http200_(Timelines)
     }
 
     func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Responses {
