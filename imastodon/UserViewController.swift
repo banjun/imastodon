@@ -83,12 +83,10 @@ final class UserViewController: UIViewController, ClientContainer {
 
         let autolayout = northLayoutFormat(["p": 8], [
             "bg": bg,
-            "bio": bioLabel,
             "toots": timelineView,
             ])
         autolayout("H:[bg]|")
-        autolayout("V:|[bg]-p-[bio]-p-[toots]|")
-        autolayout("H:|-p-[bio]-p-|")
+        autolayout("V:|[bg][toots]|")
         autolayout("H:|[toots]|")
         view.addConstraint(NSLayoutConstraint(item: bg, attribute: .bottom, relatedBy: .equal, toItem: headerView, attribute: .bottom, multiplier: 1, constant: 0))
         view.addConstraint(NSLayoutConstraint(item: bg, attribute: .width, relatedBy: .lessThanOrEqual, toItem: view, attribute: .width, multiplier: 0.4, constant: 0))
@@ -111,16 +109,23 @@ final class UserViewController: UIViewController, ClientContainer {
         displayNameLabel.setContentCompressionResistancePriority(.required, for: .vertical)
         usernameLabel.setContentCompressionResistancePriority(.required, for: .vertical)
         bioLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+        bioLabel.setContentHuggingPriority(.required, for: .vertical)
 
         bg.bringSubview(toFront: iconView)
         bg.bringSubview(toFront: displayNameLabel)
         bg.bringSubview(toFront: usernameLabel)
-        view.bringSubview(toFront: bioLabel)
+
+        timelineView.tableHeaderView = bioLabel
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setToolbarHidden(true, animated: animated)
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        timelineView.layoutTableHeaderView()
     }
 
     private func setAccount(_ baseURL: URL, _ account: Account) {
@@ -129,6 +134,7 @@ final class UserViewController: UIViewController, ClientContainer {
         displayNameLabel.text = account.display_name
         usernameLabel.text = "@" + account.acct
         bioLabel.attributedText = account.note.data(using: .utf8).flatMap {try? NSAttributedString(data: $0, options: [.documentType: NSAttributedString.DocumentType.html, .characterEncoding: String.Encoding.utf8.rawValue], documentAttributes: nil)}
+        timelineView.layoutTableHeaderView()
     }
 
     private func fetchAccountStatuses(client: Client, id: ID) -> Void {
@@ -177,5 +183,13 @@ extension UserViewController: UITableViewDataSource, UITableViewDelegate {
             ac.popoverPresentationController?.sourceRect = tableView.convert(cell.statusView.iconView.bounds, from: cell.statusView.iconView)
         }
         present(ac, animated: true)
+    }
+}
+
+extension UITableView {
+    func layoutTableHeaderView() {
+        guard let v = tableHeaderView else { return }
+        v.frame.size.height = v.systemLayoutSizeFitting(frame.size, withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel).height
+        tableHeaderView = v
     }
 }
