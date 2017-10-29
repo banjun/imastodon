@@ -135,6 +135,7 @@ extension TimelineViewController {
                                    showAccount: {[unowned self] in _ = (self as? ClientContainer).map {self.show(UserViewController(fetcher: .account(client: $0.client, account: s.mainContentStatus.account)), sender: nil)}},
                                    boost: {[unowned self] in (self as? ClientContainer & UIViewController)?.boost(s)},
                                    favorite: {[unowned self] in (self as? ClientContainer & UIViewController)?.favorite(s)})
+        ac.addAction(UIAlertAction(title: "Show Toot", style: .default) {[unowned self] _ in (self as? ClientContainer).map {self.show(StatusViewController(client: $0.client, status: s), sender: nil)}})
         ac.popoverPresentationController?.sourceView = collectionView
         ac.popoverPresentationController?.permittedArrowDirections = .any
         if let cell = collectionView.cellForItem(at: indexPath) as? StatusCollectionViewCell {

@@ -511,6 +511,62 @@ struct Boost: APIBlueprintRequest, URITemplateRequest {
 }
 
 
+struct GetStatus: APIBlueprintRequest, URITemplateRequest {
+    let baseURL: URL
+    var method: HTTPMethod {return .get}
+
+    let path = "" // see intercept(urlRequest:)
+    static let pathTemplate: URITemplate = "/api/v1/statuses/{id}"
+    var pathVars: PathVars
+    struct PathVars: URITemplateContextConvertible {
+        /// 
+        var id: String
+    }
+
+    enum Responses {
+        case http200_(Status)
+    }
+
+    func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Responses {
+        let contentType = contentMIMEType(in: urlResponse)
+        switch (urlResponse.statusCode, contentType) {
+        case (200, _):
+            return .http200_(try decodeJSON(from: object, urlResponse: urlResponse))
+        default:
+            throw ResponseError.undefined(urlResponse.statusCode, contentType)
+        }
+    }
+}
+
+
+struct GetStatusContext: APIBlueprintRequest, URITemplateRequest {
+    let baseURL: URL
+    var method: HTTPMethod {return .get}
+
+    let path = "" // see intercept(urlRequest:)
+    static let pathTemplate: URITemplate = "/api/v1/statuses/{id}/context"
+    var pathVars: PathVars
+    struct PathVars: URITemplateContextConvertible {
+        /// 
+        var id: String
+    }
+
+    enum Responses {
+        case http200_(Context)
+    }
+
+    func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Responses {
+        let contentType = contentMIMEType(in: urlResponse)
+        switch (urlResponse.statusCode, contentType) {
+        case (200, _):
+            return .http200_(try decodeJSON(from: object, urlResponse: urlResponse))
+        default:
+            throw ResponseError.undefined(urlResponse.statusCode, contentType)
+        }
+    }
+}
+
+
 struct Favorite: APIBlueprintRequest, URITemplateRequest {
     let baseURL: URL
     var method: HTTPMethod {return .post}
@@ -668,7 +724,7 @@ struct Status: Codable {
     var application: Application?
     /// The detected language for the status (default: en)
     var language: String?
-    /// Whether the status is pinned to the account  ex. boolean
+    /// Whether the authenticated user has pinned the status in API response. app may use app level mark as pinned  ex. boolean
     var pinned: Bool?
 }
 
@@ -745,6 +801,13 @@ struct LoginSettings: Codable {
     var scope: String
     /// only here: UNIX timestamp
     var created_at: Int
+}
+
+struct Context: Codable { 
+    /// The ancestors of the status in the conversation, as a list of Statuses  ex. []
+    var ancestors: [Status]
+    /// The descendants of the status in the conversation, as a list of Statuses  ex. []
+    var descendants: [Status]
 }
 
 struct ID: Codable { 
