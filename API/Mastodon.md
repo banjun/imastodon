@@ -92,6 +92,24 @@ Fetching a user's favourites
 + Response 200
     + Attributes (Timelines)
 
+# Notifications [/api/v1/notifications{?max_id,since_id,limit}]
+
++ Attributes (array[Notification])
+
+## GetNotifications [GET]
+
+Fetching a user's notifications
+
+> Note: max_id and since_id for next and previous pages are provided in the Link header. However, it is possible to use the id of the returned objects to construct your own URLs.
+
++ Parameters
+    + max_id (string, optional) - Get a list of notifications with ID less than this value
+    + since_id (string, optional) - Get a list of notifications with ID greater than this value
+    + limit (number, optional) - Maximum number of notifications to get (Default 15, Max 30)
+
++ Response 200
+    + Attributes (Notifications)
+
 # Login [/oauth/token]
 
 ## LoginSilent [POST]

@@ -10,6 +10,7 @@
 		1AA9E5D5D16230C8EA09FCAE /* Pods_imastodon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF693483815FAE1CC3AB6956 /* Pods_imastodon.framework */; };
 		EA0EDB4A1EE41FC400280536 /* Stream.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0EDB491EE41FC000280536 /* Stream.swift */; };
 		EA0EDB4C1EE429A600280536 /* TimelineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0EDB4B1EE429A600280536 /* TimelineViewController.swift */; };
+		EA2312241FA59B4F00526097 /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA2312231FA59B4F00526097 /* NotificationsViewController.swift */; };
 		EA6429EC1FA50B18006A67C0 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6429EB1FA50B18006A67C0 /* FavoritesViewController.swift */; };
 		EA6429EE1FA5110D006A67C0 /* FollowingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6429ED1FA5110D006A67C0 /* FollowingsViewController.swift */; };
 		EA6429F01FA51738006A67C0 /* AccountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6429EF1FA51738006A67C0 /* AccountCell.swift */; };
@@ -41,6 +42,7 @@
 		CF693483815FAE1CC3AB6956 /* Pods_imastodon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_imastodon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA0EDB491EE41FC000280536 /* Stream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stream.swift; sourceTree = "<group>"; };
 		EA0EDB4B1EE429A600280536 /* TimelineViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineViewController.swift; sourceTree = "<group>"; };
+		EA2312231FA59B4F00526097 /* NotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewController.swift; sourceTree = "<group>"; };
 		EA6429EB1FA50B18006A67C0 /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
 		EA6429ED1FA5110D006A67C0 /* FollowingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowingsViewController.swift; sourceTree = "<group>"; };
 		EA6429EF1FA51738006A67C0 /* AccountCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCell.swift; sourceTree = "<group>"; };
@@ -150,6 +152,7 @@
 				EA6429ED1FA5110D006A67C0 /* FollowingsViewController.swift */,
 				EA6429F11FA518F6006A67C0 /* FollowersViewController.swift */,
 				EA6429EB1FA50B18006A67C0 /* FavoritesViewController.swift */,
+				EA2312231FA59B4F00526097 /* NotificationsViewController.swift */,
 				EA6429EF1FA51738006A67C0 /* AccountCell.swift */,
 				EAC55F341ED07C5700CD567D /* Assets.xcassets */,
 				EAC55F361ED07C5700CD567D /* LaunchScreen.storyboard */,
@@ -326,6 +329,7 @@
 				EAC55F301ED07C5700CD567D /* ViewController.swift in Sources */,
 				EA65F7C41F9F68F700071B4D /* HeaderImageView.swift in Sources */,
 				EA6429EC1FA50B18006A67C0 /* FavoritesViewController.swift in Sources */,
+				EA2312241FA59B4F00526097 /* NotificationsViewController.swift in Sources */,
 				EA0EDB4C1EE429A600280536 /* TimelineViewController.swift in Sources */,
 				EAE3BC401ED3373300B31AF5 /* PostViewController.swift in Sources */,
 				EAC55F2E1ED07C5700CD567D /* AppDelegate.swift in Sources */,

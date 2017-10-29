@@ -297,7 +297,7 @@ final class StatusTableViewCell: UITableViewCell {
     }
 }
 
-final class NotificationCell: UICollectionViewCell {
+final class NotificationView: UIView {
     let iconView = UIImageView() ※ { iv in
         iv.clipsToBounds = true
         iv.layer.cornerRadius = 4
@@ -323,10 +323,6 @@ final class NotificationCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        backgroundColor = .white
-        isOpaque = true
-
-        contentView.translatesAutoresizingMaskIntoConstraints = false
         let autolayout = northLayoutFormat(["s": 4, "p": 8], [
             "icon": iconView,
             "name": nameLabel,
@@ -346,15 +342,9 @@ final class NotificationCell: UICollectionViewCell {
     
     required init?(coder aDecoder: NSCoder) {fatalError()}
 
-    override func prepareForReuse() {
-        super.prepareForReuse()
+    func prepareForReuse() {
         iconView.kf.cancelDownloadTask()
         iconView.image = nil
-    }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        contentView.frame = bounds
     }
 
     func setNotification(_ notification: Notification, text: String?, baseURL: URL?) {
@@ -364,5 +354,56 @@ final class NotificationCell: UICollectionViewCell {
         nameLabel.text = notification.account.displayNameOrUserName
         bodyLabel.text = notification.type
         targetLabel.text = text ?? notification.status?.textContent ?? "you"
+    }
+}
+
+final class NotificationCollectionViewCell: UICollectionViewCell {
+    let notificationView: NotificationView
+
+    override init(frame: CGRect) {
+        self.notificationView = NotificationView(frame: frame)
+        super.init(frame: frame)
+
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+
+        let autolayout = contentView.northLayoutFormat([:], ["notification": notificationView])
+        autolayout("H:|[notification]|")
+        autolayout("V:|[notification]|")
+    }
+
+    required init?(coder aDecoder: NSCoder) {fatalError()}
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        notificationView.prepareForReuse()
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        contentView.frame = bounds
+    }
+}
+
+final class NotificationTableViewCell: UITableViewCell {
+    let notificationView: NotificationView
+
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        self.notificationView = NotificationView(frame: .zero)
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        contentView.frame = self.bounds
+
+        let autolayout = contentView.northLayoutFormat([:], [
+            "notification": notificationView])
+        autolayout("H:|[notification]|")
+        autolayout("V:|[notification]|")
+    }
+
+    required init?(coder aDecoder: NSCoder) {fatalError()}
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        notificationView.prepareForReuse()
     }
 }

@@ -338,6 +338,40 @@ struct GetFavourites: APIBlueprintRequest, URITemplateRequest {
     }
 }
 
+/// Fetching a user's notifications
+/// 
+/// > Note: max_id and since_id for next and previous pages are provided in the Link header. However, it is possible to use the id of the returned objects to construct your own URLs.
+struct GetNotifications: APIBlueprintRequest, URITemplateRequest {
+    let baseURL: URL
+    var method: HTTPMethod {return .get}
+
+    let path = "" // see intercept(urlRequest:)
+    static let pathTemplate: URITemplate = "/api/v1/notifications{?max_id,since_id,limit}"
+    var pathVars: PathVars
+    struct PathVars: URITemplateContextConvertible {
+        /// Get a list of notifications with ID less than this value
+        var max_id: String?
+        /// Get a list of notifications with ID greater than this value
+        var since_id: String?
+        /// Maximum number of notifications to get (Default 15, Max 30)
+        var limit: String?
+    }
+
+    enum Responses {
+        case http200_(Notifications)
+    }
+
+    func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Responses {
+        let contentType = contentMIMEType(in: urlResponse)
+        switch (urlResponse.statusCode, contentType) {
+        case (200, _):
+            return .http200_(try decodeJSON(from: object, urlResponse: urlResponse))
+        default:
+            throw ResponseError.undefined(urlResponse.statusCode, contentType)
+        }
+    }
+}
+
 
 struct LoginSilent: APIBlueprintRequest {
     let baseURL: URL

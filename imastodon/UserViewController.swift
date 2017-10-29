@@ -40,6 +40,13 @@ final class UserViewController: UIViewController, ClientContainer {
                         guard let `self` = self else { return }
                         self.show(FavoritesViewController(client: self.client), sender: nil)}
                 })
+                currentUserSection.append(LabelRow {
+                    $0.title = "🔔 Notifications"
+                    $0.cell.accessoryType = .disclosureIndicator
+                    $0.onCellSelection {[weak self] _, _ in
+                        guard let `self` = self else { return }
+                        self.show(NotificationsViewController(client: self.client), sender: nil)}
+                })
                 timelineView.reloadSections([0], with: .automatic)
             }
 
