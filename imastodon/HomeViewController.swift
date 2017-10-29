@@ -6,10 +6,11 @@ import UserNotifications
 class HomeViewController: TimelineViewController, ClientContainer {
     let instanceAccount: InstanceAccout
     private var userStream: Stream?
-    var client: Client {return Client(instanceAccount)!}
+    let client: Client
 
     init(instanceAccount: InstanceAccout) {
         self.instanceAccount = instanceAccount
+        self.client = Client(instanceAccount)!
         super.init(timelineEvents: [], baseURL: instanceAccount.instance.baseURL)
         title = "Home@\(instanceAccount.instance.title) \(instanceAccount.account.display_name)"
         toolbarItems = [UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(showPost))]

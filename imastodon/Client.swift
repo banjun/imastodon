@@ -81,6 +81,11 @@ struct Client {
         }
     }
 
+    fileprivate var caches = Caches()
+    fileprivate class Caches {
+        var isPinsSupported: Bool?
+    }
+
     func run<Request: APIBlueprintRequest>(_ request: Request) -> Future<Request.Response, AppError> {
         return Future { complete in
             (authorizedSession ?? Session.shared).send(request, handler: complete)?.resume()
@@ -186,14 +191,16 @@ extension Client {
 
     // estimate the instance supports pinned toots
     private func isPinsSupported() -> Future<Bool, AppError> {
+        if let cached = caches.isPinsSupported { return Future(value: cached) }
         guard let id = account?.id else { return Future(value: false) }
         return accountStatuses(accountID: id, pinned: false, limit: 1).map {$0.first?.pinned != nil}
+            .onSuccess {self.caches.isPinsSupported = $0}
     }
 
     func accountStatuses(accountID: ID, includesPinnedStatuses: Bool = false, limit: Int = 40) -> Future<[Status], AppError> {
         let maxPins = 5
-        return isPinsSupported()
-            .flatMap { $0 && includesPinnedStatuses ?
+        return (includesPinnedStatuses ? isPinsSupported() : Future(value: false))
+            .flatMap { $0 ?
                 self.accountStatuses(accountID: accountID, pinned: true, limit: maxPins)
                 : Future(value: [])}
             .map {$0.map {s in var s = s; s.pinned = true; return s}} // mark as pinned, the response does not contain pinned when the accountID is not the current API user
