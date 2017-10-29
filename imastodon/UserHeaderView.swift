@@ -41,10 +41,12 @@ final class UserHeaderView: UIView {
         let headerLayout = northLayoutFormat(["p": 8], ["image": imageView, "bg": bg, "bio": bioLabel])
         headerLayout("H:|[image]|")
         headerLayout("H:[bg]|")
-        headerLayout("H:|-p-[bio]-p-|")
+        headerLayout("H:[bio]")
         headerLayout("V:|[image]-p-[bio]")
         headerLayout("V:|[bg(==image)]-p-[bio]")
         headerLayout("V:[bio]-p-|")
+        addConstraint(NSLayoutConstraint(item: bioLabel, attribute: .left, relatedBy: .equal, toItem: safeAreaLayoutGuide, attribute: .left, multiplier: 1, constant: 8))
+        addConstraint(NSLayoutConstraint(item: bioLabel, attribute: .right, relatedBy: .equal, toItem: safeAreaLayoutGuide, attribute: .right, multiplier: 1, constant: -8))
         addConstraint(NSLayoutConstraint(item: bg, attribute: .width, relatedBy: .lessThanOrEqual, toItem: self, attribute: .width, multiplier: 0.4, constant: 0))
         bringSubview(toFront: bg)
 
@@ -55,10 +57,11 @@ final class UserHeaderView: UIView {
             "dname": displayNameLabel,
             "uname": usernameLabel,
             ])
-        bgLayout("H:|-(>=p)-[icon(==iconWidth)]-(>=p)-|")
+        bgLayout("H:[icon(==iconWidth)]-(>=p)-|")
         bgLayout("H:|-p-[dname]-p-|")
         bgLayout("H:|-p-[uname]-p-|")
         bgLayout("V:|-p-[icon(==iconWidth)]-p-[dname]-p-[uname]-(>=p)-|")
+        addConstraint(NSLayoutConstraint(item: iconView, attribute: .top, relatedBy: .greaterThanOrEqual, toItem: safeAreaLayoutGuide, attribute: .top, multiplier: 1, constant: 8))
         bg.addConstraint(NSLayoutConstraint(item: iconView, attribute: .centerX, relatedBy: .equal, toItem: bg, attribute: .centerX, multiplier: 1, constant: 0))
 
         imageView.setContentCompressionResistancePriority(.fittingSizeLevel, for: .vertical)
@@ -77,6 +80,34 @@ final class UserHeaderView: UIView {
         displayNameLabel.text = account?.display_name
         usernameLabel.text = account.map {"@" + $0.acct}
         bioLabel.attributedText = account.flatMap {NSAttributedString(html: $0.note)}
+    }
+}
+
+@IBDesignable
+extension UserHeaderView {
+    @IBInspectable private var headerImage: UIImage? {
+        get {return imageView.imageView.image}
+        set {imageView.imageView.image = newValue}
+    }
+
+    @IBInspectable private var icon: UIImage? {
+        get {return iconView.image}
+        set {iconView.image = newValue}
+    }
+
+    @IBInspectable private var displayName: String? {
+        get {return displayNameLabel.text}
+        set {displayNameLabel.text = newValue}
+    }
+
+    @IBInspectable private var username: String? {
+        get {return usernameLabel.text}
+        set {usernameLabel.text = newValue}
+    }
+
+    @IBInspectable private var bio: String? {
+        get {return bioLabel.text}
+        set {bioLabel.attributedText = newValue?.data(using: .utf8).flatMap {try? NSAttributedString(data: $0, options: [.documentType: NSAttributedString.DocumentType.html, .characterEncoding: String.Encoding.utf8.rawValue], documentAttributes: nil)}}
     }
 }
 
