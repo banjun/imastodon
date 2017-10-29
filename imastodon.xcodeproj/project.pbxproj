@@ -35,6 +35,7 @@
 		EAE218BF1ED176C4001209F2 /* StatusRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE218BE1ED176C4001209F2 /* StatusRow.swift */; };
 		EAE3BC401ED3373300B31AF5 /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE3BC3F1ED3373300B31AF5 /* PostViewController.swift */; };
 		EAFB332C1FA61A1C00BB12C5 /* StatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAFB332B1FA61A1C00BB12C5 /* StatusViewController.swift */; };
+		EAFB332E1FA6344500BB12C5 /* StatusPreviewingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAFB332D1FA6344500BB12C5 /* StatusPreviewingDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -71,6 +72,7 @@
 		EAE218BE1ED176C4001209F2 /* StatusRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusRow.swift; sourceTree = "<group>"; };
 		EAE3BC3F1ED3373300B31AF5 /* PostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
 		EAFB332B1FA61A1C00BB12C5 /* StatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusViewController.swift; sourceTree = "<group>"; };
+		EAFB332D1FA6344500BB12C5 /* StatusPreviewingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusPreviewingDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,6 +147,7 @@
 				EAE218BC1ED176B4001209F2 /* LocalViewController.swift */,
 				EAD8AD951EF2ADE0002648F9 /* UnifiedViewController.swift */,
 				EAFB332B1FA61A1C00BB12C5 /* StatusViewController.swift */,
+				EAFB332D1FA6344500BB12C5 /* StatusPreviewingDelegate.swift */,
 				EAE3BC3F1ED3373300B31AF5 /* PostViewController.swift */,
 				EAE218B01ED1460B001209F2 /* InstanceListViewController.swift */,
 				EAE218B21ED147E2001209F2 /* LoginViewController.swift */,
@@ -323,6 +326,7 @@
 				EAE218B31ED147E2001209F2 /* LoginViewController.swift in Sources */,
 				EA6429EE1FA5110D006A67C0 /* FollowingsViewController.swift in Sources */,
 				EA6429F41FA5694E006A67C0 /* UserHeaderView.swift in Sources */,
+				EAFB332E1FA6344500BB12C5 /* StatusPreviewingDelegate.swift in Sources */,
 				EA6429F01FA51738006A67C0 /* AccountCell.swift in Sources */,
 				EA6429F21FA518F6006A67C0 /* FollowersViewController.swift in Sources */,
 				EAE218BF1ED176C4001209F2 /* StatusRow.swift in Sources */,

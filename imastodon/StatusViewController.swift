@@ -9,9 +9,24 @@ final class StatusViewController: UITableViewController, ClientContainer {
     }
     var form: [[Status]] {return [context?.ancestors, [status], context?.descendants].flatMap {$0}.filter {!$0.isEmpty}}
 
-    init(client: Client, status: Status) {
+    override var previewActionItems: [UIPreviewActionItem] {
+        let s = self.status.mainContentStatus
+        return [
+            UIPreviewAction(title: "Show \(s.account.displayNameOrUserName)", style: .default) {[weak self] _, _ in
+                guard let `self` = self else { return }
+                // showing another view controller requires some tricks, after dismissing, show on parent
+                DispatchQueue.main.async {
+                    self.showUserVC(on: self.previewActionParentViewController, s)
+                }},
+            UIPreviewAction(title: "🔁", style: .default) {[unowned self] _, _ in self.boost(s)},
+            UIPreviewAction(title: "⭐️", style: .default) {[unowned self] _, _ in self.favorite(s)}]
+    }
+    weak var previewActionParentViewController: UIViewController?
+
+    init(client: Client, status: Status, previewActionParentViewController: UIViewController? = nil) {
         self.client = client
         self.status = status
+        self.previewActionParentViewController = previewActionParentViewController
         super.init(style: .grouped)
     }
 
@@ -37,6 +52,10 @@ final class StatusViewController: UITableViewController, ClientContainer {
         }
     }
 
+    func showUserVC(on vc: UIViewController? = nil, _ status: Status) {
+        (vc ?? self).show(UserViewController(fetcher: .account(client: self.client, account: status.mainContentStatus.account)), sender: nil)
+    }
+
     override func numberOfSections(in tableView: UITableView) -> Int {
         return form.count
     }
@@ -58,7 +77,7 @@ final class StatusViewController: UITableViewController, ClientContainer {
         let s = form[indexPath.section][indexPath.row]
         let ac = UIAlertController(actionFor: s,
                                    safari: {[unowned self] in self.present($0, animated: true)},
-                                   showAccount: {[unowned self] in _ = self.show(UserViewController(fetcher: .account(client: self.client, account: s.mainContentStatus.account)), sender: nil)},
+                                   showAccount: {[unowned self] in _ = self.showUserVC(s)},
                                    boost: {[unowned self] in self.boost(s)},
                                    favorite: {[unowned self] in self.favorite(s)})
         ac.popoverPresentationController?.sourceView = tableView
