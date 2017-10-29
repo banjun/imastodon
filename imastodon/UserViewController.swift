@@ -18,33 +18,36 @@ final class UserViewController: UIViewController, ClientContainer {
     private var account: Account? {
         didSet {
             _ = account.flatMap {URL(string: $0.header)}.map {headerView.imageView.imageView.kf.setImage(with: $0)}
-            _ = account?.avatarURL(baseURL: client.baseURL).map {headerView.iconView.kf.setImageWithStub($0)}
+            _ = account?.avatarURL(baseURL: client.baseURL).map {headerView.iconView.kf.setImage(with: $0)}
             headerView.displayNameLabel.text = account?.display_name
             headerView.usernameLabel.text = account.map {"@" + $0.acct}
             headerView.bioLabel.attributedText = account?.note.data(using: .utf8).flatMap {try? NSAttributedString(data: $0, options: [.documentType: NSAttributedString.DocumentType.html, .characterEncoding: String.Encoding.utf8.rawValue], documentAttributes: nil)}
 
-            currentUserSection?.removeAll()
-            currentUserSection?.append(LabelRow {
-                $0.title = (account.map {String($0.following_count)} ?? "-") + " Followings"
-                $0.cell.accessoryType = .disclosureIndicator
-                $0.onCellSelection {[weak self] _, _ in
-                    guard let `self` = self, let account = self.account else { return }
-                    self.show(FollowingsViewController(client: self.client, subject: account), sender: nil)}
-            })
-            currentUserSection?.append(LabelRow {
-                $0.title = (account.map {String($0.followers_count)} ?? "-") + " Followers"
-                $0.cell.accessoryType = .disclosureIndicator
-                $0.onCellSelection {[weak self] _, _ in
-                    guard let `self` = self, let account = self.account else { return }
-                    self.show(FollowersViewController(client: self.client, subject: account), sender: nil)}
-            })
-            currentUserSection?.append(LabelRow {
-                $0.title = "⭐️ Favorites"
-                $0.cell.accessoryType = .disclosureIndicator
-                $0.onCellSelection {[weak self] _, _ in
-                    guard let `self` = self else { return }
-                    self.show(FavoritesViewController(client: self.client), sender: nil)}
-            })
+            if let currentUserSection = currentUserSection {
+                currentUserSection.removeAll()
+                currentUserSection.append(LabelRow {
+                    $0.title = (account.map {String($0.following_count)} ?? "-") + " Followings"
+                    $0.cell.accessoryType = .disclosureIndicator
+                    $0.onCellSelection {[weak self] _, _ in
+                        guard let `self` = self, let account = self.account else { return }
+                        self.show(FollowingsViewController(client: self.client, subject: account), sender: nil)}
+                })
+                currentUserSection.append(LabelRow {
+                    $0.title = (account.map {String($0.followers_count)} ?? "-") + " Followers"
+                    $0.cell.accessoryType = .disclosureIndicator
+                    $0.onCellSelection {[weak self] _, _ in
+                        guard let `self` = self, let account = self.account else { return }
+                        self.show(FollowersViewController(client: self.client, subject: account), sender: nil)}
+                })
+                currentUserSection.append(LabelRow {
+                    $0.title = "⭐️ Favorites"
+                    $0.cell.accessoryType = .disclosureIndicator
+                    $0.onCellSelection {[weak self] _, _ in
+                        guard let `self` = self else { return }
+                        self.show(FavoritesViewController(client: self.client), sender: nil)}
+                })
+                timelineView.reloadSections([0], with: .automatic)
+            }
 
             timelineView.layoutTableHeaderView()
         }
