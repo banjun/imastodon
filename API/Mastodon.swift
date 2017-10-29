@@ -170,13 +170,15 @@ struct GetAccountsStatuses: APIBlueprintRequest, URITemplateRequest {
     var method: HTTPMethod {return .get}
 
     let path = "" // see intercept(urlRequest:)
-    static let pathTemplate: URITemplate = "/api/v1/accounts/{id}/statuses{?only_media,exclude_replies,max_id,since_id,limit}"
+    static let pathTemplate: URITemplate = "/api/v1/accounts/{id}/statuses{?only_media,pinned,exclude_replies,max_id,since_id,limit}"
     var pathVars: PathVars
     struct PathVars: URITemplateContextConvertible {
         /// 
         var id: String
         /// Only return statuses that have media attachments
         var only_media: String?
+        /// Only return statuses that are pinned to the account
+        var pinned: String?
         /// Skip statuses that reply to other statuses
         var exclude_replies: String?
         /// Get a list of statuses with ID less than this value
@@ -666,6 +668,8 @@ struct Status: Codable {
     var application: Application?
     /// The detected language for the status (default: en)
     var language: String?
+    /// Whether the status is pinned to the account  ex. boolean
+    var pinned: Bool?
 }
 
 struct Application: Codable { 

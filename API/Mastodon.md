@@ -26,11 +26,12 @@ FORMAT: 1A
 + Response 200
     + Attributes (Account)
 
-## GetAccountsStatuses [GET /api/v1/accounts/{id}/statuses{?only_media,exclude_replies,max_id,since_id,limit}]
+## GetAccountsStatuses [GET /api/v1/accounts/{id}/statuses{?only_media,pinned,exclude_replies,max_id,since_id,limit}]
 
 + Parameters
     + id (string, required)
     + only_media (boolean, optional) - Only return statuses that have media attachments
+    + pinned (boolean, optional) - Only return statuses that are pinned to the account
     + exclude_replies (boolean, optional) - Skip statuses that reply to other statuses
     + max_id (string, optional) - Get a list of statuses with ID less than this value
     + since_id (string, optional) - Get a list of statuses with ID greater than this value
@@ -236,6 +237,7 @@ Fetching a user's notifications
 + tags (array[Tag], fixed-type, required) - An array of [Tags](#tag)
 + application (Application, optional) - [Application](#application) from which the status was posted
 + language (string, optional) - The detected language for the status (default: en)
++ pinned (boolean, optional) - Whether the authenticated user has pinned the status in API response. app may use app level mark as pinned
 
 ## Application
 

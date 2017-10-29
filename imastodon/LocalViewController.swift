@@ -5,7 +5,7 @@ import Kingfisher
 
 class LocalViewController: TimelineViewController, ClientContainer {
     let instanceAccount: InstanceAccout
-    var client: Client {return Client(instanceAccount)!}
+    let client: Client
     
     private var localStream: Stream?
     private var userStream: Stream?
@@ -15,6 +15,7 @@ class LocalViewController: TimelineViewController, ClientContainer {
 
     init(instanceAccount: InstanceAccout, timelineEvents: [TimelineEvent] = []) {
         self.instanceAccount = instanceAccount
+        self.client = Client(instanceAccount)!
         super.init(timelineEvents: timelineEvents, baseURL: instanceAccount.instance.baseURL)
         title = "Local@\(instanceAccount.instance.title) \(instanceAccount.account.display_name)"
         toolbarItems = [UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(showPost))]

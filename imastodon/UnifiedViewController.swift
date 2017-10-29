@@ -6,7 +6,7 @@ import ReactiveSwift
 
 class UnifiedViewController: TimelineViewController, ClientContainer {
     let instanceAccount: InstanceAccout
-    var client: Client {return Client(instanceAccount)!}
+    let client: Client
 
     private var localStream: Stream?
     private var userStream: Stream?
@@ -17,6 +17,7 @@ class UnifiedViewController: TimelineViewController, ClientContainer {
 
     init(instanceAccount: InstanceAccout, timelineEvents: [TimelineEvent] = []) {
         self.instanceAccount = instanceAccount
+        self.client = Client(instanceAccount)!
         super.init(timelineEvents: timelineEvents, baseURL: instanceAccount.instance.baseURL)
         title = "\(instanceAccount.instance.title) \(instanceAccount.account.displayNameOrUserName)"
         toolbarItems = [UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(showPost))]

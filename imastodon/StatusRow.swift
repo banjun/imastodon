@@ -173,6 +173,12 @@ final class StatusView: UIView {
         l.numberOfLines = 0
         l.lineBreakMode = .byTruncatingTail
     }
+    let pinLabel = UILabel() ※ { l in
+        l.text = "pinned📌"
+        l.font = .systemFont(ofSize: 12)
+        l.textColor = .darkGray
+        l.numberOfLines = 1
+    }
     let bodyLabel = UILabel() ※ { l in
         l.font = .systemFont(ofSize: 16)
         l.textColor = .black
@@ -189,13 +195,16 @@ final class StatusView: UIView {
             "icon": iconView,
             "name": nameLabel,
             "body": bodyLabel,
+            "pin": pinLabel,
             "thumbs": thumbnailView])
         autolayout("H:|-p-[icon(==32)]")
         autolayout("H:[icon]-s-[name]-p-|")
         autolayout("H:[icon]-s-[body]-p-|")
+        autolayout("H:[pin]-p-|")
         autolayout("H:|[thumbs]|")
         autolayout("V:|-p-[icon(==32)]-(>=p)-|")
         autolayout("V:|-p-[name]-2-[body]-s-[thumbs]-s-|")
+        autolayout("V:|-p-[pin]")
         nameLabel.setContentHuggingPriority(.required, for: .vertical)
         let thumbnailViewHeight = NSLayoutConstraint(item: thumbnailView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
         self.thumbnailViewHeight = thumbnailViewHeight
@@ -203,6 +212,7 @@ final class StatusView: UIView {
         thumbnailView.addConstraint(thumbnailViewHeight)
         bringSubview(toFront: iconView)
         thumbnailView.isHidden = true
+        pinLabel.isHidden = true
     }
 
     required init?(coder aDecoder: NSCoder) {fatalError()}
@@ -220,6 +230,7 @@ final class StatusView: UIView {
         }
         nameLabel.text = boosted.map {status.account.displayNameOrUserName + "🔁" + $0.account.displayNameOrUserName} ?? status.account.displayNameOrUserName
         bodyLabel.attributedText = attributedText ?? mainStatus.attributedTextContent ?? NSAttributedString(string: mainStatus.textContent)
+        pinLabel.isHidden = status.pinned != true
 
         thumbnailView.attachments = mainStatus.media_attachments
         thumbnailViewHeight?.constant = mainStatus.media_attachments.isEmpty ? 0 : 128

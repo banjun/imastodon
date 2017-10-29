@@ -71,6 +71,7 @@ struct Client {
     var accessToken: String? {
         didSet {authorizedSession = Client.authorizedSession(accessToken: accessToken)}
     }
+    let account: Account?
     private var authorizedSession: Session?
     private static func authorizedSession(accessToken: String?) -> Session? {
         return accessToken.map { accessToken in
@@ -80,21 +81,27 @@ struct Client {
         }
     }
 
+    fileprivate var caches = Caches()
+    fileprivate class Caches {
+        var isPinsSupported: Bool?
+    }
+
     func run<Request: APIBlueprintRequest>(_ request: Request) -> Future<Request.Response, AppError> {
         return Future { complete in
             (authorizedSession ?? Session.shared).send(request, handler: complete)?.resume()
             }.mapError {.apikit($0)}
     }
 
-    init(baseURL: URL, accessToken: String? = nil) {
+    init(baseURL: URL, accessToken: String? = nil, account: Account?) {
         self.baseURL = baseURL
         self.accessToken = accessToken
         self.authorizedSession = Client.authorizedSession(accessToken: accessToken)
+        self.account = account
     }
 
     init?(_ instanceAccount: InstanceAccout) {
         guard let baseURL = instanceAccount.instance.baseURL else { return nil }
-        self.init(baseURL: baseURL, accessToken: instanceAccount.accessToken)
+        self.init(baseURL: baseURL, accessToken: instanceAccount.accessToken, account: instanceAccount.account)
     }
 }
 
@@ -170,6 +177,35 @@ extension Client {
     
     func favorite(_ status: Status) -> Future<Void, AppError> {
         return run(Favorite(baseURL: baseURL, pathVars: .init(id: status.id.value))).asVoid()
+    }
+
+    // caution: mastodon before 1.6.0 does not support pins and response with normal toots regardless of pineed=true query.
+    private func accountStatuses(accountID: ID, pinned: Bool = false, limit: Int) -> Future<[Status], AppError> {
+        return run(GetAccountsStatuses(baseURL: baseURL, pathVars: .init(id: accountID.value, only_media: nil, pinned: pinned ? "true" : nil, exclude_replies: nil, max_id: nil, since_id: nil, limit: String(limit))))
+            .map { r in
+                switch r {
+                case let .http200_(toots): return toots
+                }
+        }
+    }
+
+    // estimate the instance supports pinned toots
+    private func isPinsSupported() -> Future<Bool, AppError> {
+        if let cached = caches.isPinsSupported { return Future(value: cached) }
+        guard let id = account?.id else { return Future(value: false) }
+        return accountStatuses(accountID: id, pinned: false, limit: 1).map {$0.first?.pinned != nil}
+            .onSuccess {self.caches.isPinsSupported = $0}
+    }
+
+    func accountStatuses(accountID: ID, includesPinnedStatuses: Bool = false, limit: Int = 40) -> Future<[Status], AppError> {
+        let maxPins = 5
+        return (includesPinnedStatuses ? isPinsSupported() : Future(value: false))
+            .flatMap { $0 ?
+                self.accountStatuses(accountID: accountID, pinned: true, limit: maxPins)
+                : Future(value: [])}
+            .map {$0.map {s in var s = s; s.pinned = true; return s}} // mark as pinned, the response does not contain pinned when the accountID is not the current API user
+            .flatMap { pins in
+                self.accountStatuses(accountID: accountID, pinned: false, limit: limit).map {pins + $0}}
     }
 }
 
