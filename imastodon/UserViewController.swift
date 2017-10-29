@@ -60,6 +60,14 @@ final class UserViewController: UIViewController, ClientContainer {
     private let timelineView: UITableView
     private var toots: [(Status, NSAttributedString?)] = [] // cache heavy attributed strings
 
+    private lazy var previewingDelegate: StatusPreviewingDelegate = StatusPreviewingDelegate(vc: self, client: self.client, context: { [weak self] p in
+        guard let indexPath = self?.timelineView.indexPathForRow(at: p),
+            self?.currentUserSection == nil || indexPath.section != 0,
+            let s = self?.toots[indexPath.row].0,
+            let sourceRect = self?.timelineView.rectForRow(at: indexPath) else { return nil }
+        return (s, sourceRect)
+    })
+
     init(fetcher: Fetcher, isCurrentUser: Bool = false) {
         self.fetcher = fetcher
         self.currentUserSection = isCurrentUser ? Section {
@@ -80,6 +88,7 @@ final class UserViewController: UIViewController, ClientContainer {
     override func loadView() {
         view = timelineView
         loadTimelineView()
+        registerForPreviewing(with: previewingDelegate, sourceView: timelineView)
 
         switch fetcher {
         case let .fetch(client, id):

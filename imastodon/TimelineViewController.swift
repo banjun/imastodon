@@ -47,6 +47,13 @@ class TimelineViewController: UICollectionViewController {
         l.minimumLineSpacing = 0
         l.minimumInteritemSpacing = 0
     }
+    private lazy var previewingDelegate: StatusPreviewingDelegate? = (self as? ClientContainer).map {StatusPreviewingDelegate(vc: self, client: $0.client, context: { [weak self] p in
+        guard let collectionView = self?.collectionView,
+            let indexPath = collectionView.indexPathForItem(at: p),
+            let s = self?.timelineEvent(indexPath).status,
+            let sourceRect = collectionView.layoutAttributesForItem(at: indexPath)?.frame else { return nil }
+        return (s, sourceRect)
+    })}
 
     init(timelineEvents: [TimelineEvent] = [], baseURL: URL? = nil) {
         self.baseURL = baseURL
@@ -57,11 +64,13 @@ class TimelineViewController: UICollectionViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        collectionView?.backgroundColor = .white
-        collectionView?.showsVerticalScrollIndicator = false
-        collectionView?.register(StatusCollectionViewCell.self, forCellWithReuseIdentifier: TimelineEvent.homeCellID)
-        collectionView?.register(StatusCollectionViewCell.self, forCellWithReuseIdentifier: TimelineEvent.localCellID)
-        collectionView?.register(NotificationCollectionViewCell.self, forCellWithReuseIdentifier: TimelineEvent.notificationCellID)
+        guard let collectionView = collectionView else { return }
+        collectionView.backgroundColor = .white
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.register(StatusCollectionViewCell.self, forCellWithReuseIdentifier: TimelineEvent.homeCellID)
+        collectionView.register(StatusCollectionViewCell.self, forCellWithReuseIdentifier: TimelineEvent.localCellID)
+        collectionView.register(NotificationCollectionViewCell.self, forCellWithReuseIdentifier: TimelineEvent.notificationCellID)
+        _ = previewingDelegate.map {registerForPreviewing(with: $0, sourceView: collectionView)}
     }
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -193,5 +202,26 @@ extension TimelineViewController: UICollectionViewDelegateFlowLayout {
             let layoutSize = notificationLayoutCell.systemLayoutSizeFitting(size, withHorizontalFittingPriority: UILayoutPriority.required, verticalFittingPriority: UILayoutPriority.fittingSizeLevel)
             return CGSize(width: collectionView.bounds.width, height: layoutSize.height)
         }
+    }
+}
+
+final class StatusPreviewingDelegate: NSObject, UIViewControllerPreviewingDelegate {
+    let client: Client
+    let context: (CGPoint) -> (status: Status, sourceRect: CGRect)?
+    weak var vc: UIViewController?
+    init(vc: UIViewController?, client: Client, context: @escaping (CGPoint) -> (status: Status, sourceRect: CGRect)?) {
+        self.client = client
+        self.context = context
+        self.vc = vc
+    }
+
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        guard let context = context(location) else { return nil }
+        previewingContext.sourceRect = context.sourceRect
+        return StatusViewController(client: client, status: context.status)
+    }
+
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+        vc?.show(viewControllerToCommit, sender: nil)
     }
 }
