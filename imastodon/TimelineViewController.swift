@@ -61,7 +61,7 @@ class TimelineViewController: UICollectionViewController {
         collectionView?.showsVerticalScrollIndicator = false
         collectionView?.register(StatusCollectionViewCell.self, forCellWithReuseIdentifier: TimelineEvent.homeCellID)
         collectionView?.register(StatusCollectionViewCell.self, forCellWithReuseIdentifier: TimelineEvent.localCellID)
-        collectionView?.register(NotificationCell.self, forCellWithReuseIdentifier: TimelineEvent.notificationCellID)
+        collectionView?.register(NotificationCollectionViewCell.self, forCellWithReuseIdentifier: TimelineEvent.notificationCellID)
     }
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -123,7 +123,7 @@ extension TimelineViewController {
         case let .local(s, a):
             (cell as? StatusCollectionViewCell)?.statusView.setStatus(s, attributedText: a, baseURL: baseURL) { [weak self] a in self?.showAttachment(a) }
         case let .notification(n, s):
-            (cell as? NotificationCell)?.setNotification(n, text: s, baseURL: baseURL)
+            (cell as? NotificationCollectionViewCell)?.notificationView.setNotification(n, text: s, baseURL: baseURL)
         }
         return cell
     }
@@ -164,7 +164,7 @@ extension ClientContainer where Self: UIViewController {
 }
 
 private let layoutCell = StatusCollectionViewCell(frame: .zero)
-private let notificationLayoutCell = NotificationCell(frame: .zero)
+private let notificationLayoutCell = NotificationCollectionViewCell(frame: .zero)
 
 extension TimelineViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -188,7 +188,7 @@ extension TimelineViewController: UICollectionViewDelegateFlowLayout {
         case let .home(s, a): return statusSize(s, a, constraint: size)
         case let .local(s, a): return statusSize(s, a, constraint: UILayoutFittingCompressedSize)
         case let .notification(n, s):
-            notificationLayoutCell.setNotification(n, text: s, baseURL: nil)
+            notificationLayoutCell.notificationView.setNotification(n, text: s, baseURL: nil)
             let layoutSize = notificationLayoutCell.systemLayoutSizeFitting(size, withHorizontalFittingPriority: UILayoutPriority.required, verticalFittingPriority: UILayoutPriority.fittingSizeLevel)
             return CGSize(width: collectionView.bounds.width, height: layoutSize.height)
         }

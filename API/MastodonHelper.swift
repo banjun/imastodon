@@ -1,5 +1,7 @@
 // due to SwiftBeaker not supporting some parameter structures, add below by hand
 typealias Timelines = [Status]
+typealias Accounts = [Account]
+typealias Notifications = [Notification]
 
 import APIKit
 

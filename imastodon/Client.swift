@@ -51,14 +51,18 @@ extension Status {
     }
 
     var attributedTextContent: NSAttributedString? {
-        guard let data = ("<style>body{font-size: 16px;font-family:-apple-system, Sans-Serif;} p {margin:0;padding:0;display:inline;}</style>" + content).data(using: .utf8),
-            let at = try? NSAttributedString(
-                data: data,
-                options: [
-                    .documentType: NSAttributedString.DocumentType.html,
-                    .characterEncoding: String.Encoding.utf8.rawValue],
-                documentAttributes: nil) else { return nil }
-        return at
+        return NSAttributedString(html: content)
+    }
+}
+
+extension NSAttributedString {
+    convenience init?(html: String) {
+        guard let data = ("<style>body{font-size: 16px;font-family:-apple-system, Sans-Serif;} p {margin:0;padding:0;display:inline;}</style>" + html).data(using: .utf8) else { return nil }
+        try? self.init(data: data,
+                       options: [
+                        .documentType: NSAttributedString.DocumentType.html,
+                        .characterEncoding: String.Encoding.utf8.rawValue],
+                       documentAttributes: nil)
     }
 }
 
