@@ -76,7 +76,7 @@ final class UserHeaderView: UIView {
         _ = account?.avatarURL(baseURL: baseURL).map {iconView.kf.setImage(with: $0)}
         displayNameLabel.text = account?.display_name
         usernameLabel.text = account.map {"@" + $0.acct}
-        bioLabel.attributedText = account?.note.data(using: .utf8).flatMap {try? NSAttributedString(data: $0, options: [.documentType: NSAttributedString.DocumentType.html, .characterEncoding: String.Encoding.utf8.rawValue], documentAttributes: nil)}
+        bioLabel.attributedText = account.flatMap {NSAttributedString(html: $0.note)}
     }
 }
 
