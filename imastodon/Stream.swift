@@ -82,6 +82,6 @@ extension Stream {
 extension AppError {
     var errorStatus: Status {
         let errorAccount = Account(id: "0", username: "", acct: "", display_name: "imastodon.AppError", locked: false, created_at: ISO8601DateFormatter().string(from: Date()), followers_count: 0, following_count: 0, statuses_count: 0, note: "", url: "", avatar: "", avatar_static: "", header: "", header_static: "")
-        return Status(id: "0", uri: "", url: "https://localhost/", account: errorAccount, in_reply_to_id: nil, in_reply_to_account_id: nil, reblog: nil, content: localizedDescription, created_at: ISO8601DateFormatter().string(from: Date()), reblogs_count: 0, favourites_count: 0, reblogged: nil, favourited: nil, sensitive: nil, spoiler_text: "", visibility: "public", media_attachments: [], mentions: [], tags: [], application: nil, language: "")
+        return Status(id: "0", uri: "", url: "https://localhost/", account: errorAccount, in_reply_to_id: nil, in_reply_to_account_id: nil, reblog: nil, content: localizedDescription, created_at: ISO8601DateFormatter().string(from: Date()), reblogs_count: 0, favourites_count: 0, reblogged: nil, favourited: nil, sensitive: nil, spoiler_text: "", visibility: "public", media_attachments: [], mentions: [], tags: [], application: nil, language: "", pinned: false)
     }
 }

@@ -40,7 +40,7 @@ class LoginViewController: FormViewController {
             let password = passwordRow.value else { return }
 
         SVProgressHUD.show()
-        var client = Client(baseURL: host, accessToken: nil)
+        var client = Client(baseURL: host, accessToken: nil, account: nil)
         client.registerApp()
             .flatMap { app in
                 client.login(app: app, email: email, password: password).onSuccess {

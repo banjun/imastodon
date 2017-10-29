@@ -115,13 +115,9 @@ final class UserViewController: UIViewController, ClientContainer {
     }
 
     private func fetchAccountStatuses(client: Client, id: ID) -> Void {
-        client.run(GetAccountsStatuses(baseURL: client.baseURL,pathVars: .init(id: id.value, only_media: nil, exclude_replies: nil, max_id: nil, since_id: nil, limit: nil)))
-            .onSuccess {
-                switch $0 {
-                case let .http200_(toots):
-                    self.toots = toots.map {($0, $0.mainContentStatus.attributedTextContent)}
-                    self.timelineView.reloadData()
-                }
+        client.accountStatuses(accountID: id, includesPinnedStatuses: true).onSuccess {
+            self.toots = $0.map {($0, $0.mainContentStatus.attributedTextContent)}
+            self.timelineView.reloadData()
         }
     }
 
