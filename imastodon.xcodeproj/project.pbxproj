@@ -14,6 +14,7 @@
 		EA6429EE1FA5110D006A67C0 /* FollowingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6429ED1FA5110D006A67C0 /* FollowingsViewController.swift */; };
 		EA6429F01FA51738006A67C0 /* AccountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6429EF1FA51738006A67C0 /* AccountCell.swift */; };
 		EA6429F21FA518F6006A67C0 /* FollowersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6429F11FA518F6006A67C0 /* FollowersViewController.swift */; };
+		EA6429F41FA5694E006A67C0 /* UserHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6429F31FA5694E006A67C0 /* UserHeaderView.swift */; };
 		EA65F7C21F9E2AFE00071B4D /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65F7C11F9E2AFE00071B4D /* UserViewController.swift */; };
 		EA65F7C41F9F68F700071B4D /* HeaderImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65F7C31F9F68F700071B4D /* HeaderImageView.swift */; };
 		EA72DC751EF14E3A00B5A7CD /* Mastodon.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA72DC741EF14E2B00B5A7CD /* Mastodon.swift */; };
@@ -44,6 +45,7 @@
 		EA6429ED1FA5110D006A67C0 /* FollowingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowingsViewController.swift; sourceTree = "<group>"; };
 		EA6429EF1FA51738006A67C0 /* AccountCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCell.swift; sourceTree = "<group>"; };
 		EA6429F11FA518F6006A67C0 /* FollowersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowersViewController.swift; sourceTree = "<group>"; };
+		EA6429F31FA5694E006A67C0 /* UserHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserHeaderView.swift; sourceTree = "<group>"; };
 		EA65F7C11F9E2AFE00071B4D /* UserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
 		EA65F7C31F9F68F700071B4D /* HeaderImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderImageView.swift; sourceTree = "<group>"; };
 		EA72DC721EF14E2B00B5A7CD /* Mastodon.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Mastodon.md; sourceTree = "<group>"; };
@@ -143,6 +145,7 @@
 				EAE218B21ED147E2001209F2 /* LoginViewController.swift */,
 				EAB868261EF6B4A700B38879 /* AttachmentViewController.swift */,
 				EA65F7C11F9E2AFE00071B4D /* UserViewController.swift */,
+				EA6429F31FA5694E006A67C0 /* UserHeaderView.swift */,
 				EA65F7C31F9F68F700071B4D /* HeaderImageView.swift */,
 				EA6429ED1FA5110D006A67C0 /* FollowingsViewController.swift */,
 				EA6429F11FA518F6006A67C0 /* FollowersViewController.swift */,
@@ -313,6 +316,7 @@
 				EAE218B51ED15494001209F2 /* Store.swift in Sources */,
 				EAE218B31ED147E2001209F2 /* LoginViewController.swift in Sources */,
 				EA6429EE1FA5110D006A67C0 /* FollowingsViewController.swift in Sources */,
+				EA6429F41FA5694E006A67C0 /* UserHeaderView.swift in Sources */,
 				EA6429F01FA51738006A67C0 /* AccountCell.swift in Sources */,
 				EA6429F21FA518F6006A67C0 /* FollowersViewController.swift in Sources */,
 				EAE218BF1ED176C4001209F2 /* StatusRow.swift in Sources */,
