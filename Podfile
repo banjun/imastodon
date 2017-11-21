@@ -2,7 +2,7 @@ use_frameworks!
 
 target 'imastodon' do
   pod '※ikemen'
-  pod 'NorthLayout'
+  pod 'NorthLayout', '>= 5.0.0-beta.2'
   pod 'Eureka'
   pod 'Kingfisher'
   pod 'SVProgressHUD'

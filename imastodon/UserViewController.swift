@@ -202,6 +202,7 @@ extension UserViewController: UITableViewDataSource, UITableViewDelegate {
 extension UITableView {
     func layoutTableHeaderView() {
         guard let v = tableHeaderView else { return }
+        v.setNeedsUpdateConstraints() // update layout guides before estimating systemLayoutSizeFitting
         let h = v.systemLayoutSizeFitting(frame.size, withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel).height
         guard h != v.frame.height else { return }
         v.frame.size.height = h
