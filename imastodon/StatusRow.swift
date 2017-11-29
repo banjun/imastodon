@@ -98,9 +98,10 @@ final class AttachmentsCollectionView: UIView, UICollectionViewDataSource, UICol
         let autolayout = northLayoutFormat([:], ["cv": collectionView])
         autolayout("H:|[cv]|")
         autolayout("V:|[cv]|")
-        collectionView.contentInset = UIEdgeInsets(top: 0, left: 40, bottom: 0, right: 0)
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 40, bottom: 0, right: layout.minimumInteritemSpacing)
         collectionView.alwaysBounceHorizontal = true
         collectionView.showsHorizontalScrollIndicator = false
+        collectionView.contentInsetAdjustmentBehavior = .always
     }
     required init?(coder aDecoder: NSCoder) {fatalError()}
 
@@ -191,20 +192,21 @@ final class StatusView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        let autolayout = northLayoutFormat(["s": 4, "p": 8], [
+        let autolayout = northLayoutFormat(["s": 4], [
             "icon": iconView,
             "name": nameLabel,
             "body": bodyLabel,
             "pin": pinLabel,
             "thumbs": thumbnailView])
-        autolayout("H:|-p-[icon(==32)]")
-        autolayout("H:[icon]-s-[name]-p-|")
-        autolayout("H:[icon]-s-[body]-p-|")
-        autolayout("H:[pin]-p-|")
+        autolayout("H:||[icon(==32)]")
+        autolayout("H:[icon]-s-[name]||")
+        autolayout("H:[icon]-s-[body]||")
+        autolayout("H:[pin]||")
         autolayout("H:|[thumbs]|")
-        autolayout("V:|-p-[icon(==32)]-(>=p)-|")
-        autolayout("V:|-p-[name]-2-[body]-s-[thumbs]-s-|")
-        autolayout("V:|-p-[pin]")
+        autolayout("V:||[icon(==32)]-(>=0)-||")
+        autolayout("V:||[name]-2-[body]-s-[thumbs]||")
+        autolayout("V:||[pin]")
+        layoutMargins = UIEdgeInsets(top: 8, left: 8, bottom: 4, right: 8)
         nameLabel.setContentHuggingPriority(.required, for: .vertical)
         let thumbnailViewHeight = NSLayoutConstraint(item: thumbnailView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
         self.thumbnailViewHeight = thumbnailViewHeight

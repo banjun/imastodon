@@ -16,6 +16,7 @@ final class FavoritesViewController: UITableViewController, ClientContainer {
         tableView.separatorStyle = .none
         tableView.showsVerticalScrollIndicator = false
         tableView.register(StatusTableViewCell.self, forCellReuseIdentifier: "StatusTableViewCell")
+        tableView.insetsContentViewsToSafeArea = false
     }
     required init?(coder aDecoder: NSCoder) {fatalError()}
 

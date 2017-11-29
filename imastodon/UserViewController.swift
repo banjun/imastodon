@@ -138,6 +138,7 @@ extension UserViewController: UITableViewDataSource, UITableViewDelegate {
         timelineView.dataSource = self
         timelineView.delegate = self
         timelineView.register(StatusTableViewCell.self, forCellReuseIdentifier: "StatusTableViewCell")
+        timelineView.insetsContentViewsToSafeArea = false
 
         timelineView.separatorStyle = .none
         timelineView.showsVerticalScrollIndicator = false
