@@ -1,9 +1,10 @@
 import Foundation
-import IKEventSource
+import ReactiveSSE
 import ReactiveSwift
 
-struct Stream {
-    let source: EventSource
+class Stream {
+    let source: ReactiveSSE
+    var lifetimeToken: Lifetime.Token?
     let updateSignal: Signal<Event, AppError>
     private let updateObserver: Signal<Event, AppError>.Observer
     let notificationSignal: Signal<Notification, AppError>
@@ -24,57 +25,62 @@ struct Stream {
     init(endpoint: URL, token: String) {
         (updateSignal, updateObserver) = Signal<Event, AppError>.pipe()
         (notificationSignal, notificationObserver) = Signal<Notification, AppError>.pipe()
-        source = EventSource(url: endpoint.absoluteString, headers: ["Authorization": "Bearer \(token)"])
-        source.onOpen { [weak source, weak updateObserver] in
-            NSLog("%@", "EventSource opened: \(String(describing: source))")
-            updateObserver?.send(value: .open)
-        }
-        source.onError { [weak source, weak updateObserver, weak notificationObserver] e in
-            NSLog("%@", "EventSource error: \(String(describing: e))")
-            source?.invalidate()
-            updateObserver?.send(error: .eventstream(e))
-            notificationObserver?.send(error: .eventstream(e))
-        }
-        source.addEventListener("update") { [weak updateObserver] id, event, data in
-            do {
-                let status = try JSONDecoder().decode(Status.self, from: data?.data(using: .utf8) ?? Data())
-                updateObserver?.send(value: .update(status))
-            } catch {
-                NSLog("%@", "EventSource event update, failed to parse with error \(error): \(String(describing: id)), \(String(describing: event)), \(String(describing: data))")
-                updateObserver?.send(error: .eventstream(error))
-            }
-        }
-        source.addEventListener("notification") { [weak notificationObserver] id, event, data in
-            do {
-                let notification = try JSONDecoder().decode(Notification.self, from: data?.data(using: .utf8) ?? Data())
-                notificationObserver?.send(value: notification)
-            } catch {
-                NSLog("%@", "EventSource event update, failed to parse with error \(error): \(String(describing: id)), \(String(describing: event)), \(String(describing: data))")
-                notificationObserver?.send(error: .eventstream(error))
-            }
+
+        let (lifetime, lifetimeToken) = Lifetime.make()
+        self.lifetimeToken = lifetimeToken
+        var req = URLRequest(url: endpoint)
+        req.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        source = ReactiveSSE(urlRequest: req)
+        source.producer
+            .take(during: lifetime)
+            .filterMap {e in e.data.data(using: .utf8).map {(e.type, $0)}}
+            .mapError {AppError.eventstream($0)}
+            .observe(on: QueueScheduler.main)
+            .startWithSignal { signal, disposable in
+                signal.filter {$0.0 == "update"}
+                    .flatMap(.concat) { _, d -> SignalProducer<Stream.Event, AppError> in
+                        do {
+                            return .init(value: .update(try JSONDecoder().decode(Status.self, from: d)))
+                        } catch {
+                            NSLog("%@", "EventSource event update, failed to parse with error \(error): \(String(describing: String(data: d, encoding: .utf8)))")
+                            return .init(error: .eventstream(error))
+                        }
+                    }
+                    .observe(updateObserver)
+
+                signal.filter {$0.0 == "notification"}
+                    .flatMap(.concat) { _, d -> SignalProducer<Notification, AppError> in
+                        do {
+                            return .init(value: try JSONDecoder().decode(Notification.self, from: d))
+                        } catch {
+                            NSLog("%@", "EventSource event notification, failed to parse with error \(error): \(String(describing: String(data: d, encoding: .utf8)))")
+                            return .init(error: .eventstream(error))
+                        }
+                    }
+                    .observe(notificationObserver)
         }
     }
 
     func close() {
-        source.close()
+        lifetimeToken = nil
         updateObserver.sendInterrupted()
         notificationObserver.sendInterrupted()
     }
 }
 
 extension Stream {
-    private init(mastodonForHost host: String, path: String, token: String) {
+    private convenience init(mastodonForHost host: String, path: String, token: String) {
         let knownSeparatedHosts = [
             "mstdn.jp": "streaming."]
         let streamHost = knownSeparatedHosts[host].map {$0 + host} ?? host
         self.init(endpoint: URL(string: "https://" + streamHost + path)!, token: token)
     }
 
-    init(userTimelineForHost host: String, token: String) {
+    convenience init(userTimelineForHost host: String, token: String) {
         self.init(mastodonForHost: host, path: "/api/v1/streaming/user", token: token)
     }
 
-    init(localTimelineForHost host: String, token: String) {
+    convenience init(localTimelineForHost host: String, token: String) {
         self.init(mastodonForHost: host, path: "/api/v1/streaming/public/local", token: token)
     }
 }

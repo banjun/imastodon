@@ -98,7 +98,7 @@ class LocalViewController: TimelineViewController, ClientContainer {
     }
     
     @objc private func refresh() {
-        guard !(streams.contains {$0.source.readyState == .connecting}) else {
+        guard !(streams.contains {$0.lifetimeToken != nil}) else {
             refreshControl.endRefreshing()
             return
         }

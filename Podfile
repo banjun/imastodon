@@ -7,7 +7,7 @@ target 'imastodon' do
   pod 'Kingfisher'
   pod 'SVProgressHUD'
   pod 'BrightFutures'
-  pod 'IKEventSource', git: 'https://github.com/banjun/EventSource', branch: 'banjun'
+  pod 'ReactiveSSE'
   pod 'ReactiveSwift'
   pod 'SwiftBeaker'
 end
