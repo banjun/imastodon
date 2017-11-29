@@ -77,7 +77,6 @@ final class AttachmentsCollectionView: UIView, UICollectionViewDataSource, UICol
     var attachments: [Attachment] = [] {
         didSet {
             isHidden = attachments.isEmpty
-            collectionView.reloadData()
         }
     }
     let collectionView: UICollectionView
@@ -222,6 +221,7 @@ final class StatusView: UIView {
     func prepareForReuse() {
         iconView.kf.cancelDownloadTask()
         iconView.image = nil
+        thumbnailView.attachments.removeAll()
     }
 
     func setStatus(_ status: Status, attributedText: NSAttributedString?, baseURL: URL?, didSelectAttachment: ((Attachment) -> Void)? = nil) {
@@ -235,6 +235,7 @@ final class StatusView: UIView {
         pinLabel.isHidden = status.pinned != true
 
         thumbnailView.attachments = mainStatus.media_attachments
+        if baseURL != nil {thumbnailView.collectionView.reloadData()}
         thumbnailViewHeight?.constant = mainStatus.media_attachments.isEmpty ? 0 : 128
         thumbnailView.didSelect = didSelectAttachment
     }

@@ -175,7 +175,7 @@ extension UserViewController: UITableViewDataSource, UITableViewDelegate {
         }
         let cell = timelineView.dequeueReusableCell(withIdentifier: "StatusTableViewCell", for: indexPath) as! StatusTableViewCell
         let status = toots[indexPath.row]
-        cell.statusView.setStatus(status.0, attributedText: status.1, baseURL: nil)
+        cell.statusView.setStatus(status.0, attributedText: status.1, baseURL: client.baseURL)
         return cell
     }
 
