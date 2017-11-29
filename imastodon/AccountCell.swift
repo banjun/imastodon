@@ -25,17 +25,17 @@ final class AccountCell: UITableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
-        let autolayout = northLayoutFormat(["p": 8], [
+        let autolayout = northLayoutFormat([:], [
             "icon": iconView,
             "dname": displayNameLabel,
             "uname": userNameLabel,
             "spacerT": MinView(),
             "spacerB": MinView()])
-        autolayout("H:|-p-[icon(==32)]")
-        autolayout("H:[icon]-p-[dname]-p-|")
-        autolayout("H:[icon]-p-[uname]-p-|")
-        autolayout("V:|-p-[icon(==32)]-(>=p)-|")
-        autolayout("V:|[spacerT][dname][uname][spacerB(==spacerT)]|")
+        autolayout("H:||[icon(==32)]")
+        autolayout("H:[icon]-[dname]||")
+        autolayout("H:[icon]-[uname]||")
+        autolayout("V:||[icon(==32)]-(>=0)-||")
+        autolayout("V:||[spacerT][dname][uname][spacerB(==spacerT)]||")
         displayNameLabel.setContentHuggingPriority(.required, for: .vertical)
         userNameLabel.setContentHuggingPriority(.required, for: .vertical)
     }

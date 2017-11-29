@@ -337,18 +337,18 @@ final class NotificationView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        let autolayout = northLayoutFormat(["s": 4, "p": 8], [
+        let autolayout = northLayoutFormat(["s": 4], [
             "icon": iconView,
             "name": nameLabel,
             "body": bodyLabel,
             "target": targetLabel,
             "L": MinView(),
             "R": MinView()])
-        autolayout("H:|[L][icon(==24)]-s-[name][R(==L)]|")
-        autolayout("H:|-p-[body]-p-|")
-        autolayout("H:|-p-[target]-p-|")
-        autolayout("V:|-p-[icon(==24)]-s-[body]-s-[target]-p-|")
-        autolayout("V:|-p-[name(==icon)]-s-[body]")
+        autolayout("H:||[L][icon(==24)]-s-[name][R(==L)]||")
+        autolayout("H:||[body]||")
+        autolayout("H:||[target]||")
+        autolayout("V:||[icon(==24)]-s-[body]-s-[target]||")
+        autolayout("V:||[name(==icon)]-s-[body]")
         nameLabel.setContentHuggingPriority(UILayoutPriority.required, for: .horizontal)
         bodyLabel.setContentCompressionResistancePriority(UILayoutPriority.required, for: .vertical)
         targetLabel.setContentCompressionResistancePriority(UILayoutPriority.required, for: .vertical)
