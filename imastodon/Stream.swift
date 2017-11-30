@@ -37,6 +37,11 @@ class Stream {
             .mapError {AppError.eventstream($0)}
             .observe(on: QueueScheduler.main)
             .startWithSignal { signal, disposable in
+                signal
+                    .take(first: 1)
+                    .on(value: {[weak self] _ in self?.updateObserver.send(value: .open)})
+                    .observe {_ in}
+
                 signal.filter {$0.0 == "update"}
                     .flatMap(.concat) { _, d -> SignalProducer<Stream.Event, AppError> in
                         do {
