@@ -75,10 +75,7 @@ class Stream {
 
 extension Stream {
     private convenience init(mastodonForHost host: String, path: String, token: String) {
-        let knownSeparatedHosts = [
-            "mstdn.jp": "streaming."]
-        let streamHost = knownSeparatedHosts[host].map {$0 + host} ?? host
-        self.init(endpoint: URL(string: "https://" + streamHost + path)!, token: token)
+        self.init(endpoint: URL(string: "https://" + host + path)!, token: token)
     }
 
     convenience init(userTimelineForHost host: String, token: String) {
