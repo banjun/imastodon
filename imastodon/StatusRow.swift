@@ -168,22 +168,25 @@ final class StatusView: UIView {
         iv.layer.cornerRadius = 4
     }
     let nameLabel = UILabel() ※ { l in
-        l.font = .systemFont(ofSize: 12)
+        l.font = .preferredFont(forTextStyle: .caption1)
         l.textColor = .darkGray
         l.numberOfLines = 0
         l.lineBreakMode = .byTruncatingTail
+        l.adjustsFontForContentSizeCategory = true
     }
     let pinLabel = UILabel() ※ { l in
         l.text = "pinned📌"
-        l.font = .systemFont(ofSize: 12)
+        l.font = .preferredFont(forTextStyle: .caption1)
         l.textColor = .darkGray
         l.numberOfLines = 1
+        l.adjustsFontForContentSizeCategory = true
     }
     let bodyLabel = UILabel() ※ { l in
-        l.font = .systemFont(ofSize: 16)
+        l.font = .preferredFont(forTextStyle: .body)
         l.textColor = .black
         l.numberOfLines = 0
         l.lineBreakMode = .byTruncatingTail
+        l.adjustsFontForContentSizeCategory = true
     }
     private let thumbnailView = AttachmentsCollectionView()
     private var thumbnailViewHeight: NSLayoutConstraint?
