@@ -1,0 +1,27 @@
+fastlane_version "2.66.0"
+
+default_platform :ios
+
+platform :ios do
+  lane :bump do
+    ensure_git_status_clean
+    increment_build_number
+    commit_version_bump
+  end
+  
+  desc "Submit a new Beta Build to Apple TestFlight"
+  desc "This will also make sure the profile is up to date"
+  lane :beta do
+    bump
+    gym
+    pilot(changelog: ENV['changelog'], distribute_external: true)
+    push_to_git_remote
+  end
+end
+
+
+# More information about multiple platforms in fastlane: https://docs.fastlane.tools/advanced/#control-configuration-by-lane-and-by-platform
+# All available actions: https://docs.fastlane.tools/actions
+
+# fastlane reports which actions are used. No personal data is recorded.
+# Learn more at https://docs.fastlane.tools/#metrics
