@@ -36,7 +36,7 @@ import SafariServices
 
 extension UIAlertController {
     convenience init(actionFor status: Status, safari: @escaping (SFSafariViewController) -> Void, showAccount: (() -> Void)?, boost: (() -> Void)? = nil, favorite: (() -> Void)? = nil) {
-        self.init(title: "Action to \(status.visibility) toot", message: String(status.textContent.characters.prefix(20)), preferredStyle: .actionSheet)
+        self.init(title: "Action to \(status.visibility) toot", message: String(status.textContent.prefix(20)), preferredStyle: .actionSheet)
 
         if let at = status.mainContentStatus.attributedTextContent {
             at.enumerateAttribute(.link, in: NSRange(location: 0, length: at.length), options: []) { value, _, _ in
