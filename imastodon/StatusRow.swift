@@ -158,6 +158,7 @@ final class ImageCell: UICollectionViewCell {
     }
 
     func setImageURL(_ url: URL) {
+        layoutIfNeeded()
         imageView.kf.setImageWithStub(url)
     }
 }
@@ -238,8 +239,8 @@ final class StatusView: UIView {
         pinLabel.isHidden = status.pinned != true
 
         thumbnailView.attachments = mainStatus.media_attachments
-        if baseURL != nil {thumbnailView.collectionView.reloadData()}
         thumbnailViewHeight?.constant = mainStatus.media_attachments.isEmpty ? 0 : 128
+        if baseURL != nil {thumbnailView.collectionView.reloadData()}
         thumbnailView.didSelect = didSelectAttachment
     }
 }
