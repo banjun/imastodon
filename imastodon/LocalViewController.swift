@@ -98,10 +98,6 @@ class LocalViewController: TimelineViewController, ClientContainer {
     }
     
     @objc private func refresh() {
-        guard !(streams.contains {$0.source.readyState == .connecting}) else {
-            refreshControl.endRefreshing()
-            return
-        }
         fetch()
         reconnectStream()
     }
