@@ -162,6 +162,24 @@ Fetching a user's notifications
 + Response 200
     + Attributes (Status)
 
+# Statuses [/api/v1/statuses/{id}]
+
+## GetStatus [GET]
+
++ Parameters
+    + id (ID, required)
+
++ Response 200
+    + Attributes (Status)
+
+## GetStatusContext [GET /api/v1/statuses/{id}/context]
+
++ Parameters
+    + id (ID, required)
+
++ Response 200
+    + Attributes (Context)
+
 # Favouriting [/api/v1/statuses/{id}/favourite]
 
 ## Favorite [POST]
@@ -284,6 +302,10 @@ Fetching a user's notifications
 + token_type (string, required)
 + scope (string, required)
 + created_at (number, required) - only here: UNIX timestamp
+
+### Context
++ ancestors (array[Status], fixed-type, required) - The ancestors of the status in the conversation, as a list of Statuses
++ descendants (array[Status], fixed-type, required) - The descendants of the status in the conversation, as a list of Statuses
 
 ### ID
 + value (string, required) - actual id value
