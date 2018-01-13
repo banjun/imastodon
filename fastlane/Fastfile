@@ -11,10 +11,10 @@ platform :ios do
   
   desc "Submit a new Beta Build to Apple TestFlight"
   desc "This will also make sure the profile is up to date"
-  lane :beta do
+  lane :beta do |options|
     bump
     gym
-    pilot(changelog: ENV['changelog'], distribute_external: true)
+    pilot(changelog: options['changelog'], distribute_external: true)
     push_to_git_remote
   end
 end
