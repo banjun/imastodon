@@ -89,7 +89,6 @@ class LocalViewController: TimelineViewController, ClientContainer {
             .onComplete {_ in SVProgressHUD.dismiss()}
             .onSuccess { statuses in
                 self.append(statuses.map {.local($0, nil)})
-                self.collectionView?.reloadData()
             }.onFailure { e in
                 let ac = UIAlertController(title: "Error", message: e.localizedDescription, preferredStyle: .alert)
                 ac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
