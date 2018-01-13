@@ -1,16 +1,31 @@
 import UIKit
 import Ikemen
+import Dwifft
+
+struct AttributedStatus: Equatable {
+    var status: Status
+    var attributedString: NSAttributedString?
+
+    static func == (lhs: AttributedStatus, rhs: AttributedStatus) -> Bool {
+        return lhs.status == rhs.status
+    }
+}
 
 final class StatusViewController: UITableViewController, ClientContainer {
     let client: Client
-    let status: (Status, NSAttributedString?)
-    var context: Context? {
-        didSet {tableView.reloadData()}
+    let attributedStatus: AttributedStatus
+    var context: Context? {didSet {applyDwifft()}}
+    private lazy var formDiff: TableViewDiffCalculator<String, AttributedStatus> = .init(tableView: self.tableView) ※ {$0.insertionAnimation = .middle}
+    private func applyDwifft() {
+        formDiff.sectionedValues = SectionedValues([
+            context.map {("ancestors", $0.ancestors.map {.init(status: $0, attributedString: nil)})},
+            ("status", [attributedStatus]),
+            context.map {("descendants", $0.descendants.map {.init(status: $0, attributedString: nil)})}
+            ].flatMap {$0}.filter {!$0.1.isEmpty})
     }
-    var form: [[(Status, NSAttributedString?)]] {return [context?.ancestors.map {($0, nil)}, [status], context?.descendants.map {($0, nil)}].flatMap {$0}.filter {!$0.isEmpty}}
 
     override var previewActionItems: [UIPreviewActionItem] {
-        let s = self.status.0.mainContentStatus
+        let s = attributedStatus.status.mainContentStatus
         return [
             UIPreviewAction(title: "Show \(s.account.displayNameOrUserName)", style: .default) {[weak self] _, _ in
                 guard let `self` = self else { return }
@@ -25,7 +40,7 @@ final class StatusViewController: UITableViewController, ClientContainer {
 
     init(client: Client, status: (Status, NSAttributedString?), previewActionParentViewController: UIViewController? = nil) {
         self.client = client
-        self.status = status
+        self.attributedStatus = AttributedStatus(status: status.0, attributedString: status.1)
         self.previewActionParentViewController = previewActionParentViewController
         super.init(style: .grouped)
     }
@@ -35,6 +50,7 @@ final class StatusViewController: UITableViewController, ClientContainer {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.register(StatusTableViewCell.self, forCellReuseIdentifier: "StatusTableViewCell")
+        applyDwifft()
         tableView.insetsContentViewsToSafeArea = false
         fetch()
     }
@@ -45,7 +61,7 @@ final class StatusViewController: UITableViewController, ClientContainer {
     }
 
     @objc func fetch() {
-        client.run(GetStatusContext(baseURL: client.baseURL, pathVars: .init(id: status.0.id.value)))
+        client.run(GetStatusContext(baseURL: client.baseURL, pathVars: .init(id: attributedStatus.status.mainContentStatus.id.value)))
             .onSuccess {
                 switch $0 {
                 case let .http200_(c): self.context = c
@@ -58,25 +74,25 @@ final class StatusViewController: UITableViewController, ClientContainer {
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return form.count
+        return formDiff.numberOfSections()
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return form[section].count
+        return formDiff.numberOfObjects(inSection: section)
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "StatusTableViewCell", for: indexPath) as! StatusTableViewCell
-        let s = form[indexPath.section][indexPath.row]
+        let a = formDiff.value(atIndexPath: indexPath)
         // taking attributedText during initial phase of peek-pop cause flickering & flash bug. maybe NSAttributedString uses html parser that causes UI blocking operations. as a workaround, we take pre-fetched attributed text if any.
-        cell.statusView.setStatus(s.0, attributedText: s.1, baseURL: client.baseURL) {[weak self] a in
+        cell.statusView.setStatus(a.status, attributedText: a.attributedString, baseURL: client.baseURL) {[weak self] a in
             self?.present(AttachmentViewController(attachment: a), animated: true)}
         return cell
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let s = form[indexPath.section][indexPath.row].0
+        let s = formDiff.value(atIndexPath: indexPath).status
         let ac = UIAlertController(actionFor: s,
                                    safari: {[unowned self] in self.present($0, animated: true)},
                                    showAccount: {[unowned self] in _ = self.showUserVC(s)},
