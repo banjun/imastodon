@@ -35,6 +35,7 @@ final class StatusViewController: UITableViewController, ClientContainer {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.register(StatusTableViewCell.self, forCellReuseIdentifier: "StatusTableViewCell")
+        tableView.insetsContentViewsToSafeArea = false
         fetch()
     }
 

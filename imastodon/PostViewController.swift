@@ -25,15 +25,16 @@ class PostViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(white: 0, alpha: 0.5)
-        automaticallyAdjustsScrollViewInsets = false
 
-        let autolayout = contentView.northLayoutFormat(["p": 8], ["message": postField])
+        let autolayout = contentView.northLayoutFormat([:], ["message": postField])
         autolayout("H:|[message]|")
-        autolayout("V:|[message]-p-|")
+        autolayout("V:||[message]||")
+        postField.contentInsetAdjustmentBehavior = .always
 
-        let autolayoutVC = northLayoutFormat([:], ["content": contentView])
+        let autolayoutVC = northLayoutFormat([:], ["content": contentView, "bottom": UIView() ※ {$0.isHidden = true}])
         autolayoutVC("H:|[content]|")
-        autolayoutVC("V:|[content(==128)]")
+        autolayoutVC("V:||-128-[bottom]")
+        autolayoutVC("V:|[content][bottom]")
     }
 
     override func viewWillAppear(_ animated: Bool) {

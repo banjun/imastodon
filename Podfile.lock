@@ -4,10 +4,10 @@ PODS:
   - BrightFutures (6.0.0):
     - Result (~> 3.2.4)
   - Eureka (4.0.1)
-  - FootlessParser (0.4)
+  - FootlessParser (0.4.1)
   - IKEventSource (2.1.0)
   - Kingfisher (4.2.0)
-  - NorthLayout (4.0.0):
+  - NorthLayout (5.0.0):
     - FootlessParser (~> 0.4)
   - ReactiveSwift (2.0.1):
     - Result (~> 3.2)
@@ -44,10 +44,10 @@ SPEC CHECKSUMS:
   APIKit: 7460983f490d3bde6aaaaa4164d18c9865a6f91d
   BrightFutures: 9e7604f511aed9f0d6a49b04ac9b3fca6b117758
   Eureka: c8bd5cc07143b6f66268c208d28a246c99b41955
-  FootlessParser: 17af528d685057d7a48c3231bbe0a7babb163775
+  FootlessParser: 4705a9a740675b7439d9563f2fad83f7b84fc773
   IKEventSource: 7c5feabe9bc675ac0b8e63b076e136003cf42bff
   Kingfisher: 9ee7e788d8ba07c3f21ce0d43f33cec310a4f781
-  NorthLayout: f62ab0dd41bc4ba9178174a1a90fe2a3f097e53e
+  NorthLayout: 718fecaf16d90c82788e452b1280ff3d39c193c5
   ReactiveSwift: 60a29ff35988a964fd2bb759755cb6594de523fc
   Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
   SVProgressHUD: 59b2d3dabacbd051576d21d32293ca7228dc18b0

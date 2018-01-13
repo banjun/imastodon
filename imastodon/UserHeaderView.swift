@@ -38,36 +38,30 @@ final class UserHeaderView: UIView {
 
         let bg = MinView() ※ {$0.backgroundColor = UIColor(white: 0, alpha: 0.8)}
 
-        let headerLayout = northLayoutFormat(["p": 8], ["image": imageView, "bg": bg, "bio": bioLabel])
+        let headerLayout = northLayoutFormat([:], ["image": imageView, "bg": bg, "bio": bioLabel])
         headerLayout("H:|[image]|")
         headerLayout("H:[bg]|")
-        headerLayout("H:|-p-[bio]-p-|")
-        headerLayout("V:|[image]-p-[bio]")
-        headerLayout("V:|[bg(==image)]-p-[bio]")
-        headerLayout("V:[bio]-p-|")
-        addConstraint(NSLayoutConstraint(item: bg, attribute: .width, relatedBy: .lessThanOrEqual, toItem: self, attribute: .width, multiplier: 0.4, constant: 0))
+        headerLayout("H:||[bio]||")
+        headerLayout("V:|[image]-[bio]||")
+        headerLayout("V:|[bg]-[bio]")
+        bg.widthAnchor.constraint(lessThanOrEqualTo: widthAnchor, multiplier: 0.4).isActive = true
         bringSubview(toFront: bg)
 
         let iconWidth: CGFloat = 48
         iconView.layer.cornerRadius = iconWidth / 2
-        let bgLayout = bg.northLayoutFormat(["p": 8, "iconWidth": iconWidth], [
+        let bgLayout = bg.northLayoutFormat(["iconWidth": iconWidth], [
             "icon": iconView,
             "dname": displayNameLabel,
             "uname": usernameLabel,
             ])
-        bgLayout("H:|-(>=p)-[icon(==iconWidth)]-(>=p)-|")
-        bgLayout("H:|-p-[dname]-p-|")
-        bgLayout("H:|-p-[uname]-p-|")
-        bgLayout("V:|-p-[icon(==iconWidth)]-p-[dname]-p-[uname]-(>=p)-|")
-        bg.addConstraint(NSLayoutConstraint(item: iconView, attribute: .centerX, relatedBy: .equal, toItem: bg, attribute: .centerX, multiplier: 1, constant: 0))
+        bgLayout("H:||-(>=0)-[icon(==iconWidth)]-(>=0)-||")
+        bgLayout("H:||[dname]||")
+        bgLayout("H:||[uname]||")
+        bgLayout("V:||[icon(==iconWidth)]-[dname]-[uname]-(>=0)-||")
+        bg.layoutMarginsGuide.centerXAnchor.constraint(equalTo: iconView.centerXAnchor).isActive = true
 
-        imageView.setContentCompressionResistancePriority(.fittingSizeLevel, for: .vertical)
-        displayNameLabel.setContentCompressionResistancePriority(.required, for: .vertical)
-        usernameLabel.setContentCompressionResistancePriority(.required, for: .vertical)
         bioLabel.setContentCompressionResistancePriority(.required, for: .vertical)
         bioLabel.setContentHuggingPriority(.required, for: .vertical)
-
-        self.frame.size.height = max(frame.height, systemLayoutSizeFitting(UILayoutFittingCompressedSize).height)
     }
     required init?(coder aDecoder: NSCoder) {fatalError()}
 

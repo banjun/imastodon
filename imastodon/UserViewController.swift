@@ -138,6 +138,7 @@ extension UserViewController: UITableViewDataSource, UITableViewDelegate {
         timelineView.dataSource = self
         timelineView.delegate = self
         timelineView.register(StatusTableViewCell.self, forCellReuseIdentifier: "StatusTableViewCell")
+        timelineView.insetsContentViewsToSafeArea = false
 
         timelineView.separatorStyle = .none
         timelineView.showsVerticalScrollIndicator = false
@@ -174,7 +175,7 @@ extension UserViewController: UITableViewDataSource, UITableViewDelegate {
         }
         let cell = timelineView.dequeueReusableCell(withIdentifier: "StatusTableViewCell", for: indexPath) as! StatusTableViewCell
         let status = toots[indexPath.row]
-        cell.statusView.setStatus(status.0, attributedText: status.1, baseURL: nil)
+        cell.statusView.setStatus(status.0, attributedText: status.1, baseURL: client.baseURL)
         return cell
     }
 
@@ -202,6 +203,7 @@ extension UserViewController: UITableViewDataSource, UITableViewDelegate {
 extension UITableView {
     func layoutTableHeaderView() {
         guard let v = tableHeaderView else { return }
+        v.setNeedsUpdateConstraints() // update layout guides before estimating systemLayoutSizeFitting
         let h = v.systemLayoutSizeFitting(frame.size, withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel).height
         guard h != v.frame.height else { return }
         v.frame.size.height = h

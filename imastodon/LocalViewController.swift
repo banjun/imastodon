@@ -18,7 +18,7 @@ class LocalViewController: TimelineViewController, ClientContainer {
         self.client = Client(instanceAccount)!
         super.init(timelineEvents: timelineEvents, baseURL: instanceAccount.instance.baseURL)
         title = "Local@\(instanceAccount.instance.title) \(instanceAccount.account.display_name)"
-        toolbarItems = [UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(showPost))]
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(showPost))
     }
     required init?(coder aDecoder: NSCoder) {fatalError()}
 
@@ -36,7 +36,7 @@ class LocalViewController: TimelineViewController, ClientContainer {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setToolbarHidden(false, animated: animated)
+        navigationController?.setToolbarHidden(true, animated: animated)
     }
 
     override func viewDidAppear(_ animated: Bool) {

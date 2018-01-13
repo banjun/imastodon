@@ -184,11 +184,11 @@ extension TimelineViewController: UICollectionViewDelegateFlowLayout {
             layoutCell.statusView.setStatus(s, attributedText: a, baseURL: nil)
             if let a = a, a.length < 16 && constraint.width < size.width {
                 layoutCell.statusView.bodyLabel.preferredMaxLayoutWidth = size.width / 2 - 42
-                let layoutSize = layoutCell.systemLayoutSizeFitting(constraint, withHorizontalFittingPriority: UILayoutPriority.fittingSizeLevel, verticalFittingPriority: UILayoutPriority.fittingSizeLevel)
+                let layoutSize = layoutCell.contentView.systemLayoutSizeFitting(constraint, withHorizontalFittingPriority: UILayoutPriority.fittingSizeLevel, verticalFittingPriority: UILayoutPriority.fittingSizeLevel)
                 return CGSize(width: layoutSize.width, height: layoutSize.height)
             } else {
                 layoutCell.statusView.bodyLabel.preferredMaxLayoutWidth = size.width - 42
-                let layoutSize = layoutCell.systemLayoutSizeFitting(constraint, withHorizontalFittingPriority: UILayoutPriority.required, verticalFittingPriority: UILayoutPriority.fittingSizeLevel)
+                let layoutSize = layoutCell.contentView.systemLayoutSizeFitting(CGSize(width: size.width, height: constraint.height), withHorizontalFittingPriority: UILayoutPriority.required, verticalFittingPriority: UILayoutPriority.fittingSizeLevel)
                 return CGSize(width: size.width, height: layoutSize.height)
             }
         }
