@@ -57,7 +57,7 @@ extension Status {
 
 extension NSAttributedString {
     convenience init?(html: String) {
-        guard let data = ("<style>body{font-size: 16px;font-family:-apple-system, Sans-Serif;} p {margin:0;padding:0;display:inline;}</style>" + html).data(using: .utf8) else { return nil }
+        guard let data = ("<style>body {font:-apple-system-body;line-height:100%;} p {margin:0;padding:0;display:inline;}</style>" + html).data(using: .utf8) else { return nil }
         try? self.init(data: data,
                        options: [
                         .documentType: NSAttributedString.DocumentType.html,

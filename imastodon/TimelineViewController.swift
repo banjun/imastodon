@@ -55,10 +55,19 @@ class TimelineViewController: UICollectionViewController {
         return (s, sourceRect)
     })}
 
+    private var layoutCell = StatusCollectionViewCell(frame: .zero)
+    private let notificationLayoutCell = NotificationCollectionViewCell(frame: .zero)
+
     init(timelineEvents: [TimelineEvent] = [], baseURL: URL? = nil) {
         self.baseURL = baseURL
         self.timelineEvents = timelineEvents
         super.init(collectionViewLayout: layout)
+
+        NotificationCenter.default.addObserver(forName: .UIContentSizeCategoryDidChange, object: nil, queue: .main) { [weak self] _ in
+            // for NSAttributedString, label cannot be adjusted for size calculation corresponding to Dynamic Type Change.
+            // as a workaround, we re-create a cell.
+            self?.layoutCell = StatusCollectionViewCell(frame: .zero)
+        }
     }
     required init?(coder aDecoder: NSCoder) {fatalError()}
 
@@ -173,21 +182,22 @@ extension ClientContainer where Self: UIViewController {
     }
 }
 
-private let layoutCell = StatusCollectionViewCell(frame: .zero)
-private let notificationLayoutCell = NotificationCollectionViewCell(frame: .zero)
-
 extension TimelineViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let size = collectionView.bounds.size
 
         func statusSize(_ s: Status, _ a: NSAttributedString?, constraint: CGSize) -> CGSize {
             layoutCell.statusView.setStatus(s, attributedText: a, baseURL: nil)
-            if let a = a, a.length < 16 && constraint.width < size.width {
-                layoutCell.statusView.bodyLabel.preferredMaxLayoutWidth = size.width / 2 - 42
+            if let a = a, a.length < 24 && constraint.width < size.width {
+                let preferredLabelMaxWidth = size.width / 2 - 52
+                layoutCell.statusView.nameLabel.preferredMaxLayoutWidth = preferredLabelMaxWidth
+                layoutCell.statusView.bodyLabel.preferredMaxLayoutWidth = preferredLabelMaxWidth
                 let layoutSize = layoutCell.contentView.systemLayoutSizeFitting(constraint, withHorizontalFittingPriority: UILayoutPriority.fittingSizeLevel, verticalFittingPriority: UILayoutPriority.fittingSizeLevel)
                 return CGSize(width: layoutSize.width, height: layoutSize.height)
             } else {
-                layoutCell.statusView.bodyLabel.preferredMaxLayoutWidth = size.width - 42
+                let preferredLabelMaxWidth = size.width - 52
+                layoutCell.statusView.nameLabel.preferredMaxLayoutWidth = preferredLabelMaxWidth
+                layoutCell.statusView.bodyLabel.preferredMaxLayoutWidth = preferredLabelMaxWidth
                 let layoutSize = layoutCell.contentView.systemLayoutSizeFitting(CGSize(width: size.width, height: constraint.height), withHorizontalFittingPriority: UILayoutPriority.required, verticalFittingPriority: UILayoutPriority.fittingSizeLevel)
                 return CGSize(width: size.width, height: layoutSize.height)
             }
