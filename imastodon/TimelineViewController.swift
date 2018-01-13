@@ -2,6 +2,7 @@ import Foundation
 import SVProgressHUD
 import SafariServices
 import Ikemen
+import Dwifft
 
 enum TimelineEvent {
     case home(Status, NSAttributedString?) // as creating attributed text is heavy, cache it
@@ -40,9 +41,24 @@ enum TimelineEvent {
     var mainContentStatus: Status? {return status?.mainContentStatus}
 }
 
+extension TimelineEvent: Equatable {
+    static func == (lhs: TimelineEvent, rhs: TimelineEvent) -> Bool {
+        switch (lhs, rhs) {
+        case (.home(let l, _), .home(let r, _)): return l.id == r.id
+        case (.local(let l, _), .local(let r, _)): return l.id == r.id
+        case (.notification(let l, _), .notification(let r, _)): return l.id == r.id
+        case (.home, _), (.local, _), (.notification, _): return false
+        }
+    }
+}
+
 class TimelineViewController: UICollectionViewController {
     var baseURL: URL? // base url for images such as /avatars/original/missing.png
-    var timelineEvents: [TimelineEvent]
+    var timelineEvents: [TimelineEvent] {didSet {applyDwifft()}}
+    private(set) lazy var timelineDiff: CollectionViewDiffCalculator<Int, TimelineEvent> = .init(collectionView: self.collectionView)
+    private func applyDwifft() {
+        timelineDiff.sectionedValues = SectionedValues([(0, timelineEvents)])
+    }
     let layout = UICollectionViewFlowLayout() ※ { l in
         l.minimumLineSpacing = 0
         l.minimumInteritemSpacing = 0
@@ -50,7 +66,7 @@ class TimelineViewController: UICollectionViewController {
     private lazy var previewingDelegate: StatusPreviewingDelegate? = (self as? ClientContainer).map {StatusPreviewingDelegate(vc: self, client: $0.client, context: { [weak self] p in
         guard let collectionView = self?.collectionView,
             let indexPath = collectionView.indexPathForItem(at: p),
-            let event = self?.timelineEvent(indexPath),
+            let event = self?.timelineDiff.value(atIndexPath: indexPath),
             let sourceRect = collectionView.layoutAttributesForItem(at: indexPath)?.frame else { return nil }
         switch event {
         case let .home(s, a): return (s, a, sourceRect)
@@ -89,7 +105,6 @@ class TimelineViewController: UICollectionViewController {
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
         layout.invalidateLayout()
-        collectionView?.reloadData()
     }
 
     func append(_ events: [TimelineEvent]) {
@@ -102,24 +117,17 @@ class TimelineViewController: UICollectionViewController {
                         case (.home, .local):
                             // upgrade from home to local. (more public)
                             self.timelineEvents[old.offset] = e.cached
-                            self.collectionView?.reloadItems(at: [IndexPath(item: old.offset, section: 0)])
                         default: break
                         }
                         return true
                     }) else { return }
                     self.timelineEvents.insert(e.cached, at: 0)
-                    self.collectionView?.insertItems(at: [IndexPath(item: 0, section: 0)])
                 }
             }
 
         if self.timelineEvents.count > 100 {
             self.timelineEvents.removeLast(self.timelineEvents.count - 80)
-            collectionView?.reloadData()
         }
-    }
-
-    func timelineEvent(_ indexPath: IndexPath) -> TimelineEvent {
-        return timelineEvents[indexPath.row]
     }
 }
 
@@ -129,15 +137,15 @@ protocol ClientContainer {
 
 extension TimelineViewController {
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
+        return timelineDiff.numberOfSections()
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return timelineEvents.count
+        return timelineDiff.numberOfObjects(inSection: section)
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let e = timelineEvent(indexPath)
+        let e = timelineDiff.value(atIndexPath: indexPath)
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: e.cellID, for: indexPath)
         switch e {
         case let .home(s, a):
@@ -151,7 +159,7 @@ extension TimelineViewController {
     }
 
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let s = timelineEvent(indexPath).status else { return }
+        guard let s = timelineDiff.value(atIndexPath: indexPath).status else { return }
         let ac = UIAlertController(actionFor: s,
                                    safari: {[unowned self] in self.present($0, animated: true)},
                                    showAccount: {[unowned self] in _ = (self as? ClientContainer).map {self.show(UserViewController(fetcher: .account(client: $0.client, account: s.mainContentStatus.account)), sender: nil)}},
@@ -207,7 +215,7 @@ extension TimelineViewController: UICollectionViewDelegateFlowLayout {
             }
         }
 
-        let e = timelineEvent(indexPath)
+        let e = timelineDiff.value(atIndexPath: indexPath)
         switch e {
         case let .home(s, a): return statusSize(s, a, constraint: size)
         case let .local(s, a): return statusSize(s, a, constraint: UILayoutFittingCompressedSize)

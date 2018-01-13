@@ -120,7 +120,7 @@ class UnifiedViewController: TimelineViewController, ClientContainer {
 
     override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         // super.collectionView(collectionView, willDisplay: cell, forItemAt: indexPath)
-        let e = timelineEvent(indexPath)
+        let e = timelineDiff.value(atIndexPath: indexPath)
         switch e {
         case .home:
             cell.contentView.backgroundColor = UIColor(white: 0.95, alpha: 1.0)
