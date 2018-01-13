@@ -3,14 +3,14 @@ import Ikemen
 
 final class StatusViewController: UITableViewController, ClientContainer {
     let client: Client
-    let status: Status
+    let status: (Status, NSAttributedString?)
     var context: Context? {
         didSet {tableView.reloadData()}
     }
-    var form: [[Status]] {return [context?.ancestors, [status], context?.descendants].flatMap {$0}.filter {!$0.isEmpty}}
+    var form: [[(Status, NSAttributedString?)]] {return [context?.ancestors.map {($0, nil)}, [status], context?.descendants.map {($0, nil)}].flatMap {$0}.filter {!$0.isEmpty}}
 
     override var previewActionItems: [UIPreviewActionItem] {
-        let s = self.status.mainContentStatus
+        let s = self.status.0.mainContentStatus
         return [
             UIPreviewAction(title: "Show \(s.account.displayNameOrUserName)", style: .default) {[weak self] _, _ in
                 guard let `self` = self else { return }
@@ -23,7 +23,7 @@ final class StatusViewController: UITableViewController, ClientContainer {
     }
     weak var previewActionParentViewController: UIViewController?
 
-    init(client: Client, status: Status, previewActionParentViewController: UIViewController? = nil) {
+    init(client: Client, status: (Status, NSAttributedString?), previewActionParentViewController: UIViewController? = nil) {
         self.client = client
         self.status = status
         self.previewActionParentViewController = previewActionParentViewController
@@ -45,7 +45,7 @@ final class StatusViewController: UITableViewController, ClientContainer {
     }
 
     @objc func fetch() {
-        client.run(GetStatusContext(baseURL: client.baseURL, pathVars: .init(id: status.id.value)))
+        client.run(GetStatusContext(baseURL: client.baseURL, pathVars: .init(id: status.0.id.value)))
             .onSuccess {
                 switch $0 {
                 case let .http200_(c): self.context = c
@@ -68,14 +68,15 @@ final class StatusViewController: UITableViewController, ClientContainer {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "StatusTableViewCell", for: indexPath) as! StatusTableViewCell
         let s = form[indexPath.section][indexPath.row]
-        cell.statusView.setStatus(s, attributedText: nil, baseURL: client.baseURL) {[weak self] a in
+        // taking attributedText during initial phase of peek-pop cause flickering & flash bug. maybe NSAttributedString uses html parser that causes UI blocking operations. as a workaround, we take pre-fetched attributed text if any.
+        cell.statusView.setStatus(s.0, attributedText: s.1, baseURL: client.baseURL) {[weak self] a in
             self?.present(AttachmentViewController(attachment: a), animated: true)}
         return cell
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let s = form[indexPath.section][indexPath.row]
+        let s = form[indexPath.section][indexPath.row].0
         let ac = UIAlertController(actionFor: s,
                                    safari: {[unowned self] in self.present($0, animated: true)},
                                    showAccount: {[unowned self] in _ = self.showUserVC(s)},

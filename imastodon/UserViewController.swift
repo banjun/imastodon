@@ -63,9 +63,9 @@ final class UserViewController: UIViewController, ClientContainer {
     private lazy var previewingDelegate: StatusPreviewingDelegate = StatusPreviewingDelegate(vc: self, client: self.client, context: { [weak self] p in
         guard let indexPath = self?.timelineView.indexPathForRow(at: p),
             self?.currentUserSection == nil || indexPath.section != 0,
-            let s = self?.toots[indexPath.row].0,
+            let t = self?.toots[indexPath.row],
             let sourceRect = self?.timelineView.rectForRow(at: indexPath) else { return nil }
-        return (s, sourceRect)
+        return (t.0, t.1, sourceRect)
     })
 
     init(fetcher: Fetcher, isCurrentUser: Bool = false) {

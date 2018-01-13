@@ -2,9 +2,9 @@ import UIKit
 
 final class StatusPreviewingDelegate: NSObject, UIViewControllerPreviewingDelegate {
     let client: Client
-    let context: (CGPoint) -> (status: Status, sourceRect: CGRect)?
+    let context: (CGPoint) -> (status: Status, attributedText: NSAttributedString?, sourceRect: CGRect)?
     weak var vc: UIViewController?
-    init(vc: UIViewController?, client: Client, context: @escaping (CGPoint) -> (status: Status, sourceRect: CGRect)?) {
+    init(vc: UIViewController?, client: Client, context: @escaping (CGPoint) -> (status: Status, attributedText: NSAttributedString?, sourceRect: CGRect)?) {
         self.client = client
         self.context = context
         self.vc = vc
@@ -13,7 +13,7 @@ final class StatusPreviewingDelegate: NSObject, UIViewControllerPreviewingDelega
     func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
         guard let context = context(location) else { return nil }
         previewingContext.sourceRect = context.sourceRect
-        return StatusViewController(client: client, status: context.status, previewActionParentViewController: vc)
+        return StatusViewController(client: client, status: (context.status, context.attributedText), previewActionParentViewController: vc)
     }
 
     func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {

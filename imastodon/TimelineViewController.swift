@@ -50,9 +50,13 @@ class TimelineViewController: UICollectionViewController {
     private lazy var previewingDelegate: StatusPreviewingDelegate? = (self as? ClientContainer).map {StatusPreviewingDelegate(vc: self, client: $0.client, context: { [weak self] p in
         guard let collectionView = self?.collectionView,
             let indexPath = collectionView.indexPathForItem(at: p),
-            let s = self?.timelineEvent(indexPath).status,
+            let event = self?.timelineEvent(indexPath),
             let sourceRect = collectionView.layoutAttributesForItem(at: indexPath)?.frame else { return nil }
-        return (s, sourceRect)
+        switch event {
+        case let .home(s, a): return (s, a, sourceRect)
+        case let .local(s, a): return (s, a, sourceRect)
+        case .notification: return nil
+        }
     })}
 
     private var layoutCell = StatusCollectionViewCell(frame: .zero)
@@ -153,7 +157,7 @@ extension TimelineViewController {
                                    showAccount: {[unowned self] in _ = (self as? ClientContainer).map {self.show(UserViewController(fetcher: .account(client: $0.client, account: s.mainContentStatus.account)), sender: nil)}},
                                    boost: {[unowned self] in (self as? ClientContainer & UIViewController)?.boost(s)},
                                    favorite: {[unowned self] in (self as? ClientContainer & UIViewController)?.favorite(s)})
-        ac.addAction(UIAlertAction(title: "Show Toot", style: .default) {[unowned self] _ in (self as? ClientContainer).map {self.show(StatusViewController(client: $0.client, status: s), sender: nil)}})
+        ac.addAction(UIAlertAction(title: "Show Toot", style: .default) {[unowned self] _ in (self as? ClientContainer).map {self.show(StatusViewController(client: $0.client, status: (s, s.mainContentStatus.attributedTextContent)), sender: nil)}})
         ac.popoverPresentationController?.sourceView = collectionView
         ac.popoverPresentationController?.permittedArrowDirections = .any
         if let cell = collectionView.cellForItem(at: indexPath) as? StatusCollectionViewCell {
