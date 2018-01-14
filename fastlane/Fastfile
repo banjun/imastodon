@@ -14,7 +14,7 @@ platform :ios do
   lane :beta do |options|
     bump
     gym
-    pilot(changelog: options[:changelog], distribute_external: true)
+    pilot(changelog: options[:changelog], distribute_external: true, groups: ['External Testers'])
     push_to_git_remote
   end
 end
