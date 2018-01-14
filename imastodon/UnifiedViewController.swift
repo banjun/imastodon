@@ -98,7 +98,6 @@ class UnifiedViewController: TimelineViewController, ClientContainer {
             .onSuccess { ls, hs in
                 let events: [TimelineEvent] = ls.map {.local($0, nil)} + hs.map {.home($0, nil)}
                 self.append(events.sorted {($0.status?.createdAt?.timeIntervalSinceReferenceDate ?? 0) > ($1.status?.createdAt?.timeIntervalSinceReferenceDate ?? 0)})
-                self.collectionView?.reloadData()
             }.onFailure { e in
                 let ac = UIAlertController(title: "Error", message: e.localizedDescription, preferredStyle: .alert)
                 ac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
@@ -120,7 +119,7 @@ class UnifiedViewController: TimelineViewController, ClientContainer {
 
     override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         // super.collectionView(collectionView, willDisplay: cell, forItemAt: indexPath)
-        let e = timelineEvent(indexPath)
+        let e = timelineDiff.value(atIndexPath: indexPath)
         switch e {
         case .home:
             cell.contentView.backgroundColor = UIColor(white: 0.95, alpha: 1.0)

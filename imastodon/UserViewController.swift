@@ -1,6 +1,7 @@
 import UIKit
 import Eureka
 import Ikemen
+import Dwifft
 
 final class UserViewController: UIViewController, ClientContainer {
     var client: Client {
@@ -17,48 +18,50 @@ final class UserViewController: UIViewController, ClientContainer {
         didSet {
             headerView.setAccount(account, baseURL: client.baseURL)
 
-            if let currentUserSection = currentUserSection {
-                currentUserSection.removeAll()
-                currentUserSection.append(LabelRow {
+            currentUserSection = isCurrentUser ? [
+                LabelRow {
                     $0.title = (account.map {String($0.following_count)} ?? "-") + " Followings"
                     $0.cell.accessoryType = .disclosureIndicator
                     $0.onCellSelection {[weak self] _, _ in
                         guard let `self` = self, let account = self.account else { return }
                         self.show(FollowingsViewController(client: self.client, subject: account), sender: nil)}
-                })
-                currentUserSection.append(LabelRow {
+                },
+                LabelRow {
                     $0.title = (account.map {String($0.followers_count)} ?? "-") + " Followers"
                     $0.cell.accessoryType = .disclosureIndicator
                     $0.onCellSelection {[weak self] _, _ in
                         guard let `self` = self, let account = self.account else { return }
                         self.show(FollowersViewController(client: self.client, subject: account), sender: nil)}
-                })
-                currentUserSection.append(LabelRow {
+                },LabelRow {
                     $0.title = "⭐️ Favorites"
                     $0.cell.accessoryType = .disclosureIndicator
                     $0.onCellSelection {[weak self] _, _ in
                         guard let `self` = self else { return }
                         self.show(FavoritesViewController(client: self.client), sender: nil)}
-                })
-                currentUserSection.append(LabelRow {
+                },LabelRow {
                     $0.title = "🔔 Notifications"
                     $0.cell.accessoryType = .disclosureIndicator
                     $0.onCellSelection {[weak self] _, _ in
                         guard let `self` = self else { return }
                         self.show(NotificationsViewController(client: self.client), sender: nil)}
-                })
-                timelineView.reloadSections([0], with: .automatic)
-            }
+                }] : nil
 
             timelineView.layoutTableHeaderView()
         }
     }
     var isCurrentUser: Bool {return currentUserSection != nil}
-    private var currentUserSection: Section?
+    private var currentUserSection: [BaseRow]? {didSet {applyDwifft()}}
 
     private let headerView: UserHeaderView
     private let timelineView: UITableView
-    private var toots: [(Status, NSAttributedString?)] = [] // cache heavy attributed strings
+    private var toots: [(Status, NSAttributedString?)] = [] {didSet {applyDwifft()}} // cache heavy attributed strings
+    private lazy var tootsDiff: TableViewDiffCalculator<Int, String> = .init(tableView: self.timelineView)
+    fileprivate func applyDwifft() {
+        tootsDiff.sectionedValues = SectionedValues([
+            currentUserSection.map {(0, $0.enumerated().map {"currentUserSection.\($0)"})},
+            (1, toots.map {$0.0.id.value})]
+            .flatMap {$0})
+    }
 
     private lazy var previewingDelegate: StatusPreviewingDelegate = StatusPreviewingDelegate(vc: self, client: self.client, context: { [weak self] p in
         guard let indexPath = self?.timelineView.indexPathForRow(at: p),
@@ -70,10 +73,7 @@ final class UserViewController: UIViewController, ClientContainer {
 
     init(fetcher: Fetcher, isCurrentUser: Bool = false) {
         self.fetcher = fetcher
-        self.currentUserSection = isCurrentUser ? Section {
-            $0.header = HeaderFooterView(title: " ")
-            $0.footer = HeaderFooterView(title: " ")
-            } : nil
+        self.currentUserSection = isCurrentUser ? [] : nil
         self.headerView = UserHeaderView()
         self.timelineView = UITableView(frame: .zero, style: .plain)
         super.init(nibName: nil, bundle: nil)
@@ -126,7 +126,6 @@ final class UserViewController: UIViewController, ClientContainer {
     private func fetchAccountStatuses(client: Client, id: ID) -> Void {
         client.accountStatuses(accountID: id, includesPinnedStatuses: true).onSuccess {
             self.toots = $0.map {($0, $0.mainContentStatus.attributedTextContent)}
-            self.timelineView.reloadData()
         }
     }
 
@@ -138,6 +137,7 @@ extension UserViewController: UITableViewDataSource, UITableViewDelegate {
         timelineView.dataSource = self
         timelineView.delegate = self
         timelineView.register(StatusTableViewCell.self, forCellReuseIdentifier: "StatusTableViewCell")
+        applyDwifft()
         timelineView.insetsContentViewsToSafeArea = false
 
         timelineView.separatorStyle = .none
@@ -160,12 +160,12 @@ extension UserViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if let currentUserSection = currentUserSection, section == 0 { return currentUserSection.header?.title }
+        if isCurrentUser, section == 0 { return " " }
         return nil
     }
 
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        if let currentUserSection = currentUserSection, section == 0 { return currentUserSection.footer?.title }
+        if isCurrentUser, section == 0 { return " " }
         return nil
     }
 

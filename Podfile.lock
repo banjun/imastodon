@@ -3,6 +3,7 @@ PODS:
     - Result (~> 3.0)
   - BrightFutures (6.0.0):
     - Result (~> 3.2.4)
+  - Dwifft (0.8)
   - Eureka (4.0.1)
   - FootlessParser (0.4.1)
   - Kingfisher (4.6.1)
@@ -23,6 +24,7 @@ PODS:
 
 DEPENDENCIES:
   - BrightFutures
+  - Dwifft
   - Eureka
   - Kingfisher
   - NorthLayout
@@ -35,6 +37,7 @@ DEPENDENCIES:
 SPEC CHECKSUMS:
   APIKit: 7460983f490d3bde6aaaaa4164d18c9865a6f91d
   BrightFutures: 9e7604f511aed9f0d6a49b04ac9b3fca6b117758
+  Dwifft: 463e61d07322fdf83b32ee6975ca1b20708db746
   Eureka: c8bd5cc07143b6f66268c208d28a246c99b41955
   FootlessParser: 4705a9a740675b7439d9563f2fad83f7b84fc773
   Kingfisher: 1f9157d9c02b380cbd0b7cc890161195164eb634
@@ -47,6 +50,6 @@ SPEC CHECKSUMS:
   URITemplate: ace0c4c46dcf8afe6e89b4060621852886b15c3b
   ※ikemen: 0cf85af52790db21a846ad31abca356e99da1ffb
 
-PODFILE CHECKSUM: abf55965cec890c642fff1e8570972cd67978002
+PODFILE CHECKSUM: 2d908ba5e2e1eb48a001eaf4554e5fae346eae4b
 
 COCOAPODS: 1.3.1

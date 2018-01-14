@@ -1,3 +1,4 @@
+platform :ios, '11'
 use_frameworks!
 
 target 'imastodon' do
@@ -10,4 +11,5 @@ target 'imastodon' do
   pod 'ReactiveSSE'
   pod 'ReactiveSwift'
   pod 'SwiftBeaker'
+  pod 'Dwifft'
 end
