@@ -19,6 +19,7 @@
 		EA30246A200B84F40084FFD8 /* Mastodon.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA72DC741EF14E2B00B5A7CD /* Mastodon.swift */; };
 		EA30246B200B84F40084FFD8 /* MastodonHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB623AC1EF16AA500F7BE80 /* MastodonHelper.swift */; };
 		EA584F59200B8C1100D08656 /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE218BA1ED1615A001209F2 /* Client.swift */; };
+		EA584F5B200B98F800D08656 /* StatusCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA584F5A200B98F800D08656 /* StatusCellView.xib */; };
 		EA6429EC1FA50B18006A67C0 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6429EB1FA50B18006A67C0 /* FavoritesViewController.swift */; };
 		EA6429EE1FA5110D006A67C0 /* FollowingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6429ED1FA5110D006A67C0 /* FollowingsViewController.swift */; };
 		EA6429F01FA51738006A67C0 /* AccountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6429EF1FA51738006A67C0 /* AccountCell.swift */; };
@@ -62,6 +63,7 @@
 		EA302463200B80100084FFD8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		EA302465200B80100084FFD8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EA302466200B80100084FFD8 /* imastodon_mac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = imastodon_mac.entitlements; sourceTree = "<group>"; };
+		EA584F5A200B98F800D08656 /* StatusCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StatusCellView.xib; sourceTree = "<group>"; };
 		EA6429EB1FA50B18006A67C0 /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
 		EA6429ED1FA5110D006A67C0 /* FollowingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowingsViewController.swift; sourceTree = "<group>"; };
 		EA6429EF1FA51738006A67C0 /* AccountCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCell.swift; sourceTree = "<group>"; };
@@ -140,6 +142,7 @@
 				EA30245E200B80100084FFD8 /* ViewController.swift */,
 				EA302460200B80100084FFD8 /* Assets.xcassets */,
 				EA302462200B80100084FFD8 /* Main.storyboard */,
+				EA584F5A200B98F800D08656 /* StatusCellView.xib */,
 				EA302465200B80100084FFD8 /* Info.plist */,
 				EA302466200B80100084FFD8 /* imastodon_mac.entitlements */,
 			);
@@ -301,6 +304,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA302461200B80100084FFD8 /* Assets.xcassets in Resources */,
+				EA584F5B200B98F800D08656 /* StatusCellView.xib in Resources */,
 				EA302464200B80100084FFD8 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
