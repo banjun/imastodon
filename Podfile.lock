@@ -16,7 +16,7 @@ PODS:
     - Result (~> 3.2)
   - Result (3.2.4)
   - SVProgressHUD (2.2.2)
-  - SwiftBeaker (1.0.0):
+  - SwiftBeaker (1.0.1):
     - APIKit
     - URITemplate
   - URITemplate (2.0.3)
@@ -46,10 +46,10 @@ SPEC CHECKSUMS:
   ReactiveSwift: 5b26d2e988fe0eed2daf48c4054d1de74db50184
   Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
   SVProgressHUD: 59b2d3dabacbd051576d21d32293ca7228dc18b0
-  SwiftBeaker: c5e91c64394a15f095006c43172b8c06db263e46
+  SwiftBeaker: 49a89e7a664189936b6555738a38d066320ede9a
   URITemplate: ace0c4c46dcf8afe6e89b4060621852886b15c3b
   ※ikemen: 0cf85af52790db21a846ad31abca356e99da1ffb
 
-PODFILE CHECKSUM: a534e3d9953663e58f1c88a0440f6f21e45dcf25
+PODFILE CHECKSUM: ab5fece546de76bc6827d8e97b55cb52a8c6b1b5
 
 COCOAPODS: 1.3.1

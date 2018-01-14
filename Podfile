@@ -24,7 +24,7 @@ target 'imastodon-mac' do
   pod 'BrightFutures'
   pod 'ReactiveSSE'
   pod 'ReactiveSwift'
-  # pod 'SwiftBeaker' TODO: chore
+  pod 'SwiftBeaker'
   pod 'Dwifft'
 end
 
