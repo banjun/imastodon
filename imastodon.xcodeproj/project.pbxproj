@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1AA9E5D5D16230C8EA09FCAE /* Pods_imastodon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF693483815FAE1CC3AB6956 /* Pods_imastodon.framework */; };
+		BC21D433B90F4159776AE0E6 /* Pods_imastodon_mac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAC0BF8BE76D2E0BB1EC2987 /* Pods_imastodon_mac.framework */; };
 		EA0EDB4A1EE41FC400280536 /* Stream.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0EDB491EE41FC000280536 /* Stream.swift */; };
 		EA0EDB4C1EE429A600280536 /* TimelineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0EDB4B1EE429A600280536 /* TimelineViewController.swift */; };
 		EA2312241FA59B4F00526097 /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA2312231FA59B4F00526097 /* NotificationsViewController.swift */; };
@@ -44,8 +45,10 @@
 
 /* Begin PBXFileReference section */
 		3395940DED0D0BA0835EFD0E /* Pods-imastodon.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-imastodon.release.xcconfig"; path = "Pods/Target Support Files/Pods-imastodon/Pods-imastodon.release.xcconfig"; sourceTree = "<group>"; };
+		7518B5189A465B5CDC2E2350 /* Pods-imastodon-mac.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-imastodon-mac.release.xcconfig"; path = "Pods/Target Support Files/Pods-imastodon-mac/Pods-imastodon-mac.release.xcconfig"; sourceTree = "<group>"; };
 		7C138BF5F063A0B55F519D11 /* Pods-imastodon.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-imastodon.debug.xcconfig"; path = "Pods/Target Support Files/Pods-imastodon/Pods-imastodon.debug.xcconfig"; sourceTree = "<group>"; };
 		CF693483815FAE1CC3AB6956 /* Pods_imastodon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_imastodon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D907FF16E22400E775461EBC /* Pods-imastodon-mac.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-imastodon-mac.debug.xcconfig"; path = "Pods/Target Support Files/Pods-imastodon-mac/Pods-imastodon-mac.debug.xcconfig"; sourceTree = "<group>"; };
 		EA0EDB491EE41FC000280536 /* Stream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stream.swift; sourceTree = "<group>"; };
 		EA0EDB4B1EE429A600280536 /* TimelineViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineViewController.swift; sourceTree = "<group>"; };
 		EA2312231FA59B4F00526097 /* NotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewController.swift; sourceTree = "<group>"; };
@@ -84,6 +87,7 @@
 		EAE3BC3F1ED3373300B31AF5 /* PostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
 		EAFB332B1FA61A1C00BB12C5 /* StatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusViewController.swift; sourceTree = "<group>"; };
 		EAFB332D1FA6344500BB12C5 /* StatusPreviewingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusPreviewingDelegate.swift; sourceTree = "<group>"; };
+		FAC0BF8BE76D2E0BB1EC2987 /* Pods_imastodon_mac.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_imastodon_mac.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +95,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC21D433B90F4159776AE0E6 /* Pods_imastodon_mac.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -109,6 +114,7 @@
 			isa = PBXGroup;
 			children = (
 				CF693483815FAE1CC3AB6956 /* Pods_imastodon.framework */,
+				FAC0BF8BE76D2E0BB1EC2987 /* Pods_imastodon_mac.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -118,6 +124,8 @@
 			children = (
 				7C138BF5F063A0B55F519D11 /* Pods-imastodon.debug.xcconfig */,
 				3395940DED0D0BA0835EFD0E /* Pods-imastodon.release.xcconfig */,
+				D907FF16E22400E775461EBC /* Pods-imastodon-mac.debug.xcconfig */,
+				7518B5189A465B5CDC2E2350 /* Pods-imastodon-mac.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -207,9 +215,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = EA302469200B80100084FFD8 /* Build configuration list for PBXNativeTarget "imastodon-mac" */;
 			buildPhases = (
+				370ECB91D44A3F5F8BDD4A15 /* [CP] Check Pods Manifest.lock */,
 				EA302456200B80100084FFD8 /* Sources */,
 				EA302457200B80100084FFD8 /* Frameworks */,
 				EA302458200B80100084FFD8 /* Resources */,
+				A1B635027D4D913C7C894A65 /* [CP] Embed Pods Frameworks */,
+				5D85F814FD81DCBBD8BFA833 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -318,6 +329,24 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-imastodon/Pods-imastodon-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		370ECB91D44A3F5F8BDD4A15 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-imastodon-mac-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		5B5A2FDBB989939885304443 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -326,19 +355,19 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-imastodon/Pods-imastodon-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/APIKit/APIKit.framework",
-				"${BUILT_PRODUCTS_DIR}/BrightFutures/BrightFutures.framework",
-				"${BUILT_PRODUCTS_DIR}/Dwifft/Dwifft.framework",
+				"${BUILT_PRODUCTS_DIR}/BrightFutures-iOS/BrightFutures.framework",
+				"${BUILT_PRODUCTS_DIR}/Dwifft-iOS/Dwifft.framework",
 				"${BUILT_PRODUCTS_DIR}/Eureka/Eureka.framework",
-				"${BUILT_PRODUCTS_DIR}/FootlessParser/FootlessParser.framework",
-				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
-				"${BUILT_PRODUCTS_DIR}/NorthLayout/NorthLayout.framework",
-				"${BUILT_PRODUCTS_DIR}/ReactiveSSE/ReactiveSSE.framework",
-				"${BUILT_PRODUCTS_DIR}/ReactiveSwift/ReactiveSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/Result/Result.framework",
+				"${BUILT_PRODUCTS_DIR}/FootlessParser-iOS/FootlessParser.framework",
+				"${BUILT_PRODUCTS_DIR}/Kingfisher-iOS/Kingfisher.framework",
+				"${BUILT_PRODUCTS_DIR}/NorthLayout-iOS/NorthLayout.framework",
+				"${BUILT_PRODUCTS_DIR}/ReactiveSSE-iOS/ReactiveSSE.framework",
+				"${BUILT_PRODUCTS_DIR}/ReactiveSwift-iOS/ReactiveSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/Result-iOS/Result.framework",
 				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftBeaker/SwiftBeaker.framework",
 				"${BUILT_PRODUCTS_DIR}/URITemplate/URITemplate.framework",
-				"${BUILT_PRODUCTS_DIR}/※ikemen/Ikemen.framework",
+				"${BUILT_PRODUCTS_DIR}/※ikemen-iOS/Ikemen.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -360,6 +389,55 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-imastodon/Pods-imastodon-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5D85F814FD81DCBBD8BFA833 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-imastodon-mac/Pods-imastodon-mac-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A1B635027D4D913C7C894A65 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-imastodon-mac/Pods-imastodon-mac-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/BrightFutures-macOS/BrightFutures.framework",
+				"${BUILT_PRODUCTS_DIR}/Dwifft-macOS/Dwifft.framework",
+				"${BUILT_PRODUCTS_DIR}/FootlessParser-macOS/FootlessParser.framework",
+				"${BUILT_PRODUCTS_DIR}/Kingfisher-macOS/Kingfisher.framework",
+				"${BUILT_PRODUCTS_DIR}/NorthLayout-macOS/NorthLayout.framework",
+				"${BUILT_PRODUCTS_DIR}/ReactiveSSE-macOS/ReactiveSSE.framework",
+				"${BUILT_PRODUCTS_DIR}/ReactiveSwift-macOS/ReactiveSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/Result-macOS/Result.framework",
+				"${BUILT_PRODUCTS_DIR}/※ikemen-macOS/Ikemen.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BrightFutures.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Dwifft.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FootlessParser.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NorthLayout.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactiveSSE.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactiveSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Ikemen.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-imastodon-mac/Pods-imastodon-mac-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD174175ECEBE32229D17E94 /* [CP] Check Pods Manifest.lock */ = {
@@ -449,6 +527,7 @@
 /* Begin XCBuildConfiguration section */
 		EA302467200B80100084FFD8 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D907FF16E22400E775461EBC /* Pods-imastodon-mac.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -471,6 +550,7 @@
 		};
 		EA302468200B80100084FFD8 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7518B5189A465B5CDC2E2350 /* Pods-imastodon-mac.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";

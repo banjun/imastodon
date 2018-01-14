@@ -1,7 +1,8 @@
-platform :ios, '11'
 use_frameworks!
 
 target 'imastodon' do
+  platform :ios, '11'
+
   pod '※ikemen'
   pod 'NorthLayout'
   pod 'Eureka'
@@ -13,3 +14,17 @@ target 'imastodon' do
   pod 'SwiftBeaker'
   pod 'Dwifft'
 end
+
+target 'imastodon-mac' do
+  platform :osx, '10.13'
+
+  pod '※ikemen'
+  pod 'NorthLayout'
+  pod 'Kingfisher'
+  pod 'BrightFutures'
+  pod 'ReactiveSSE'
+  pod 'ReactiveSwift'
+  # pod 'SwiftBeaker' TODO: chore
+  pod 'Dwifft'
+end
+
