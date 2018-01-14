@@ -17,6 +17,7 @@ final class HeaderImageView: UIView, UIScrollViewDelegate {
         super.init(frame: frame)
 
         scrollView.delegate = self
+        scrollView.contentInsetAdjustmentBehavior = .never // the missing .vertical is what we need. adjust by manual contentInset and zoom scale
 
         let autolayout = northLayoutFormat([:], ["sv": scrollView])
         autolayout("H:|[sv]|")
@@ -35,12 +36,13 @@ final class HeaderImageView: UIView, UIScrollViewDelegate {
 
     override func layoutSubviews() {
         super.layoutSubviews()
+        scrollView.contentInset.top = scrollView.safeAreaInsets.top
 
         guard let image = imageView.image, image.size.width > 0, image.size.height > 0 else { return }
         UIView.performWithoutAnimation {
             scrollView.layoutIfNeeded() // update scroll view contentSize
             let aspectFillScale = max(bounds.size.width / image.size.width,
-                                      (bounds.size.height - scrollView.adjustedContentInset.top) / image.size.height)
+                                      (bounds.size.height - scrollView.contentInset.top) / image.size.height)
             scrollView.minimumZoomScale = aspectFillScale
             scrollView.maximumZoomScale = aspectFillScale
             scrollView.zoomScale = aspectFillScale

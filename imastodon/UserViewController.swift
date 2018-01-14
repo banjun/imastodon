@@ -46,13 +46,16 @@ final class UserViewController: UIViewController, ClientContainer {
                         self.show(NotificationsViewController(client: self.client), sender: nil)}
                 }] : nil
 
-            timelineView.layoutTableHeaderView()
+            updateHeaderHeight()
         }
     }
     var isCurrentUser: Bool {return currentUserSection != nil}
     private var currentUserSection: [BaseRow]? {didSet {applyDwifft()}}
 
     private let headerView: UserHeaderView
+    private lazy var headerTop = headerView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0) ※ {$0.isActive = true}
+    private lazy var headerHeight = headerView.heightAnchor.constraint(equalToConstant: 256) ※ {$0.isActive = true}
+    private var headerViewMinHeight: CGFloat = 0
     private let timelineView: UITableView
     private var toots: [(Status, NSAttributedString?)] = [] {didSet {applyDwifft()}} // cache heavy attributed strings
     private lazy var tootsDiff: TableViewDiffCalculator<Int, String> = .init(tableView: self.timelineView)
@@ -75,7 +78,7 @@ final class UserViewController: UIViewController, ClientContainer {
         self.fetcher = fetcher
         self.currentUserSection = isCurrentUser ? [] : nil
         self.headerView = UserHeaderView()
-        self.timelineView = UITableView(frame: .zero, style: .plain)
+        self.timelineView = UITableView(frame: .zero, style: .grouped)
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -86,12 +89,18 @@ final class UserViewController: UIViewController, ClientContainer {
     }
 
     override func loadView() {
-        view = timelineView
+        super.loadView()
+        let autolayout = northLayoutFormat([:], ["header": headerView, "timeline": timelineView])
+        autolayout("H:|[header]|")
+        autolayout("H:|[timeline]|")
+        autolayout("V:|[timeline]|")
+        view.bringSubview(toFront: headerView)
         loadTimelineView()
         registerForPreviewing(with: previewingDelegate, sourceView: timelineView)
 
         switch fetcher {
         case let .fetch(client, id):
+            updateHeaderHeight()
             fetchAccount(client: client, id: id)
             fetchAccountStatuses(client: client, id: id)
         case let .account(client, account):
@@ -105,9 +114,17 @@ final class UserViewController: UIViewController, ClientContainer {
         navigationController?.setToolbarHidden(true, animated: animated)
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        timelineView.layoutTableHeaderView()
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        coordinator.animate(alongsideTransition: {_ in self.updateHeaderHeight(viewSize: size)})
+    }
+
+    private func updateHeaderHeight(viewSize: CGSize? = nil) {
+        let constraints = [headerTop, headerHeight]
+        constraints.forEach {$0.isActive = false}
+        defer {constraints.forEach {$0.isActive = true}}
+        headerViewMinHeight = headerView.systemLayoutSizeFitting(viewSize ?? view.frame.size, withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel).height - headerView.safeAreaInsets.top
+        timelineView.contentInset.top = headerViewMinHeight
+        scrollViewDidScroll(timelineView)
     }
 
     private func fetchAccount(client: Client, id: ID) -> Void {
@@ -142,7 +159,6 @@ extension UserViewController: UITableViewDataSource, UITableViewDelegate {
 
         timelineView.separatorStyle = .none
         timelineView.showsVerticalScrollIndicator = false
-        timelineView.tableHeaderView = headerView
         timelineView.backgroundView = UILabel() ※ {
             $0.text = "Loading..."
             $0.font = .systemFont(ofSize: UIFont.smallSystemFontSize)
@@ -157,16 +173,6 @@ extension UserViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let currentUserSection = currentUserSection, section == 0 { return currentUserSection.count }
         return toots.count
-    }
-
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if isCurrentUser, section == 0 { return " " }
-        return nil
-    }
-
-    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        if isCurrentUser, section == 0 { return " " }
-        return nil
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -198,16 +204,10 @@ extension UserViewController: UITableViewDataSource, UITableViewDelegate {
         }
         present(ac, animated: true)
     }
-}
 
-extension UITableView {
-    func layoutTableHeaderView() {
-        guard let v = tableHeaderView else { return }
-        v.setNeedsUpdateConstraints() // update layout guides before estimating systemLayoutSizeFitting
-        let h = v.systemLayoutSizeFitting(frame.size, withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel).height
-        guard h != v.frame.height else { return }
-        v.frame.size.height = h
-        tableHeaderView = v
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let extend = -scrollView.contentOffset.y - scrollView.adjustedContentInset.top
+        headerTop.constant = min(0, extend) // allow scroll out from top bounds
+        headerHeight.constant = headerViewMinHeight + headerView.safeAreaInsets.top + max(0, extend) // allow extend height while bouncing scrolling down
     }
 }
-

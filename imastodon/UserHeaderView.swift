@@ -43,7 +43,7 @@ final class UserHeaderView: UIView {
         headerLayout("H:[bg]|")
         headerLayout("H:||[bio]||")
         headerLayout("V:|[image]-[bio]||")
-        headerLayout("V:|[bg]-[bio]")
+        headerLayout("V:|[bg]-[bio]||")
         bg.widthAnchor.constraint(lessThanOrEqualTo: widthAnchor, multiplier: 0.4).isActive = true
         bringSubview(toFront: bg)
 
@@ -71,6 +71,10 @@ final class UserHeaderView: UIView {
         displayNameLabel.text = account?.display_name
         usernameLabel.text = account.map {"@" + $0.acct}
         bioLabel.attributedText = account.flatMap {NSAttributedString(html: $0.note)}
+    }
+
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        return imageView.hitTest(point, with: event) // pass through label flick to parent scroll event
     }
 }
 
