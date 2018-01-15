@@ -10,7 +10,7 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView identifier="Status" id="c22-O7-iKe" customClass="StatusTableCellView" customModule="imastodon_mac" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="480" height="272"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
         </customView>
     </objects>
 </document>
