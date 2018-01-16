@@ -126,14 +126,14 @@ final class AutoLayoutLabel: NSTextField {
             "icon": iconView,
             "name": nameLabel,
             "body": bodyLabel])
-        autolayout("H:|[icon(==32)]-[name]|")
-        autolayout("H:|[body]|")
-        autolayout("V:|[icon(==32)][body]|")
-        autolayout("V:|[name][body]|")
+        autolayout("H:|-4-[icon(==32)]-4-[name]|")
+        autolayout("H:[icon]-4-[body]|")
+        autolayout("V:|-4-[icon(==32)]-(>=4)-|")
+        autolayout("V:|-4-[name][body]-(>=4)-|")
     }
 
     func setStatus(_ status: Status, widthConstraintConstant: CGFloat? = nil) {
-        _ = widthConstraintConstant.map {bodyLabel.preferredMaxLayoutWidth = $0}
+        _ = widthConstraintConstant.map {bodyLabel.preferredMaxLayoutWidth = $0 - 40}
 
         bodyLabel.stringValue = status.textContent
         nameLabel.stringValue = status.account.displayNameOrUserName
