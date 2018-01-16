@@ -11,6 +11,8 @@ final class InstanceAccountsWindowController: NSWindowController, NSTableViewDat
         tv.addTableColumn(accountsColumn)
         tv.dataSource = self
         tv.delegate = self
+        tv.target = self
+        tv.doubleAction = #selector(tableViewDidDoubleClick)
     }
     private lazy var accountsColumn: NSTableColumn = .init(identifier: .init("Account")) ※ { c in
         c.title = "\(StoreFile.shared.store.instanceAccounts.count) Accounts"
@@ -45,6 +47,10 @@ final class InstanceAccountsWindowController: NSWindowController, NSTableViewDat
     func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?, row: Int) -> Any? {
         let a = accounts[row]
         return "\(a.account.display_name) (@\(a.account.username)) at \(a.instance.title)"
+    }
+
+    @objc private func tableViewDidDoubleClick(_ sender: Any?) {
+        appDelegate.appendWindowControllerAndShowWindow(LocalTLWindowController(instanceAccount: accounts[accountsView.clickedRow]))
     }
 
     @objc private func addAccount() {

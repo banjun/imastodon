@@ -1,8 +1,11 @@
 import Cocoa
 
+let appDelegate = NSApp.delegate as! AppDelegate
+
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
     private lazy var instanceAccountsWindowController: InstanceAccountsWindowController = .init()
+    var windowControllers: [NSWindowController] = []
 
     func applicationDidFinishLaunching(_ notification: AppKit.Notification) {
     }
@@ -13,5 +16,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBAction func showInstanceAccounts(_ sender: Any?) {
         instanceAccountsWindowController.showWindow(self)
+    }
+
+    func appendWindowControllerAndShowWindow(_ wc: NSWindowController) {
+        windowControllers.append(wc)
+        wc.showWindow(self)
     }
 }

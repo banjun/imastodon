@@ -13,7 +13,6 @@
 		EA0EDB4C1EE429A600280536 /* TimelineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0EDB4B1EE429A600280536 /* TimelineViewController.swift */; };
 		EA2312241FA59B4F00526097 /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA2312231FA59B4F00526097 /* NotificationsViewController.swift */; };
 		EA30245D200B80100084FFD8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA30245C200B80100084FFD8 /* AppDelegate.swift */; };
-		EA30245F200B80100084FFD8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA30245E200B80100084FFD8 /* ViewController.swift */; };
 		EA302461200B80100084FFD8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA302460200B80100084FFD8 /* Assets.xcassets */; };
 		EA302464200B80100084FFD8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA302462200B80100084FFD8 /* Main.storyboard */; };
 		EA30246A200B84F40084FFD8 /* Mastodon.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA72DC741EF14E2B00B5A7CD /* Mastodon.swift */; };
@@ -23,6 +22,9 @@
 		EA584F5D200E2E6C00D08656 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA584F5C200E2E6C00D08656 /* Store.swift */; };
 		EA584F5F200E37AF00D08656 /* InstanceAccountsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA584F5E200E37AF00D08656 /* InstanceAccountsWindowController.swift */; };
 		EA584F61200E38EB00D08656 /* NewAccountWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA584F60200E38EB00D08656 /* NewAccountWindowController.swift */; };
+		EA584F63200E442D00D08656 /* LocalTLWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA584F62200E442D00D08656 /* LocalTLWindowController.swift */; };
+		EA584F65200E4B3700D08656 /* AutolayoutLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA584F64200E4B3700D08656 /* AutolayoutLabel.swift */; };
+		EA584F67200E4B5A00D08656 /* StatusTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA584F66200E4B5A00D08656 /* StatusTableCellView.swift */; };
 		EA6429EC1FA50B18006A67C0 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6429EB1FA50B18006A67C0 /* FavoritesViewController.swift */; };
 		EA6429EE1FA5110D006A67C0 /* FollowingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6429ED1FA5110D006A67C0 /* FollowingsViewController.swift */; };
 		EA6429F01FA51738006A67C0 /* AccountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6429EF1FA51738006A67C0 /* AccountCell.swift */; };
@@ -61,7 +63,6 @@
 		EA2312231FA59B4F00526097 /* NotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewController.swift; sourceTree = "<group>"; };
 		EA30245A200B80100084FFD8 /* imastodon-mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "imastodon-mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA30245C200B80100084FFD8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		EA30245E200B80100084FFD8 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		EA302460200B80100084FFD8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EA302463200B80100084FFD8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		EA302465200B80100084FFD8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -70,6 +71,9 @@
 		EA584F5C200E2E6C00D08656 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		EA584F5E200E37AF00D08656 /* InstanceAccountsWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceAccountsWindowController.swift; sourceTree = "<group>"; };
 		EA584F60200E38EB00D08656 /* NewAccountWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAccountWindowController.swift; sourceTree = "<group>"; };
+		EA584F62200E442D00D08656 /* LocalTLWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalTLWindowController.swift; sourceTree = "<group>"; };
+		EA584F64200E4B3700D08656 /* AutolayoutLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutolayoutLabel.swift; sourceTree = "<group>"; };
+		EA584F66200E4B5A00D08656 /* StatusTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusTableCellView.swift; sourceTree = "<group>"; };
 		EA6429EB1FA50B18006A67C0 /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
 		EA6429ED1FA5110D006A67C0 /* FollowingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowingsViewController.swift; sourceTree = "<group>"; };
 		EA6429EF1FA51738006A67C0 /* AccountCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCell.swift; sourceTree = "<group>"; };
@@ -146,9 +150,11 @@
 			children = (
 				EA30245C200B80100084FFD8 /* AppDelegate.swift */,
 				EA584F5C200E2E6C00D08656 /* Store.swift */,
-				EA30245E200B80100084FFD8 /* ViewController.swift */,
+				EA584F66200E4B5A00D08656 /* StatusTableCellView.swift */,
+				EA584F64200E4B3700D08656 /* AutolayoutLabel.swift */,
 				EA584F5E200E37AF00D08656 /* InstanceAccountsWindowController.swift */,
 				EA584F60200E38EB00D08656 /* NewAccountWindowController.swift */,
+				EA584F62200E442D00D08656 /* LocalTLWindowController.swift */,
 				EA302460200B80100084FFD8 /* Assets.xcassets */,
 				EA302462200B80100084FFD8 /* Main.storyboard */,
 				EA584F5A200B98F800D08656 /* StatusCellView.xib */,
@@ -489,12 +495,14 @@
 			files = (
 				EA30246B200B84F40084FFD8 /* MastodonHelper.swift in Sources */,
 				EA584F5D200E2E6C00D08656 /* Store.swift in Sources */,
-				EA30245F200B80100084FFD8 /* ViewController.swift in Sources */,
 				EA30246A200B84F40084FFD8 /* Mastodon.swift in Sources */,
+				EA584F63200E442D00D08656 /* LocalTLWindowController.swift in Sources */,
+				EA584F65200E4B3700D08656 /* AutolayoutLabel.swift in Sources */,
 				EA584F61200E38EB00D08656 /* NewAccountWindowController.swift in Sources */,
 				EA584F59200B8C1100D08656 /* Client.swift in Sources */,
 				EA30245D200B80100084FFD8 /* AppDelegate.swift in Sources */,
 				EA584F5F200E37AF00D08656 /* InstanceAccountsWindowController.swift in Sources */,
+				EA584F67200E4B5A00D08656 /* StatusTableCellView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
