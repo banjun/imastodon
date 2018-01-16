@@ -20,6 +20,9 @@
 		EA30246B200B84F40084FFD8 /* MastodonHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB623AC1EF16AA500F7BE80 /* MastodonHelper.swift */; };
 		EA584F59200B8C1100D08656 /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE218BA1ED1615A001209F2 /* Client.swift */; };
 		EA584F5B200B98F800D08656 /* StatusCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA584F5A200B98F800D08656 /* StatusCellView.xib */; };
+		EA584F5D200E2E6C00D08656 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA584F5C200E2E6C00D08656 /* Store.swift */; };
+		EA584F5F200E37AF00D08656 /* InstanceAccountsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA584F5E200E37AF00D08656 /* InstanceAccountsWindowController.swift */; };
+		EA584F61200E38EB00D08656 /* NewAccountWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA584F60200E38EB00D08656 /* NewAccountWindowController.swift */; };
 		EA6429EC1FA50B18006A67C0 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6429EB1FA50B18006A67C0 /* FavoritesViewController.swift */; };
 		EA6429EE1FA5110D006A67C0 /* FollowingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6429ED1FA5110D006A67C0 /* FollowingsViewController.swift */; };
 		EA6429F01FA51738006A67C0 /* AccountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6429EF1FA51738006A67C0 /* AccountCell.swift */; };
@@ -64,6 +67,9 @@
 		EA302465200B80100084FFD8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EA302466200B80100084FFD8 /* imastodon_mac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = imastodon_mac.entitlements; sourceTree = "<group>"; };
 		EA584F5A200B98F800D08656 /* StatusCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StatusCellView.xib; sourceTree = "<group>"; };
+		EA584F5C200E2E6C00D08656 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
+		EA584F5E200E37AF00D08656 /* InstanceAccountsWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceAccountsWindowController.swift; sourceTree = "<group>"; };
+		EA584F60200E38EB00D08656 /* NewAccountWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAccountWindowController.swift; sourceTree = "<group>"; };
 		EA6429EB1FA50B18006A67C0 /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
 		EA6429ED1FA5110D006A67C0 /* FollowingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowingsViewController.swift; sourceTree = "<group>"; };
 		EA6429EF1FA51738006A67C0 /* AccountCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCell.swift; sourceTree = "<group>"; };
@@ -139,7 +145,10 @@
 			isa = PBXGroup;
 			children = (
 				EA30245C200B80100084FFD8 /* AppDelegate.swift */,
+				EA584F5C200E2E6C00D08656 /* Store.swift */,
 				EA30245E200B80100084FFD8 /* ViewController.swift */,
+				EA584F5E200E37AF00D08656 /* InstanceAccountsWindowController.swift */,
+				EA584F60200E38EB00D08656 /* NewAccountWindowController.swift */,
 				EA302460200B80100084FFD8 /* Assets.xcassets */,
 				EA302462200B80100084FFD8 /* Main.storyboard */,
 				EA584F5A200B98F800D08656 /* StatusCellView.xib */,
@@ -479,10 +488,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA30246B200B84F40084FFD8 /* MastodonHelper.swift in Sources */,
+				EA584F5D200E2E6C00D08656 /* Store.swift in Sources */,
 				EA30245F200B80100084FFD8 /* ViewController.swift in Sources */,
 				EA30246A200B84F40084FFD8 /* Mastodon.swift in Sources */,
+				EA584F61200E38EB00D08656 /* NewAccountWindowController.swift in Sources */,
 				EA584F59200B8C1100D08656 /* Client.swift in Sources */,
 				EA30245D200B80100084FFD8 /* AppDelegate.swift in Sources */,
+				EA584F5F200E37AF00D08656 /* InstanceAccountsWindowController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

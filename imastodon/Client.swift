@@ -2,11 +2,11 @@ import BrightFutures
 import Foundation
 import APIKit
 
-enum AppError: Error {
+enum AppError: LocalizedError {
     case apikit(SessionTaskError)
     case eventstream(Error?)
 
-    var localizedDescription: String {
+    var errorDescription: String? {
         switch self {
         case let .apikit(.connectionError(e)): return "connectionError(\(e))"
         case let .apikit(.requestError(e)): return "requestError(\(e))"
