@@ -1,7 +1,7 @@
 import Cocoa
 import NorthLayout
 import Ikemen
-import Dwifft
+import Differ
 import ReactiveSSE
 import ReactiveSwift
 
@@ -26,10 +26,12 @@ final class LocalTLViewController: NSViewController, NSTableViewDataSource, NSTa
         sv.documentView = timelineView
     }
     private let timelineView = NSTableView(frame: .zero)
-    private lazy var timelineDiff: TableViewDiffCalculator<ID> = .init(tableView: self.timelineView)
-    private var timeline: [Status] = [] {didSet {applyDwifft()}}
-    private func applyDwifft() {
-        timelineDiff.rows = timeline.map {$0.id}
+    private var timeline: [Status] = [] {
+        didSet {
+            timelineView.animateRowAndSectionChanges(
+                oldData: oldValue.map {$0.id.value},
+                newData: timeline.map {$0.id.value})
+        }
     }
 
     init(instanceAccount: InstanceAccout) {
@@ -51,7 +53,6 @@ final class LocalTLViewController: NSViewController, NSTableViewDataSource, NSTa
         }
         timelineView.addTableColumn(tc)
         timelineView.register(NSNib(nibNamed: NSNib.Name(rawValue: "StatusCellView"), bundle: nil), forIdentifier: tc.identifier)
-        applyDwifft()
 
         let autolayout = view.northLayoutFormat([:], ["sv": scrollView])
         autolayout("H:|[sv(>=128)]|")
@@ -81,7 +82,7 @@ final class LocalTLViewController: NSViewController, NSTableViewDataSource, NSTa
     }
 
     func numberOfRows(in tableView: NSTableView) -> Int {
-        return timelineDiff.rows.count
+        return timeline.count
     }
 
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {

@@ -25,6 +25,6 @@ target 'imastodon-mac' do
   pod 'ReactiveSSE'
   pod 'ReactiveSwift'
   pod 'SwiftBeaker'
-  pod 'Dwifft'
+  pod 'Differ'
 end
 
