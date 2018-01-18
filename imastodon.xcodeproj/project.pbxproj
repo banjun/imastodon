@@ -378,7 +378,7 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-imastodon/Pods-imastodon-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/APIKit-iOS/APIKit.framework",
 				"${BUILT_PRODUCTS_DIR}/BrightFutures-iOS/BrightFutures.framework",
-				"${BUILT_PRODUCTS_DIR}/Dwifft-iOS/Dwifft.framework",
+				"${BUILT_PRODUCTS_DIR}/Dwifft/Dwifft.framework",
 				"${BUILT_PRODUCTS_DIR}/Eureka/Eureka.framework",
 				"${BUILT_PRODUCTS_DIR}/FootlessParser-iOS/FootlessParser.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher-iOS/Kingfisher.framework",
@@ -437,7 +437,6 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-imastodon-mac/Pods-imastodon-mac-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/APIKit-macOS/APIKit.framework",
 				"${BUILT_PRODUCTS_DIR}/BrightFutures-macOS/BrightFutures.framework",
-				"${BUILT_PRODUCTS_DIR}/Dwifft-macOS/Dwifft.framework",
 				"${BUILT_PRODUCTS_DIR}/FootlessParser-macOS/FootlessParser.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher-macOS/Kingfisher.framework",
 				"${BUILT_PRODUCTS_DIR}/NorthLayout-macOS/NorthLayout.framework",
@@ -447,12 +446,12 @@
 				"${BUILT_PRODUCTS_DIR}/SwiftBeaker-macOS/SwiftBeaker.framework",
 				"${BUILT_PRODUCTS_DIR}/URITemplate-macOS/URITemplate.framework",
 				"${BUILT_PRODUCTS_DIR}/※ikemen-macOS/Ikemen.framework",
+				"${BUILT_PRODUCTS_DIR}/Differ/Differ.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/APIKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BrightFutures.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Dwifft.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FootlessParser.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NorthLayout.framework",
@@ -462,6 +461,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftBeaker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/URITemplate.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Ikemen.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Differ.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

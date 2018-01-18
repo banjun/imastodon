@@ -1,9 +1,68 @@
 import Cocoa
 import NorthLayout
 import Ikemen
-import Dwifft
+import Differ
 import ReactiveSSE
 import ReactiveSwift
+
+public struct BatchUpdate {
+    public let deletions: IndexSet
+    public let insertions: IndexSet
+
+    public init(
+        diff: ExtendedDiff,
+        indexTransform: (Int) -> Int = { $0 }
+        ) {
+        deletions = IndexSet(diff.flatMap { element -> Int? in
+            switch element {
+            case let .delete(at):
+                return indexTransform(at)
+            default: return nil
+            }
+        })
+        insertions = IndexSet(diff.flatMap { element -> Int? in
+            switch element {
+            case let .insert(at):
+                return indexTransform(at)
+            default: return nil
+            }
+        })
+    }
+}
+
+extension NSTableView {
+    public func animateRowAndSectionChanges<T: Collection>(
+        oldData: T,
+        newData: T,
+        rowDeletionAnimation: AnimationOptions = .effectFade,
+        rowInsertionAnimation: AnimationOptions = .effectFade,
+        indexTransform: (Int) -> Int = { $0 }
+        )
+        where T.Iterator.Element: Collection,
+        T.Iterator.Element: Equatable,
+        T.Iterator.Element.Iterator.Element: Equatable {
+            apply(
+                oldData.extendedDiff(newData),
+                rowDeletionAnimation: rowDeletionAnimation,
+                rowInsertionAnimation: rowInsertionAnimation,
+                indexTransform: indexTransform
+            )
+    }
+
+    public func apply(
+        _ diff: ExtendedDiff,
+        rowDeletionAnimation: AnimationOptions = .effectFade,
+        rowInsertionAnimation: AnimationOptions = .effectFade,
+        indexTransform: (Int) -> Int
+        ) {
+
+        let update = BatchUpdate(diff: diff, indexTransform: indexTransform)
+        beginUpdates()
+        removeRows(at: update.deletions, withAnimation: rowDeletionAnimation)
+        insertRows(at: update.insertions, withAnimation: rowInsertionAnimation)
+        endUpdates()
+    }
+}
 
 final class LocalTLWindowController: NSWindowController {
     init(instanceAccount: InstanceAccout) {
@@ -26,10 +85,12 @@ final class LocalTLViewController: NSViewController, NSTableViewDataSource, NSTa
         sv.documentView = timelineView
     }
     private let timelineView = NSTableView(frame: .zero)
-    private lazy var timelineDiff: TableViewDiffCalculator<ID> = .init(tableView: self.timelineView)
-    private var timeline: [Status] = [] {didSet {applyDwifft()}}
-    private func applyDwifft() {
-        timelineDiff.rows = timeline.map {$0.id}
+    private var timeline: [Status] = [] {
+        didSet {
+            timelineView.animateRowAndSectionChanges(
+                oldData: oldValue.map {$0.id.value},
+                newData: timeline.map {$0.id.value})
+        }
     }
 
     init(instanceAccount: InstanceAccout) {
@@ -51,7 +112,6 @@ final class LocalTLViewController: NSViewController, NSTableViewDataSource, NSTa
         }
         timelineView.addTableColumn(tc)
         timelineView.register(NSNib(nibNamed: NSNib.Name(rawValue: "StatusCellView"), bundle: nil), forIdentifier: tc.identifier)
-        applyDwifft()
 
         let autolayout = view.northLayoutFormat([:], ["sv": scrollView])
         autolayout("H:|[sv(>=128)]|")
@@ -81,7 +141,7 @@ final class LocalTLViewController: NSViewController, NSTableViewDataSource, NSTa
     }
 
     func numberOfRows(in tableView: NSTableView) -> Int {
-        return timelineDiff.rows.count
+        return timeline.count
     }
 
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
