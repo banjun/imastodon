@@ -5,6 +5,7 @@ import Differ
 import ReactiveSSE
 import ReactiveSwift
 import ReactiveCocoa
+import Result
 
 final class LocalTLWindowController: NSWindowController {
     init(instanceAccount: InstanceAccout) {
@@ -20,18 +21,22 @@ final class LocalTLWindowController: NSWindowController {
     required init?(coder: NSCoder) {fatalError()}
 }
 
-struct TimelineViewModel {
+final class TimelineViewModel {
     let timeline = MutableProperty<[Status]>([])
     let filterText = MutableProperty<String>("")
-    var filterPredicate: Property<(Status) -> Bool> {return filterText.map { t in t.isEmpty ? {_ in true}
+    var filterPredicate: Property<((Status) -> Bool)?> {return filterText.map { t in t.isEmpty ? nil
         : {$0.mainContentStatus.textContent.range(
             of: t,
             options: [.caseInsensitive, .diacriticInsensitive, .widthInsensitive],
             locale: .current) != nil}
         }}
-    var filteredTimeline: Property<[Status]> {
-        return Property.combineLatest(timeline, filterPredicate) .map { timeline, filterPredicate in
-            timeline.filter(filterPredicate)}}
+    private(set) lazy var filteredTimeline = Property<[Status]>(initial: timeline.value, then:
+        filterPredicate.producer
+            .debounce(0.1, on: QueueScheduler.main)
+            .combineLatest(with: timeline)
+            .throttle(0.1, on: QueueScheduler.main)
+            // TODO: consider scan to apply filter only on inserted toots
+            .map {filterPredicate, timeline in filterPredicate.map {timeline.filter($0)} ?? timeline})
 }
 
 final class LocalTLViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
