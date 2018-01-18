@@ -47,6 +47,8 @@ final class LocalTLViewController: NSViewController, NSTableViewDataSource, NSTa
         timelineView.dataSource = self
         timelineView.delegate = self
         timelineView.headerView = nil
+        timelineView.target = self
+        timelineView.doubleAction = #selector(tableViewDidDoubleClick)
         //        timelineView.usesAutomaticRowHeights = true
         let tc = NSTableColumn() ※ {
             $0.identifier = NSUserInterfaceItemIdentifier(rawValue: "Status")
@@ -99,5 +101,11 @@ final class LocalTLViewController: NSViewController, NSTableViewDataSource, NSTa
     func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
         layoutCell.setStatus(timeline[row], baseURL: nil, widthConstraintConstant: scrollView.contentView.bounds.width)
         return layoutCell.fittingSize.height
+    }
+
+    @objc private func tableViewDidDoubleClick(_ sender: Any?) {
+        let s = timeline[timelineView.clickedRow]
+        guard let url = ((s.mainContentStatus.url ?? s.url).flatMap {URL(string: $0)}) else { return }
+        NSWorkspace.shared.open(url)
     }
 }
