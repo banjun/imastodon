@@ -26,5 +26,6 @@ target 'imastodon-mac' do
   pod 'ReactiveSwift'
   pod 'SwiftBeaker'
   pod 'Differ'
+  pod 'SwiftRichString'
 end
 
