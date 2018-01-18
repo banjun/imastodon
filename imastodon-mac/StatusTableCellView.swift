@@ -7,12 +7,14 @@ import Kingfisher
 @objc class StatusTableCellView: NSTableCellView {
     let iconView = NSImageView()
     let nameLabel = AutolayoutLabel() ※ { l in
-        l.textColor = .gray
+        l.font = .systemFont(ofSize: 14)
         l.isBezeled = false
+        l.drawsBackground = false
     }
     let bodyLabel = AutolayoutLabel() ※ { l in
-        l.textColor = .black
+        l.font = .systemFont(ofSize: 15)
         l.isBezeled = false
+        l.drawsBackground = false
     }
 
     override func awakeFromNib() {
@@ -35,6 +37,23 @@ import Kingfisher
         nameLabel.stringValue = status.account.displayNameOrUserName
         if let avatarURL = (baseURL.flatMap {status.account.avatarURL(baseURL: $0)}) {
             iconView.kf.setImage(with: avatarURL)
+        }
+    }
+
+    override var backgroundStyle: NSView.BackgroundStyle {
+        get {return super.backgroundStyle}
+        set {
+            super.backgroundStyle = newValue
+            switch newValue {
+            case .dark:
+                nameLabel.textColor = .white
+                bodyLabel.textColor = .white
+            case .light:
+                nameLabel.textColor = .gray
+                bodyLabel.textColor = .black
+            case .raised, .lowered:
+                break
+            }
         }
     }
 }
