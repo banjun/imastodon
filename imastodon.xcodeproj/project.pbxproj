@@ -48,6 +48,7 @@
 		EAE218BD1ED176B4001209F2 /* LocalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE218BC1ED176B4001209F2 /* LocalViewController.swift */; };
 		EAE218BF1ED176C4001209F2 /* StatusRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE218BE1ED176C4001209F2 /* StatusRow.swift */; };
 		EAE3BC401ED3373300B31AF5 /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE3BC3F1ED3373300B31AF5 /* PostViewController.swift */; };
+		EAE792A92010D1BB00E38831 /* Differ+AppKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE792A82010D1BB00E38831 /* Differ+AppKit.swift */; };
 		EAFB332C1FA61A1C00BB12C5 /* StatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAFB332B1FA61A1C00BB12C5 /* StatusViewController.swift */; };
 		EAFB332E1FA6344500BB12C5 /* StatusPreviewingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAFB332D1FA6344500BB12C5 /* StatusPreviewingDelegate.swift */; };
 /* End PBXBuildFile section */
@@ -100,6 +101,7 @@
 		EAE218BC1ED176B4001209F2 /* LocalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalViewController.swift; sourceTree = "<group>"; };
 		EAE218BE1ED176C4001209F2 /* StatusRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusRow.swift; sourceTree = "<group>"; };
 		EAE3BC3F1ED3373300B31AF5 /* PostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
+		EAE792A82010D1BB00E38831 /* Differ+AppKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Differ+AppKit.swift"; sourceTree = "<group>"; };
 		EAFB332B1FA61A1C00BB12C5 /* StatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusViewController.swift; sourceTree = "<group>"; };
 		EAFB332D1FA6344500BB12C5 /* StatusPreviewingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusPreviewingDelegate.swift; sourceTree = "<group>"; };
 		FAC0BF8BE76D2E0BB1EC2987 /* Pods_imastodon_mac.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_imastodon_mac.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -155,6 +157,7 @@
 				EA584F5E200E37AF00D08656 /* InstanceAccountsWindowController.swift */,
 				EA584F60200E38EB00D08656 /* NewAccountWindowController.swift */,
 				EA584F62200E442D00D08656 /* LocalTLWindowController.swift */,
+				EAE792A82010D1BB00E38831 /* Differ+AppKit.swift */,
 				EA302460200B80100084FFD8 /* Assets.xcassets */,
 				EA302462200B80100084FFD8 /* Main.storyboard */,
 				EA584F5A200B98F800D08656 /* StatusCellView.xib */,
@@ -495,6 +498,7 @@
 			files = (
 				EA30246B200B84F40084FFD8 /* MastodonHelper.swift in Sources */,
 				EA584F5D200E2E6C00D08656 /* Store.swift in Sources */,
+				EAE792A92010D1BB00E38831 /* Differ+AppKit.swift in Sources */,
 				EA30246A200B84F40084FFD8 /* Mastodon.swift in Sources */,
 				EA584F63200E442D00D08656 /* LocalTLWindowController.swift in Sources */,
 				EA584F65200E4B3700D08656 /* AutolayoutLabel.swift in Sources */,
