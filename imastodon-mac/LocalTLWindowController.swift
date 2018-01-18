@@ -42,6 +42,7 @@ final class LocalTLViewController: NSViewController, NSTableViewDataSource, NSTa
 
     override func loadView() {
         view = NSView()
+        view.wantsLayer = true
 
         timelineView.dataSource = self
         timelineView.delegate = self
