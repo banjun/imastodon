@@ -116,6 +116,11 @@ final class LocalTLViewController: NSViewController, NSTableViewDataSource, NSTa
         }
     }
 
+    override func viewWillAppear() {
+        super.viewWillAppear()
+        view.window?.initialFirstResponder = timelineView
+    }
+
     override func viewDidLayout() {
         super.viewDidLayout()
         timelineView.noteHeightOfRows(withIndexesChanged: NSIndexSet(indexesIn: timelineView.rows(in: scrollView.contentView.bounds)) as IndexSet)
@@ -144,6 +149,10 @@ final class LocalTLViewController: NSViewController, NSTableViewDataSource, NSTa
         let s = viewModel.filteredTimeline.value[timelineView.clickedRow]
         guard let url = ((s.mainContentStatus.url ?? s.url).flatMap {URL(string: $0)}) else { return }
         NSWorkspace.shared.open(url)
+    }
+
+    @IBAction func filter(_ sender: Any?) {
+        view.window?.makeFirstResponder(searchField)
     }
 
     @IBAction func post(_ sender: Any?) {
