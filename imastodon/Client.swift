@@ -103,9 +103,9 @@ struct Client {
 }
 
 extension Client {
-    func registerApp() -> Future<ClientApplication, AppError> {
+    func registerApp(clientName: String? = nil) -> Future<ClientApplication, AppError> {
         return run(RegisterApp(baseURL: baseURL, pathVars: .init(
-            client_name: "iM@STODON-banjun",
+            client_name: clientName ?? "imastodon-banjun",
             redirect_uris: "urn:ietf:wg:oauth:2.0:oob",
             scopes: "read write follow",
             website: "https://imastodon.banjun.jp/"))).map { r in
