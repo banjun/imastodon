@@ -55,6 +55,7 @@ final class LocalTLViewController: NSViewController, NSTableViewDataSource, NSTa
     private lazy var searchField: NSSearchField = .init() ※ { sf in
         sf.placeholderString = "Filter"
         viewModel.filterText <~ sf.reactive.continuousStringValues
+        sf.nextKeyView = timelineView
     }
     private let timelineView = NSTableView(frame: .zero)
 
