@@ -94,10 +94,15 @@ final class LocalTLViewController: NSViewController, NSTableViewDataSource, NSTa
         var req = URLRequest(url: URL(string: instanceAccount.instance.baseURL!.absoluteString + "/api/v1/streaming/public/local")!)
         req.addValue("Bearer \(instanceAccount.accessToken)", forHTTPHeaderField: "Authorization")
         ReactiveSSE(urlRequest: req).producer
+            .on(starting: {NSLog("%@", "starting ReactiveSSE for \(self.instanceAccount.instance.title)")},
+                started: {NSLog("%@", "started ReactiveSSE for \(self.instanceAccount.instance.title)")},
+                completed: {NSLog("%@", "completed ReactiveSSE for \(self.instanceAccount.instance.title)")},
+                terminated: {NSLog("%@", "terminated ReactiveSSE for \(self.instanceAccount.instance.title)")})
             .filter {$0.type == "update"}
             .filterMap {$0.data.data(using: .utf8)}
             .filterMap {try? JSONDecoder().decode(Status.self, from: $0)}
             .observe(on: UIScheduler())
+            .retry(upTo: 10, interval: 5, on: QueueScheduler.main)
             .startWithResult { [unowned self] r in
                 switch r {
                 case .success(let s):
