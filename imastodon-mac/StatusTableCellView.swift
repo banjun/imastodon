@@ -5,7 +5,9 @@ import Kingfisher
 
 // instantiated from xib
 @objc class StatusTableCellView: NSTableCellView {
-    let iconView = NSImageView()
+    let iconView = NSImageView() ※ { iv in
+        iv.animates = false // heavy GIF performance
+    }
     let nameLabel = AutolayoutLabel() ※ { l in
         l.font = .systemFont(ofSize: 14)
         l.isBezeled = false
