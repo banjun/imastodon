@@ -113,7 +113,8 @@
                                                 <action selector="runPageLayout:" target="Ady-hI-5gd" id="Din-rz-gC5"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Print…" keyEquivalent="p" id="aTl-1u-JFS">
+                                        <menuItem title="Print…" id="aTl-1u-JFS">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="print:" target="Ady-hI-5gd" id="qaZ-4w-aoO"/>
                                             </connections>
@@ -336,6 +337,18 @@
                                                     </menuItem>
                                                 </items>
                                             </menu>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
+                            <menuItem title="Mastodon" id="lrE-EH-aY4">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Mastodon" id="UvD-ot-nHq">
+                                    <items>
+                                        <menuItem title="Post Toot..." keyEquivalent="p" id="shT-y2-OZC">
+                                            <connections>
+                                                <action selector="post:" target="Ady-hI-5gd" id="OEE-PL-PrI"/>
+                                            </connections>
                                         </menuItem>
                                     </items>
                                 </menu>

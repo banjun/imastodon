@@ -12,6 +12,7 @@
 		EA0EDB4A1EE41FC400280536 /* Stream.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0EDB491EE41FC000280536 /* Stream.swift */; };
 		EA0EDB4C1EE429A600280536 /* TimelineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0EDB4B1EE429A600280536 /* TimelineViewController.swift */; };
 		EA2312241FA59B4F00526097 /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA2312231FA59B4F00526097 /* NotificationsViewController.swift */; };
+		EA2BBB95201225A900918725 /* PostWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA2BBB94201225A900918725 /* PostWindowController.swift */; };
 		EA30245D200B80100084FFD8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA30245C200B80100084FFD8 /* AppDelegate.swift */; };
 		EA302461200B80100084FFD8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA302460200B80100084FFD8 /* Assets.xcassets */; };
 		EA302464200B80100084FFD8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA302462200B80100084FFD8 /* Main.storyboard */; };
@@ -63,6 +64,7 @@
 		EA0EDB4B1EE429A600280536 /* TimelineViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineViewController.swift; sourceTree = "<group>"; };
 		EA2312231FA59B4F00526097 /* NotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewController.swift; sourceTree = "<group>"; };
 		EA2BBB932012244400918725 /* imastodon-mac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "imastodon-mac.entitlements"; sourceTree = "<group>"; };
+		EA2BBB94201225A900918725 /* PostWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostWindowController.swift; sourceTree = "<group>"; };
 		EA30245A200B80100084FFD8 /* imastodon-mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "imastodon-mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA30245C200B80100084FFD8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EA302460200B80100084FFD8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -159,6 +161,7 @@
 				EA584F5E200E37AF00D08656 /* InstanceAccountsWindowController.swift */,
 				EA584F60200E38EB00D08656 /* NewAccountWindowController.swift */,
 				EA584F62200E442D00D08656 /* LocalTLWindowController.swift */,
+				EA2BBB94201225A900918725 /* PostWindowController.swift */,
 				EAE792A82010D1BB00E38831 /* Differ+AppKit.swift */,
 				EA302460200B80100084FFD8 /* Assets.xcassets */,
 				EA302462200B80100084FFD8 /* Main.storyboard */,
@@ -518,6 +521,7 @@
 				EA30245D200B80100084FFD8 /* AppDelegate.swift in Sources */,
 				EA584F5F200E37AF00D08656 /* InstanceAccountsWindowController.swift in Sources */,
 				EA584F67200E4B5A00D08656 /* StatusTableCellView.swift in Sources */,
+				EA2BBB95201225A900918725 /* PostWindowController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

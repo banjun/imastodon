@@ -207,14 +207,14 @@ extension Client {
 }
 
 extension Client {
-    func post(message: String) -> Future<Status, AppError> {
+    func post(message: String, visibility: Visibility = .public) -> Future<Status, AppError> {
         return run(PostStatus(baseURL: baseURL, pathVars: .init(
             status: message,
             in_reply_to_id: nil,
             media_ids: nil,
             sensitive: nil,
             spoiler_text: nil,
-            visibility: "public"))).map { r in
+            visibility: visibility.rawValue))).map { r in
                 switch r {
                 case let .http200_(status): return status
                 }

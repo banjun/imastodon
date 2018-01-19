@@ -58,6 +58,8 @@ final class LocalTLViewController: NSViewController, NSTableViewDataSource, NSTa
     }
     private let timelineView = NSTableView(frame: .zero)
 
+    private lazy var postWindowController: PostWindowController = PostWindowController(instanceAccount: instanceAccount, visibility: .public)
+
     init(instanceAccount: InstanceAccout) {
         self.instanceAccount = instanceAccount
         super.init(nibName: nil, bundle: nil)
@@ -142,5 +144,10 @@ final class LocalTLViewController: NSViewController, NSTableViewDataSource, NSTa
         let s = viewModel.filteredTimeline.value[timelineView.clickedRow]
         guard let url = ((s.mainContentStatus.url ?? s.url).flatMap {URL(string: $0)}) else { return }
         NSWorkspace.shared.open(url)
+    }
+
+    @IBAction func post(_ sender: Any?) {
+        guard let sheet = postWindowController.window else { return }
+        view.window?.beginSheet(sheet)
     }
 }

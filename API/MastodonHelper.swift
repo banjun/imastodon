@@ -83,3 +83,7 @@ struct LoginSilentFormURLEncoded: APIBlueprintRequest {
         }
     }
 }
+
+enum Visibility: String {
+    case `public`, `unlisted`, `private`, `direct`
+}
