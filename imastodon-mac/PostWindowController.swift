@@ -4,7 +4,7 @@ import Ikemen
 import BrightFutures
 import Kingfisher
 
-final class PostWindowController: NSWindowController {
+final class PostWindowController: NSWindowController, NSTextViewDelegate {
     let instanceAccount: InstanceAccout
     let visibility: Visibility
 
@@ -31,7 +31,7 @@ final class PostWindowController: NSWindowController {
         b.keyEquivalent = "\u{1b}" // ESC
     }
     private lazy var postButton: NSButton = .init(title: "Toot", target: self, action: #selector(post)) ※ { b in
-        // b.keyEquivalent = "\r" // avoid post by mistake
+         b.keyEquivalent = "\r" // does not trigger when tootView is focused. safe enough not to post by mistake.
     }
 
     init(instanceAccount: InstanceAccout, visibility: Visibility) {
@@ -60,6 +60,8 @@ final class PostWindowController: NSWindowController {
         autolayout("H:|-p-[cancel]-(>=p)-[post(==cancel)]-p-|")
         autolayout("V:|-p-[icon(==32)]-[text(>=64)]-p-[cancel]-p-|")
         autolayout("V:|-p-[name]-(>=8)-[text]-p-[post]-p-|")
+
+        tootView.delegate = self
     }
 
     required init?(coder: NSCoder) {fatalError()}
@@ -80,5 +82,15 @@ final class PostWindowController: NSWindowController {
                 window.sheetParent?.endSheet(window, returnCode: .OK)
             }
             .onFailure {NSAlert(error: $0).beginSheetModal(for: window)}
+    }
+
+    func textView(_ textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
+        switch commandSelector {
+        case #selector(insertTab(_:)):
+            window?.selectNextKeyView(nil)
+            return true
+        default:
+            return false
+        }
     }
 }
