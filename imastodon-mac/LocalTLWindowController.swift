@@ -39,6 +39,10 @@ final class TimelineViewModel {
             // TODO: consider scan to apply filter only on inserted toots
             .map {filterPredicate, timeline in filterPredicate.map {timeline.filter($0)} ?? timeline}
             .observe(on: UIScheduler()))
+
+    func insert(status: Status) {
+        timeline.value = [status] + timeline.value.prefix(345)
+    }
 }
 
 final class LocalTLViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
@@ -98,7 +102,7 @@ final class LocalTLViewController: NSViewController, NSTableViewDataSource, NSTa
                 switch r {
                 case .success(let s):
                     // NSLog("%@", "\(s.textContent)")
-                    self.viewModel.timeline.value.insert(s, at: 0)
+                    self.viewModel.insert(status: s)
                 case .failure(let e):
                     NSLog("%@", "\(e)")
                 }
