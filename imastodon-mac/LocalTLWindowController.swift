@@ -106,9 +106,9 @@ final class LocalTLViewController: NSViewController, NSTableViewDataSource, NSTa
         var req = URLRequest(url: URL(string: instanceAccount.instance.baseURL!.absoluteString + "/api/v1/streaming/public/local")!)
         req.addValue("Bearer \(instanceAccount.accessToken)", forHTTPHeaderField: "Authorization")
         ReactiveSSE(urlRequest: req).producer
-            .logEvents(identifier: "\(Date()) \(instanceAccount.instance.title)",
-                events: [.starting, .started, .completed, .interrupted, .terminated, .disposed])
-            .retry(upTo: 10, interval: 5, on: QueueScheduler.main)
+            .logEvents(identifier: instanceAccount.instance.title,
+                events: [.starting, .started, .completed, .interrupted, .terminated, .disposed], logger: timestampEventLog)
+            .retry(throttling: 10)
             .take(duringLifetimeOf: self)
             .startWithSignal { signal, disposable in
                 signal.filter {$0.type == "update"}

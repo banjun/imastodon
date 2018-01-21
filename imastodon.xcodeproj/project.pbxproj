@@ -32,6 +32,8 @@
 		EA65F7C21F9E2AFE00071B4D /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65F7C11F9E2AFE00071B4D /* UserViewController.swift */; };
 		EA65F7C41F9F68F700071B4D /* HeaderImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65F7C31F9F68F700071B4D /* HeaderImageView.swift */; };
 		EAB868271EF6B4A700B38879 /* AttachmentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB868261EF6B4A700B38879 /* AttachmentViewController.swift */; };
+		EAC4F2422014FE5000A35E9D /* ReactiveExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC4F2412014FE5000A35E9D /* ReactiveExtension.swift */; };
+		EAC4F2432014FE5000A35E9D /* ReactiveExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC4F2412014FE5000A35E9D /* ReactiveExtension.swift */; };
 		EAC55F2E1ED07C5700CD567D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC55F2D1ED07C5700CD567D /* AppDelegate.swift */; };
 		EAC55F301ED07C5700CD567D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC55F2F1ED07C5700CD567D /* ViewController.swift */; };
 		EAC55F351ED07C5700CD567D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EAC55F341ED07C5700CD567D /* Assets.xcassets */; };
@@ -85,6 +87,7 @@
 		EA72DC741EF14E2B00B5A7CD /* Mastodon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mastodon.swift; sourceTree = "<group>"; };
 		EAB623AC1EF16AA500F7BE80 /* MastodonHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonHelper.swift; sourceTree = "<group>"; };
 		EAB868261EF6B4A700B38879 /* AttachmentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentViewController.swift; sourceTree = "<group>"; };
+		EAC4F2412014FE5000A35E9D /* ReactiveExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactiveExtension.swift; sourceTree = "<group>"; };
 		EAC55F2A1ED07C5700CD567D /* imastodon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = imastodon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAC55F2D1ED07C5700CD567D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EAC55F2F1ED07C5700CD567D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -237,6 +240,7 @@
 			isa = PBXGroup;
 			children = (
 				EAE218BA1ED1615A001209F2 /* Client.swift */,
+				EAC4F2412014FE5000A35E9D /* ReactiveExtension.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -528,6 +532,7 @@
 				EA584F5F200E37AF00D08656 /* InstanceAccountsWindowController.swift in Sources */,
 				EA584F67200E4B5A00D08656 /* StatusTableCellView.swift in Sources */,
 				EA2BBB95201225A900918725 /* PostWindowController.swift in Sources */,
+				EAC4F2432014FE5000A35E9D /* ReactiveExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -538,6 +543,7 @@
 				EA0EDB4A1EE41FC400280536 /* Stream.swift in Sources */,
 				EAB868271EF6B4A700B38879 /* AttachmentViewController.swift in Sources */,
 				EAE218B51ED15494001209F2 /* Store.swift in Sources */,
+				EAC4F2422014FE5000A35E9D /* ReactiveExtension.swift in Sources */,
 				EAE218B31ED147E2001209F2 /* LoginViewController.swift in Sources */,
 				EA6429EE1FA5110D006A67C0 /* FollowingsViewController.swift in Sources */,
 				EA6429F41FA5694E006A67C0 /* UserHeaderView.swift in Sources */,
