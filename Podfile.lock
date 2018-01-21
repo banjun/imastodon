@@ -12,7 +12,7 @@ PODS:
     - FootlessParser (~> 0.4)
   - ReactiveCocoa (7.1.0):
     - ReactiveSwift (~> 3.1)
-  - ReactiveSSE (0.1.0):
+  - ReactiveSSE (0.1.1):
     - FootlessParser (~> 0.4)
     - ReactiveSwift (~> 3.0)
   - ReactiveSwift (3.1.0):
@@ -51,7 +51,7 @@ SPEC CHECKSUMS:
   Kingfisher: 1f9157d9c02b380cbd0b7cc890161195164eb634
   NorthLayout: 718fecaf16d90c82788e452b1280ff3d39c193c5
   ReactiveCocoa: 105ad96f6b8711f1ee7d165fc96587479298053b
-  ReactiveSSE: 1a9bb744c8b2b2c14da6bb0dfb5007b133b04394
+  ReactiveSSE: 662bfc2c088c89aac810cc0bb079717d0f0a67bb
   ReactiveSwift: 5b26d2e988fe0eed2daf48c4054d1de74db50184
   Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
   SVProgressHUD: 59b2d3dabacbd051576d21d32293ca7228dc18b0

@@ -22,4 +22,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         windowControllers.append(wc)
         wc.showWindow(self)
     }
+
+    func removeWindowController(_ wc: NSWindowController) {
+        windowControllers = windowControllers.filter {$0 != wc}
+    }
 }

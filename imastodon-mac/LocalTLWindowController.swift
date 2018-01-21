@@ -16,9 +16,12 @@ final class LocalTLWindowController: NSWindowController {
         super.init(window: window)
         window.contentViewController = LocalTLViewController(instanceAccount: instanceAccount)
         window.title = "LocalTL @ \(instanceAccount.instance.title)"
+        NotificationCenter.default.reactive.notifications(forName: NSWindow.willCloseNotification, object: window)
+            .take(duringLifetimeOf: self)
+            .observeValues {[unowned self] _ in appDelegate.removeWindowController(self)}
     }
-
     required init?(coder: NSCoder) {fatalError()}
+    deinit {NSLog("%@", "deinit \(self)")}
 }
 
 final class TimelineViewModel {
@@ -70,6 +73,7 @@ final class LocalTLViewController: NSViewController, NSTableViewDataSource, NSTa
         super.init(nibName: nil, bundle: nil)
     }
     required init?(coder: NSCoder) {fatalError()}
+    deinit {NSLog("%@", "deinit \(self)")}
 
     override func loadView() {
         view = NSView()
@@ -101,11 +105,10 @@ final class LocalTLViewController: NSViewController, NSTableViewDataSource, NSTa
         var req = URLRequest(url: URL(string: instanceAccount.instance.baseURL!.absoluteString + "/api/v1/streaming/public/local")!)
         req.addValue("Bearer \(instanceAccount.accessToken)", forHTTPHeaderField: "Authorization")
         ReactiveSSE(urlRequest: req).producer
-            .on(starting: {NSLog("%@", "starting ReactiveSSE for \(self.instanceAccount.instance.title)")},
-                started: {NSLog("%@", "started ReactiveSSE for \(self.instanceAccount.instance.title)")},
-                completed: {NSLog("%@", "completed ReactiveSSE for \(self.instanceAccount.instance.title)")},
-                terminated: {NSLog("%@", "terminated ReactiveSSE for \(self.instanceAccount.instance.title)")})
+            .logEvents(identifier: "\(Date()) \(instanceAccount.instance.title)",
+                events: [.starting, .started, .completed, .interrupted, .terminated, .disposed])
             .retry(upTo: 10, interval: 5, on: QueueScheduler.main)
+            .take(duringLifetimeOf: self)
             .startWithSignal { signal, disposable in
                 signal.filter {$0.type == "update"}
                     .filterMap {$0.data.data(using: .utf8)}
