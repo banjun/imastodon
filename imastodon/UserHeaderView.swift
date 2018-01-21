@@ -2,6 +2,7 @@ import UIKit
 import Kingfisher
 import NorthLayout
 import Ikemen
+import API
 
 final class UserHeaderView: UIView {
     private let imageView = HeaderImageView() ※ {

@@ -2,6 +2,7 @@ import Cocoa
 import Ikemen
 import NorthLayout
 import Kingfisher
+import API
 
 // instantiated from xib
 @objc class StatusTableCellView: NSTableCellView {

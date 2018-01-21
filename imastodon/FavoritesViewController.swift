@@ -1,5 +1,6 @@
 import UIKit
 import Ikemen
+import API
 
 final class FavoritesViewController: UITableViewController, ClientContainer {
     let client: Client

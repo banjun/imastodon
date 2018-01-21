@@ -3,6 +3,7 @@ import NorthLayout
 import Ikemen
 import BrightFutures
 import Kingfisher
+import API
 
 final class PostWindowController: NSWindowController, NSTextViewDelegate {
     let instanceAccount: InstanceAccout

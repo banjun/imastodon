@@ -2,6 +2,7 @@ import UIKit
 import Eureka
 import Ikemen
 import Dwifft
+import API
 
 final class UserViewController: UIViewController, ClientContainer {
     var client: Client {

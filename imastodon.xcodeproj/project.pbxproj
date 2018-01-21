@@ -16,8 +16,6 @@
 		EA30245D200B80100084FFD8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA30245C200B80100084FFD8 /* AppDelegate.swift */; };
 		EA302461200B80100084FFD8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA302460200B80100084FFD8 /* Assets.xcassets */; };
 		EA302464200B80100084FFD8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA302462200B80100084FFD8 /* Main.storyboard */; };
-		EA30246A200B84F40084FFD8 /* Mastodon.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA72DC741EF14E2B00B5A7CD /* Mastodon.swift */; };
-		EA30246B200B84F40084FFD8 /* MastodonHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB623AC1EF16AA500F7BE80 /* MastodonHelper.swift */; };
 		EA584F59200B8C1100D08656 /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE218BA1ED1615A001209F2 /* Client.swift */; };
 		EA584F5B200B98F800D08656 /* StatusCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA584F5A200B98F800D08656 /* StatusCellView.xib */; };
 		EA584F5D200E2E6C00D08656 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA584F5C200E2E6C00D08656 /* Store.swift */; };
@@ -33,8 +31,6 @@
 		EA6429F41FA5694E006A67C0 /* UserHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6429F31FA5694E006A67C0 /* UserHeaderView.swift */; };
 		EA65F7C21F9E2AFE00071B4D /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65F7C11F9E2AFE00071B4D /* UserViewController.swift */; };
 		EA65F7C41F9F68F700071B4D /* HeaderImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65F7C31F9F68F700071B4D /* HeaderImageView.swift */; };
-		EA72DC751EF14E3A00B5A7CD /* Mastodon.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA72DC741EF14E2B00B5A7CD /* Mastodon.swift */; };
-		EAB623AD1EF16AA500F7BE80 /* MastodonHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB623AC1EF16AA500F7BE80 /* MastodonHelper.swift */; };
 		EAB868271EF6B4A700B38879 /* AttachmentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB868261EF6B4A700B38879 /* AttachmentViewController.swift */; };
 		EAC55F2E1ED07C5700CD567D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC55F2D1ED07C5700CD567D /* AppDelegate.swift */; };
 		EAC55F301ED07C5700CD567D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC55F2F1ED07C5700CD567D /* ViewController.swift */; };
@@ -397,6 +393,7 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-imastodon/Pods-imastodon-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/API-iOS/API.framework",
 				"${BUILT_PRODUCTS_DIR}/APIKit-iOS/APIKit.framework",
 				"${BUILT_PRODUCTS_DIR}/BrightFutures-iOS/BrightFutures.framework",
 				"${BUILT_PRODUCTS_DIR}/Dwifft/Dwifft.framework",
@@ -414,6 +411,7 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/API.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/APIKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BrightFutures.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Dwifft.framework",
@@ -456,6 +454,7 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-imastodon-mac/Pods-imastodon-mac-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/API-macOS/API.framework",
 				"${BUILT_PRODUCTS_DIR}/APIKit-macOS/APIKit.framework",
 				"${BUILT_PRODUCTS_DIR}/BrightFutures-macOS/BrightFutures.framework",
 				"${BUILT_PRODUCTS_DIR}/FootlessParser-macOS/FootlessParser.framework",
@@ -473,6 +472,7 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/API.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/APIKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BrightFutures.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FootlessParser.framework",
@@ -518,10 +518,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EA30246B200B84F40084FFD8 /* MastodonHelper.swift in Sources */,
 				EA584F5D200E2E6C00D08656 /* Store.swift in Sources */,
 				EAE792A92010D1BB00E38831 /* Differ+AppKit.swift in Sources */,
-				EA30246A200B84F40084FFD8 /* Mastodon.swift in Sources */,
 				EA584F63200E442D00D08656 /* LocalTLWindowController.swift in Sources */,
 				EA584F65200E4B3700D08656 /* AutolayoutLabel.swift in Sources */,
 				EA584F61200E38EB00D08656 /* NewAccountWindowController.swift in Sources */,
@@ -549,8 +547,6 @@
 				EAE218BF1ED176C4001209F2 /* StatusRow.swift in Sources */,
 				EAFB332C1FA61A1C00BB12C5 /* StatusViewController.swift in Sources */,
 				EA65F7C21F9E2AFE00071B4D /* UserViewController.swift in Sources */,
-				EAB623AD1EF16AA500F7BE80 /* MastodonHelper.swift in Sources */,
-				EA72DC751EF14E3A00B5A7CD /* Mastodon.swift in Sources */,
 				EAC55F301ED07C5700CD567D /* ViewController.swift in Sources */,
 				EA65F7C41F9F68F700071B4D /* HeaderImageView.swift in Sources */,
 				EA6429EC1FA50B18006A67C0 /* FavoritesViewController.swift in Sources */,

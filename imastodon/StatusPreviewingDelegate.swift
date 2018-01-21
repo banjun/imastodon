@@ -1,4 +1,5 @@
 import UIKit
+import API
 
 final class StatusPreviewingDelegate: NSObject, UIViewControllerPreviewingDelegate {
     let client: Client

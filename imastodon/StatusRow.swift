@@ -1,6 +1,7 @@
 import Kingfisher
 import Ikemen
 import NorthLayout
+import API
 
 extension Status: Equatable {
     public static func == (lhs: Status, rhs: Status) -> Bool {
@@ -365,7 +366,7 @@ final class NotificationView: UIView {
         iconView.image = nil
     }
 
-    func setNotification(_ notification: Notification, text: String?, baseURL: URL?) {
+    func setNotification(_ notification: API.Notification, text: String?, baseURL: URL?) {
         if let avatarURL = notification.account.avatarURL(baseURL: baseURL) {
             iconView.kf.setImageWithStub(avatarURL)
         }

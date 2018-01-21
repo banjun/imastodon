@@ -3,11 +3,12 @@ import SVProgressHUD
 import SafariServices
 import Ikemen
 import Dwifft
+import API
 
 enum TimelineEvent {
     case home(Status, NSAttributedString?) // as creating attributed text is heavy, cache it
     case local(Status, NSAttributedString?) // as creating attributed text is heavy, cache it
-    case notification(Notification, String?) // as creating attributed text is buggy, cache it
+    case notification(API.Notification, String?) // as creating attributed text is buggy, cache it
 
     var cached: TimelineEvent {
         switch self {

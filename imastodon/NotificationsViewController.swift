@@ -1,9 +1,10 @@
 import UIKit
 import Ikemen
+import API
 
 final class NotificationsViewController: UITableViewController, ClientContainer {
     let client: Client
-    private var notifications: [Notification] = [] {
+    private var notifications: [API.Notification] = [] {
         didSet {
             tableView.reloadData()
         }

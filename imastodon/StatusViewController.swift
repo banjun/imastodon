@@ -1,6 +1,7 @@
 import UIKit
 import Ikemen
 import Dwifft
+import API
 
 struct AttributedStatus: Equatable {
     var status: Status

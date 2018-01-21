@@ -1,14 +1,15 @@
 import Foundation
 import ReactiveSSE
 import ReactiveSwift
+import API
 
 class Stream {
     let source: ReactiveSSE
     var lifetimeToken: Lifetime.Token?
     let updateSignal: Signal<Event, AppError>
     private let updateObserver: Signal<Event, AppError>.Observer
-    let notificationSignal: Signal<Notification, AppError>
-    private let notificationObserver: Signal<Notification, AppError>.Observer
+    let notificationSignal: Signal<API.Notification, AppError>
+    private let notificationObserver: Signal<API.Notification, AppError>.Observer
     
     enum Event {
         case open
@@ -24,7 +25,7 @@ class Stream {
 
     init(endpoint: URL, token: String) {
         (updateSignal, updateObserver) = Signal<Event, AppError>.pipe()
-        (notificationSignal, notificationObserver) = Signal<Notification, AppError>.pipe()
+        (notificationSignal, notificationObserver) = Signal<API.Notification, AppError>.pipe()
 
         let (lifetime, lifetimeToken) = Lifetime.make()
         self.lifetimeToken = lifetimeToken
@@ -54,9 +55,9 @@ class Stream {
                     .observe(updateObserver)
 
                 signal.filter {$0.0 == "notification"}
-                    .flatMap(.concat) { _, d -> SignalProducer<Notification, AppError> in
+                    .flatMap(.concat) { _, d -> SignalProducer<API.Notification, AppError> in
                         do {
-                            return .init(value: try JSONDecoder().decode(Notification.self, from: d))
+                            return .init(value: try JSONDecoder().decode(API.Notification.self, from: d))
                         } catch {
                             NSLog("%@", "EventSource event notification, failed to parse with error \(error): \(String(describing: String(data: d, encoding: .utf8)))")
                             return .init(error: .eventstream(error))

@@ -2,6 +2,7 @@ use_frameworks!
 
 target 'imastodon' do
   platform :ios, '11'
+  pod 'API', path: '.'
 
   pod '※ikemen'
   pod 'NorthLayout'
@@ -11,12 +12,12 @@ target 'imastodon' do
   pod 'BrightFutures'
   pod 'ReactiveSSE'
   pod 'ReactiveSwift'
-  pod 'SwiftBeaker'
   pod 'Dwifft'
 end
 
 target 'imastodon-mac' do
   platform :osx, '10.13'
+  pod 'API', path: '.'
 
   pod '※ikemen'
   pod 'NorthLayout'

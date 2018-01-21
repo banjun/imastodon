@@ -1,9 +1,10 @@
 import BrightFutures
 import Foundation
 import APIKit
-#if os(osx)
+#if os(OSX)
 import SwiftRichString
 #endif
+import API
 
 enum AppError: LocalizedError {
     case apikit(SessionTaskError)
@@ -20,7 +21,7 @@ enum AppError: LocalizedError {
 }
 
 struct InstanceAccout: Codable {
-    var instance: Instance
+    var instance: API.Instance
     var account: Account
     var accessToken: String
 }
@@ -61,7 +62,7 @@ extension Status {
 extension NSAttributedString {
     convenience init?(html: String) {
         // TODO: unify logic for platforms
-        #if !os(osx)
+        #if !os(OSX)
             guard let data = ("<style>body {font:-apple-system-body;line-height:100%;} p {margin:0;padding:0;display:inline;}</style>" + html).data(using: .utf8) else { return nil }
             try? self.init(data: data,
                            options: [

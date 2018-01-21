@@ -1,5 +1,6 @@
 import UIKit
 import Ikemen
+import API
 
 final class FollowingsViewController: UITableViewController, ClientContainer {
     let client: Client

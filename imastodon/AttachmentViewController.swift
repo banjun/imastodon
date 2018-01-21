@@ -2,6 +2,7 @@ import UIKit
 import Kingfisher
 import Ikemen
 import NorthLayout
+import API
 
 final class AttachmentViewController: UIViewController, UIGestureRecognizerDelegate {
     private let imageCache: ImageCache

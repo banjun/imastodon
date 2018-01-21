@@ -93,17 +93,22 @@ public class Indirect<V: Codable>: Codable {
 // MARK: - Transitions
 
 
-struct GetInstance: APIBlueprintRequest {
-    let baseURL: URL
-    var method: HTTPMethod {return .get}
+public struct GetInstance: APIBlueprintRequest {
+    public let baseURL: URL
+    public var method: HTTPMethod {return .get}
 
-    var path: String {return "/api/v1/instance"}
+    public var path: String {return "/api/v1/instance"}
 
-    enum Responses {
+    public enum Responses {
         case http200_(Instance)
     }
 
-    func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Responses {
+    // public memberwise init
+    public init(baseURL: URL) {
+        self.baseURL = baseURL
+    }
+
+    public func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Responses {
         let contentType = contentMIMEType(in: urlResponse)
         switch (urlResponse.statusCode, contentType) {
         case (200, _):
@@ -115,23 +120,34 @@ struct GetInstance: APIBlueprintRequest {
 }
 
 
-struct GetAccount: APIBlueprintRequest, URITemplateRequest {
-    let baseURL: URL
-    var method: HTTPMethod {return .get}
+public struct GetAccount: APIBlueprintRequest, URITemplateRequest {
+    public let baseURL: URL
+    public var method: HTTPMethod {return .get}
 
-    let path = "" // see intercept(urlRequest:)
+    public let path = "" // see intercept(urlRequest:)
     static let pathTemplate: URITemplate = "/api/v1/accounts/{id}"
-    var pathVars: PathVars
-    struct PathVars: URITemplateContextConvertible {
+    public var pathVars: PathVars
+    public struct PathVars: URITemplateContextConvertible {
         /// 
-        var id: String
+        public var id: String
+
+        // public memberwise init
+        public init(id: String) {
+            self.id = id
+        }
     }
 
-    enum Responses {
+    public enum Responses {
         case http200_(Account)
     }
 
-    func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Responses {
+    // public memberwise init
+    public init(baseURL: URL, pathVars: PathVars) {
+        self.baseURL = baseURL
+        self.pathVars = pathVars
+    }
+
+    public func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Responses {
         let contentType = contentMIMEType(in: urlResponse)
         switch (urlResponse.statusCode, contentType) {
         case (200, _):
@@ -143,17 +159,22 @@ struct GetAccount: APIBlueprintRequest, URITemplateRequest {
 }
 
 
-struct GetCurrentUser: APIBlueprintRequest {
-    let baseURL: URL
-    var method: HTTPMethod {return .get}
+public struct GetCurrentUser: APIBlueprintRequest {
+    public let baseURL: URL
+    public var method: HTTPMethod {return .get}
 
-    var path: String {return "/api/v1/accounts/verify_credentials"}
+    public var path: String {return "/api/v1/accounts/verify_credentials"}
 
-    enum Responses {
+    public enum Responses {
         case http200_(Account)
     }
 
-    func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Responses {
+    // public memberwise init
+    public init(baseURL: URL) {
+        self.baseURL = baseURL
+    }
+
+    public func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Responses {
         let contentType = contentMIMEType(in: urlResponse)
         switch (urlResponse.statusCode, contentType) {
         case (200, _):
@@ -165,35 +186,52 @@ struct GetCurrentUser: APIBlueprintRequest {
 }
 
 
-struct GetAccountsStatuses: APIBlueprintRequest, URITemplateRequest {
-    let baseURL: URL
-    var method: HTTPMethod {return .get}
+public struct GetAccountsStatuses: APIBlueprintRequest, URITemplateRequest {
+    public let baseURL: URL
+    public var method: HTTPMethod {return .get}
 
-    let path = "" // see intercept(urlRequest:)
+    public let path = "" // see intercept(urlRequest:)
     static let pathTemplate: URITemplate = "/api/v1/accounts/{id}/statuses{?only_media,pinned,exclude_replies,max_id,since_id,limit}"
-    var pathVars: PathVars
-    struct PathVars: URITemplateContextConvertible {
+    public var pathVars: PathVars
+    public struct PathVars: URITemplateContextConvertible {
         /// 
-        var id: String
+        public var id: String
         /// Only return statuses that have media attachments
-        var only_media: String?
+        public var only_media: String?
         /// Only return statuses that are pinned to the account
-        var pinned: String?
+        public var pinned: String?
         /// Skip statuses that reply to other statuses
-        var exclude_replies: String?
+        public var exclude_replies: String?
         /// Get a list of statuses with ID less than this value
-        var max_id: String?
+        public var max_id: String?
         /// Get a list of statuses with ID greater than this value
-        var since_id: String?
+        public var since_id: String?
         /// Maximum number of statuses to get (Default 20, Max 40)
-        var limit: String?
+        public var limit: String?
+
+        // public memberwise init
+        public init(id: String, only_media: String?, pinned: String?, exclude_replies: String?, max_id: String?, since_id: String?, limit: String?) {
+            self.id = id
+            self.only_media = only_media
+            self.pinned = pinned
+            self.exclude_replies = exclude_replies
+            self.max_id = max_id
+            self.since_id = since_id
+            self.limit = limit
+        }
     }
 
-    enum Responses {
+    public enum Responses {
         case http200_(Timelines)
     }
 
-    func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Responses {
+    // public memberwise init
+    public init(baseURL: URL, pathVars: PathVars) {
+        self.baseURL = baseURL
+        self.pathVars = pathVars
+    }
+
+    public func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Responses {
         let contentType = contentMIMEType(in: urlResponse)
         switch (urlResponse.statusCode, contentType) {
         case (200, _):
@@ -205,29 +243,43 @@ struct GetAccountsStatuses: APIBlueprintRequest, URITemplateRequest {
 }
 
 
-struct GetFollowers: APIBlueprintRequest, URITemplateRequest {
-    let baseURL: URL
-    var method: HTTPMethod {return .get}
+public struct GetFollowers: APIBlueprintRequest, URITemplateRequest {
+    public let baseURL: URL
+    public var method: HTTPMethod {return .get}
 
-    let path = "" // see intercept(urlRequest:)
+    public let path = "" // see intercept(urlRequest:)
     static let pathTemplate: URITemplate = "/api/v1/accounts/{id}/followers{?max_id,since_id,limit}"
-    var pathVars: PathVars
-    struct PathVars: URITemplateContextConvertible {
+    public var pathVars: PathVars
+    public struct PathVars: URITemplateContextConvertible {
         /// 
-        var id: String
+        public var id: String
         /// Get a list of followings with ID less than this value
-        var max_id: String?
+        public var max_id: String?
         /// Get a list of followings with ID greater than this value
-        var since_id: String?
+        public var since_id: String?
         /// Maximum number of followings to get (Default 40, Max 80)
-        var limit: String?
+        public var limit: String?
+
+        // public memberwise init
+        public init(id: String, max_id: String?, since_id: String?, limit: String?) {
+            self.id = id
+            self.max_id = max_id
+            self.since_id = since_id
+            self.limit = limit
+        }
     }
 
-    enum Responses {
+    public enum Responses {
         case http200_(Accounts)
     }
 
-    func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Responses {
+    // public memberwise init
+    public init(baseURL: URL, pathVars: PathVars) {
+        self.baseURL = baseURL
+        self.pathVars = pathVars
+    }
+
+    public func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Responses {
         let contentType = contentMIMEType(in: urlResponse)
         switch (urlResponse.statusCode, contentType) {
         case (200, _):
@@ -239,29 +291,43 @@ struct GetFollowers: APIBlueprintRequest, URITemplateRequest {
 }
 
 
-struct GetFollowings: APIBlueprintRequest, URITemplateRequest {
-    let baseURL: URL
-    var method: HTTPMethod {return .get}
+public struct GetFollowings: APIBlueprintRequest, URITemplateRequest {
+    public let baseURL: URL
+    public var method: HTTPMethod {return .get}
 
-    let path = "" // see intercept(urlRequest:)
+    public let path = "" // see intercept(urlRequest:)
     static let pathTemplate: URITemplate = "/api/v1/accounts/{id}/following{?max_id,since_id,limit}"
-    var pathVars: PathVars
-    struct PathVars: URITemplateContextConvertible {
+    public var pathVars: PathVars
+    public struct PathVars: URITemplateContextConvertible {
         /// 
-        var id: String
+        public var id: String
         /// Get a list of followings with ID less than this value
-        var max_id: String?
+        public var max_id: String?
         /// Get a list of followings with ID greater than this value
-        var since_id: String?
+        public var since_id: String?
         /// Maximum number of followings to get (Default 40, Max 80)
-        var limit: String?
+        public var limit: String?
+
+        // public memberwise init
+        public init(id: String, max_id: String?, since_id: String?, limit: String?) {
+            self.id = id
+            self.max_id = max_id
+            self.since_id = since_id
+            self.limit = limit
+        }
     }
 
-    enum Responses {
+    public enum Responses {
         case http200_(Accounts)
     }
 
-    func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Responses {
+    // public memberwise init
+    public init(baseURL: URL, pathVars: PathVars) {
+        self.baseURL = baseURL
+        self.pathVars = pathVars
+    }
+
+    public func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Responses {
         let contentType = contentMIMEType(in: urlResponse)
         switch (urlResponse.statusCode, contentType) {
         case (200, _):
@@ -273,29 +339,43 @@ struct GetFollowings: APIBlueprintRequest, URITemplateRequest {
 }
 
 
-struct RegisterApp: APIBlueprintRequest, URITemplateRequest {
-    let baseURL: URL
-    var method: HTTPMethod {return .post}
+public struct RegisterApp: APIBlueprintRequest, URITemplateRequest {
+    public let baseURL: URL
+    public var method: HTTPMethod {return .post}
 
-    let path = "" // see intercept(urlRequest:)
+    public let path = "" // see intercept(urlRequest:)
     static let pathTemplate: URITemplate = "/api/v1/apps{?client_name,redirect_uris,scopes,website}"
-    var pathVars: PathVars
-    struct PathVars: URITemplateContextConvertible {
+    public var pathVars: PathVars
+    public struct PathVars: URITemplateContextConvertible {
         /// Name of your application
-        var client_name: String
+        public var client_name: String
         /// Where the user should be redirected after authorization (for no redirect, use `urn:ietf:wg:oauth:2.0:oob`)
-        var redirect_uris: String
+        public var redirect_uris: String
         /// This can be a space-separated list of the following items: "read", "write" and "follow" (see [this page](OAuth-details.md) for details on what the scopes do)
-        var scopes: String
+        public var scopes: String
         /// URL to the homepage of your app
-        var website: String?
+        public var website: String?
+
+        // public memberwise init
+        public init(client_name: String, redirect_uris: String, scopes: String, website: String?) {
+            self.client_name = client_name
+            self.redirect_uris = redirect_uris
+            self.scopes = scopes
+            self.website = website
+        }
     }
 
-    enum Responses {
+    public enum Responses {
         case http200_(ClientApplication)
     }
 
-    func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Responses {
+    // public memberwise init
+    public init(baseURL: URL, pathVars: PathVars) {
+        self.baseURL = baseURL
+        self.pathVars = pathVars
+    }
+
+    public func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Responses {
         let contentType = contentMIMEType(in: urlResponse)
         switch (urlResponse.statusCode, contentType) {
         case (200, _):
@@ -309,27 +389,40 @@ struct RegisterApp: APIBlueprintRequest, URITemplateRequest {
 /// Fetching a user's favourites
 /// 
 /// > Note: max_id and since_id for next and previous pages are provided in the Link header. It is not possible to use the id of the returned objects to construct your own URLs, because the results are sorted by an internal key.
-struct GetFavourites: APIBlueprintRequest, URITemplateRequest {
-    let baseURL: URL
-    var method: HTTPMethod {return .get}
+public struct GetFavourites: APIBlueprintRequest, URITemplateRequest {
+    public let baseURL: URL
+    public var method: HTTPMethod {return .get}
 
-    let path = "" // see intercept(urlRequest:)
+    public let path = "" // see intercept(urlRequest:)
     static let pathTemplate: URITemplate = "/api/v1/favourites{?max_id,since_id,limit}"
-    var pathVars: PathVars
-    struct PathVars: URITemplateContextConvertible {
+    public var pathVars: PathVars
+    public struct PathVars: URITemplateContextConvertible {
         /// Get a list of favourites with ID less than this value
-        var max_id: String?
+        public var max_id: String?
         /// Get a list of favourites with ID greater than this value
-        var since_id: String?
+        public var since_id: String?
         /// Maximum number of favourites to get (Default 20, Max 40)
-        var limit: String?
+        public var limit: String?
+
+        // public memberwise init
+        public init(max_id: String?, since_id: String?, limit: String?) {
+            self.max_id = max_id
+            self.since_id = since_id
+            self.limit = limit
+        }
     }
 
-    enum Responses {
+    public enum Responses {
         case http200_(Timelines)
     }
 
-    func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Responses {
+    // public memberwise init
+    public init(baseURL: URL, pathVars: PathVars) {
+        self.baseURL = baseURL
+        self.pathVars = pathVars
+    }
+
+    public func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Responses {
         let contentType = contentMIMEType(in: urlResponse)
         switch (urlResponse.statusCode, contentType) {
         case (200, _):
@@ -343,27 +436,40 @@ struct GetFavourites: APIBlueprintRequest, URITemplateRequest {
 /// Fetching a user's notifications
 /// 
 /// > Note: max_id and since_id for next and previous pages are provided in the Link header. However, it is possible to use the id of the returned objects to construct your own URLs.
-struct GetNotifications: APIBlueprintRequest, URITemplateRequest {
-    let baseURL: URL
-    var method: HTTPMethod {return .get}
+public struct GetNotifications: APIBlueprintRequest, URITemplateRequest {
+    public let baseURL: URL
+    public var method: HTTPMethod {return .get}
 
-    let path = "" // see intercept(urlRequest:)
+    public let path = "" // see intercept(urlRequest:)
     static let pathTemplate: URITemplate = "/api/v1/notifications{?max_id,since_id,limit}"
-    var pathVars: PathVars
-    struct PathVars: URITemplateContextConvertible {
+    public var pathVars: PathVars
+    public struct PathVars: URITemplateContextConvertible {
         /// Get a list of notifications with ID less than this value
-        var max_id: String?
+        public var max_id: String?
         /// Get a list of notifications with ID greater than this value
-        var since_id: String?
+        public var since_id: String?
         /// Maximum number of notifications to get (Default 15, Max 30)
-        var limit: String?
+        public var limit: String?
+
+        // public memberwise init
+        public init(max_id: String?, since_id: String?, limit: String?) {
+            self.max_id = max_id
+            self.since_id = since_id
+            self.limit = limit
+        }
     }
 
-    enum Responses {
+    public enum Responses {
         case http200_(Notifications)
     }
 
-    func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Responses {
+    // public memberwise init
+    public init(baseURL: URL, pathVars: PathVars) {
+        self.baseURL = baseURL
+        self.pathVars = pathVars
+    }
+
+    public func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Responses {
         let contentType = contentMIMEType(in: urlResponse)
         switch (urlResponse.statusCode, contentType) {
         case (200, _):
@@ -375,37 +481,53 @@ struct GetNotifications: APIBlueprintRequest, URITemplateRequest {
 }
 
 
-struct LoginSilent: APIBlueprintRequest {
-    let baseURL: URL
-    var method: HTTPMethod {return .post}
+public struct LoginSilent: APIBlueprintRequest {
+    public let baseURL: URL
+    public var method: HTTPMethod {return .post}
 
-    var path: String {return "/oauth/token"}
+    public var path: String {return "/oauth/token"}
 
-    let param: Param
-    var bodyParameters: BodyParameters? {
+    public let param: Param
+    public var bodyParameters: BodyParameters? {
         let encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .iso8601
         return try? JSONBodyParameters(JSONObject: JSONSerialization.jsonObject(with: encoder.encode(param)))
     }
-    struct Param: Codable { 
+    public struct Param: Codable { 
         /// 
-        var client_id: String
+        public var client_id: String
         /// 
-        var client_secret: String
+        public var client_secret: String
         /// 
-        var scope: String
+        public var scope: String
         /// 
-        var grant_type: String
+        public var grant_type: String
         /// 
-        var username: String
+        public var username: String
         /// 
-        var password: String
+        public var password: String
+    
+        // public memberwise init
+        public init(client_id: String, client_secret: String, scope: String, grant_type: String, username: String, password: String) {
+            self.client_id = client_id
+            self.client_secret = client_secret
+            self.scope = scope
+            self.grant_type = grant_type
+            self.username = username
+            self.password = password
+        }
     }
-    enum Responses {
+    public enum Responses {
         case http200_(LoginSettings)
     }
 
-    func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Responses {
+    // public memberwise init
+    public init(baseURL: URL, param: Param) {
+        self.baseURL = baseURL
+        self.param = param
+    }
+
+    public func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Responses {
         let contentType = contentMIMEType(in: urlResponse)
         switch (urlResponse.statusCode, contentType) {
         case (200, _):
@@ -417,27 +539,40 @@ struct LoginSilent: APIBlueprintRequest {
 }
 
 
-struct GetHomeTimeline: APIBlueprintRequest, URITemplateRequest {
-    let baseURL: URL
-    var method: HTTPMethod {return .get}
+public struct GetHomeTimeline: APIBlueprintRequest, URITemplateRequest {
+    public let baseURL: URL
+    public var method: HTTPMethod {return .get}
 
-    let path = "" // see intercept(urlRequest:)
+    public let path = "" // see intercept(urlRequest:)
     static let pathTemplate: URITemplate = "/api/v1/timelines/home{?max_id,since_id,limit}"
-    var pathVars: PathVars
-    struct PathVars: URITemplateContextConvertible {
+    public var pathVars: PathVars
+    public struct PathVars: URITemplateContextConvertible {
         /// Get a list of timelines with ID less than this value
-        var max_id: String?
+        public var max_id: String?
         /// Get a list of timelines with ID greater than this value
-        var since_id: String?
+        public var since_id: String?
         /// Maximum number of statuses on the requested timeline to get (Default 20, Max 40)
-        var limit: String?
+        public var limit: String?
+
+        // public memberwise init
+        public init(max_id: String?, since_id: String?, limit: String?) {
+            self.max_id = max_id
+            self.since_id = since_id
+            self.limit = limit
+        }
     }
 
-    enum Responses {
+    public enum Responses {
         case http200_(Timelines)
     }
 
-    func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Responses {
+    // public memberwise init
+    public init(baseURL: URL, pathVars: PathVars) {
+        self.baseURL = baseURL
+        self.pathVars = pathVars
+    }
+
+    public func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Responses {
         let contentType = contentMIMEType(in: urlResponse)
         switch (urlResponse.statusCode, contentType) {
         case (200, _):
@@ -449,29 +584,43 @@ struct GetHomeTimeline: APIBlueprintRequest, URITemplateRequest {
 }
 
 
-struct GetPublicTimeline: APIBlueprintRequest, URITemplateRequest {
-    let baseURL: URL
-    var method: HTTPMethod {return .get}
+public struct GetPublicTimeline: APIBlueprintRequest, URITemplateRequest {
+    public let baseURL: URL
+    public var method: HTTPMethod {return .get}
 
-    let path = "" // see intercept(urlRequest:)
+    public let path = "" // see intercept(urlRequest:)
     static let pathTemplate: URITemplate = "/api/v1/timelines/public{?local,max_id,since_id,limit}"
-    var pathVars: PathVars
-    struct PathVars: URITemplateContextConvertible {
+    public var pathVars: PathVars
+    public struct PathVars: URITemplateContextConvertible {
         /// Only return statuses originating from this instance (public and tag timelines only)
-        var local: String?
+        public var local: String?
         /// Get a list of timelines with ID less than this value
-        var max_id: String?
+        public var max_id: String?
         /// Get a list of timelines with ID greater than this value
-        var since_id: String?
+        public var since_id: String?
         /// Maximum number of statuses on the requested timeline to get (Default 20, Max 40)
-        var limit: String?
+        public var limit: String?
+
+        // public memberwise init
+        public init(local: String?, max_id: String?, since_id: String?, limit: String?) {
+            self.local = local
+            self.max_id = max_id
+            self.since_id = since_id
+            self.limit = limit
+        }
     }
 
-    enum Responses {
+    public enum Responses {
         case http200_(Timelines)
     }
 
-    func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Responses {
+    // public memberwise init
+    public init(baseURL: URL, pathVars: PathVars) {
+        self.baseURL = baseURL
+        self.pathVars = pathVars
+    }
+
+    public func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Responses {
         let contentType = contentMIMEType(in: urlResponse)
         switch (urlResponse.statusCode, contentType) {
         case (200, _):
@@ -483,23 +632,34 @@ struct GetPublicTimeline: APIBlueprintRequest, URITemplateRequest {
 }
 
 
-struct Boost: APIBlueprintRequest, URITemplateRequest {
-    let baseURL: URL
-    var method: HTTPMethod {return .post}
+public struct Boost: APIBlueprintRequest, URITemplateRequest {
+    public let baseURL: URL
+    public var method: HTTPMethod {return .post}
 
-    let path = "" // see intercept(urlRequest:)
+    public let path = "" // see intercept(urlRequest:)
     static let pathTemplate: URITemplate = "/api/v1/statuses/{id}/reblog"
-    var pathVars: PathVars
-    struct PathVars: URITemplateContextConvertible {
+    public var pathVars: PathVars
+    public struct PathVars: URITemplateContextConvertible {
         /// 
-        var id: String
+        public var id: String
+
+        // public memberwise init
+        public init(id: String) {
+            self.id = id
+        }
     }
 
-    enum Responses {
+    public enum Responses {
         case http200_(Status)
     }
 
-    func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Responses {
+    // public memberwise init
+    public init(baseURL: URL, pathVars: PathVars) {
+        self.baseURL = baseURL
+        self.pathVars = pathVars
+    }
+
+    public func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Responses {
         let contentType = contentMIMEType(in: urlResponse)
         switch (urlResponse.statusCode, contentType) {
         case (200, _):
@@ -511,23 +671,34 @@ struct Boost: APIBlueprintRequest, URITemplateRequest {
 }
 
 
-struct GetStatus: APIBlueprintRequest, URITemplateRequest {
-    let baseURL: URL
-    var method: HTTPMethod {return .get}
+public struct GetStatus: APIBlueprintRequest, URITemplateRequest {
+    public let baseURL: URL
+    public var method: HTTPMethod {return .get}
 
-    let path = "" // see intercept(urlRequest:)
+    public let path = "" // see intercept(urlRequest:)
     static let pathTemplate: URITemplate = "/api/v1/statuses/{id}"
-    var pathVars: PathVars
-    struct PathVars: URITemplateContextConvertible {
+    public var pathVars: PathVars
+    public struct PathVars: URITemplateContextConvertible {
         /// 
-        var id: String
+        public var id: String
+
+        // public memberwise init
+        public init(id: String) {
+            self.id = id
+        }
     }
 
-    enum Responses {
+    public enum Responses {
         case http200_(Status)
     }
 
-    func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Responses {
+    // public memberwise init
+    public init(baseURL: URL, pathVars: PathVars) {
+        self.baseURL = baseURL
+        self.pathVars = pathVars
+    }
+
+    public func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Responses {
         let contentType = contentMIMEType(in: urlResponse)
         switch (urlResponse.statusCode, contentType) {
         case (200, _):
@@ -539,23 +710,34 @@ struct GetStatus: APIBlueprintRequest, URITemplateRequest {
 }
 
 
-struct GetStatusContext: APIBlueprintRequest, URITemplateRequest {
-    let baseURL: URL
-    var method: HTTPMethod {return .get}
+public struct GetStatusContext: APIBlueprintRequest, URITemplateRequest {
+    public let baseURL: URL
+    public var method: HTTPMethod {return .get}
 
-    let path = "" // see intercept(urlRequest:)
+    public let path = "" // see intercept(urlRequest:)
     static let pathTemplate: URITemplate = "/api/v1/statuses/{id}/context"
-    var pathVars: PathVars
-    struct PathVars: URITemplateContextConvertible {
+    public var pathVars: PathVars
+    public struct PathVars: URITemplateContextConvertible {
         /// 
-        var id: String
+        public var id: String
+
+        // public memberwise init
+        public init(id: String) {
+            self.id = id
+        }
     }
 
-    enum Responses {
+    public enum Responses {
         case http200_(Context)
     }
 
-    func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Responses {
+    // public memberwise init
+    public init(baseURL: URL, pathVars: PathVars) {
+        self.baseURL = baseURL
+        self.pathVars = pathVars
+    }
+
+    public func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Responses {
         let contentType = contentMIMEType(in: urlResponse)
         switch (urlResponse.statusCode, contentType) {
         case (200, _):
@@ -567,23 +749,34 @@ struct GetStatusContext: APIBlueprintRequest, URITemplateRequest {
 }
 
 
-struct Favorite: APIBlueprintRequest, URITemplateRequest {
-    let baseURL: URL
-    var method: HTTPMethod {return .post}
+public struct Favorite: APIBlueprintRequest, URITemplateRequest {
+    public let baseURL: URL
+    public var method: HTTPMethod {return .post}
 
-    let path = "" // see intercept(urlRequest:)
+    public let path = "" // see intercept(urlRequest:)
     static let pathTemplate: URITemplate = "/api/v1/statuses/{id}/favourite"
-    var pathVars: PathVars
-    struct PathVars: URITemplateContextConvertible {
+    public var pathVars: PathVars
+    public struct PathVars: URITemplateContextConvertible {
         /// 
-        var id: String
+        public var id: String
+
+        // public memberwise init
+        public init(id: String) {
+            self.id = id
+        }
     }
 
-    enum Responses {
+    public enum Responses {
         case http200_(Status)
     }
 
-    func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Responses {
+    // public memberwise init
+    public init(baseURL: URL, pathVars: PathVars) {
+        self.baseURL = baseURL
+        self.pathVars = pathVars
+    }
+
+    public func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Responses {
         let contentType = contentMIMEType(in: urlResponse)
         switch (urlResponse.statusCode, contentType) {
         case (200, _):
@@ -595,33 +788,49 @@ struct Favorite: APIBlueprintRequest, URITemplateRequest {
 }
 
 
-struct PostStatus: APIBlueprintRequest, URITemplateRequest {
-    let baseURL: URL
-    var method: HTTPMethod {return .post}
+public struct PostStatus: APIBlueprintRequest, URITemplateRequest {
+    public let baseURL: URL
+    public var method: HTTPMethod {return .post}
 
-    let path = "" // see intercept(urlRequest:)
+    public let path = "" // see intercept(urlRequest:)
     static let pathTemplate: URITemplate = "/api/v1/statuses{?status,in_reply_to_id,media_ids,sensitive,spoiler_text,visibility}"
-    var pathVars: PathVars
-    struct PathVars: URITemplateContextConvertible {
+    public var pathVars: PathVars
+    public struct PathVars: URITemplateContextConvertible {
         /// The text of the status
-        var status: String
+        public var status: String
         /// local ID of the status you want to reply to
-        var in_reply_to_id: String?
+        public var in_reply_to_id: String?
         /// Array of media IDs to attach to the status (maximum 4)
-        var media_ids: String?
+        public var media_ids: String?
         /// Set this to mark the media of the status as NSFW
-        var sensitive: String?
+        public var sensitive: String?
         /// Text to be shown as a warning before the actual content
-        var spoiler_text: String?
+        public var spoiler_text: String?
         /// Either "direct", "private", "unlisted" or "public"
-        var visibility: String?
+        public var visibility: String?
+
+        // public memberwise init
+        public init(status: String, in_reply_to_id: String?, media_ids: String?, sensitive: String?, spoiler_text: String?, visibility: String?) {
+            self.status = status
+            self.in_reply_to_id = in_reply_to_id
+            self.media_ids = media_ids
+            self.sensitive = sensitive
+            self.spoiler_text = spoiler_text
+            self.visibility = visibility
+        }
     }
 
-    enum Responses {
+    public enum Responses {
         case http200_(Status)
     }
 
-    func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Responses {
+    // public memberwise init
+    public init(baseURL: URL, pathVars: PathVars) {
+        self.baseURL = baseURL
+        self.pathVars = pathVars
+    }
+
+    public func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Responses {
         let contentType = contentMIMEType(in: urlResponse)
         switch (urlResponse.statusCode, contentType) {
         case (200, _):
@@ -635,183 +844,303 @@ struct PostStatus: APIBlueprintRequest, URITemplateRequest {
 
 // MARK: - Data Structures
 
-struct Instance: Codable { 
+public struct Instance: Codable { 
     /// URI of the current instance
-    var uri: String
+    public var uri: String
     /// The instance's title
-    var title: String
+    public var title: String
     /// A description for the instance
-    var description: String
+    public var description: String
     /// An email address which can be used to contact the instance administrator
-    var email: String
+    public var email: String
     /// The Mastodon version used by instance
-    var version: String?
+    public var version: String?
+
+    // public memberwise init
+    public init(uri: String, title: String, description: String, email: String, version: String?) {
+        self.uri = uri
+        self.title = title
+        self.description = description
+        self.email = email
+        self.version = version
+    }
 }
 
-struct Account: Codable { 
+public struct Account: Codable { 
     /// The ID of the account  ex. ID
-    var id: ID
+    public var id: ID
     /// The username of the account
-    var username: String
+    public var username: String
     /// Equals `username` for local users, includes `@domain` for remote ones
-    var acct: String
+    public var acct: String
     /// The account's display name
-    var display_name: String
+    public var display_name: String
     /// Boolean for when the account cannot be followed without waiting for approval first  ex. boolean
-    var locked: Bool
+    public var locked: Bool
     /// The time the account was created
-    var created_at: String
+    public var created_at: String
     /// The number of followers for the account
-    var followers_count: Int
+    public var followers_count: Int
     /// The number of accounts the given account is following
-    var following_count: Int
+    public var following_count: Int
     /// The number of statuses the account has made
-    var statuses_count: Int
+    public var statuses_count: Int
     /// Biography of user
-    var note: String
+    public var note: String
     /// URL of the user's profile page (can be remote)
-    var url: String
+    public var url: String
     /// URL to the avatar image
-    var avatar: String
+    public var avatar: String
     /// URL to the avatar static image (gif)
-    var avatar_static: String
+    public var avatar_static: String
     /// URL to the header image
-    var header: String
+    public var header: String
     /// URL to the header static image (gif)
-    var header_static: String
+    public var header_static: String
+
+    // public memberwise init
+    public init(id: ID, username: String, acct: String, display_name: String, locked: Bool, created_at: String, followers_count: Int, following_count: Int, statuses_count: Int, note: String, url: String, avatar: String, avatar_static: String, header: String, header_static: String) {
+        self.id = id
+        self.username = username
+        self.acct = acct
+        self.display_name = display_name
+        self.locked = locked
+        self.created_at = created_at
+        self.followers_count = followers_count
+        self.following_count = following_count
+        self.statuses_count = statuses_count
+        self.note = note
+        self.url = url
+        self.avatar = avatar
+        self.avatar_static = avatar_static
+        self.header = header
+        self.header_static = header_static
+    }
 }
 
-struct Status: Codable { 
+public struct Status: Codable { 
     /// The ID of the status  ex. ID
-    var id: ID
+    public var id: ID
     /// A Fediverse-unique resource ID
-    var uri: String
+    public var uri: String
     /// URL to the status page (can be remote). NOTE: non-optional. occasionaly null in real world (around mastodon 2?). should be fatal bug in server.
-    var url: String?
+    public var url: String?
     /// The [Account](#account) which posted the status  ex. Account
-    var account: Account
+    public var account: Account
     /// `null` or the ID of the status it replies to  ex. ID
-    var in_reply_to_id: ID?
+    public var in_reply_to_id: ID?
     /// `null` or the ID of the account it replies to  ex. ID
-    var in_reply_to_account_id: ID?
+    public var in_reply_to_account_id: ID?
     /// `null` or the reblogged [Status](#status)  ex. Status
-    var reblog: Indirect<Status>?
+    public var reblog: Indirect<Status>?
     /// Body of the status; this will contain HTML (remote HTML already sanitized)
-    var content: String
+    public var content: String
     /// The time the status was created
-    var created_at: String
+    public var created_at: String
     /// The number of reblogs for the status
-    var reblogs_count: Int
+    public var reblogs_count: Int
     /// The number of favourites for the status
-    var favourites_count: Int
+    public var favourites_count: Int
     /// Whether the authenticated user has reblogged the status  ex. boolean
-    var reblogged: Bool?
+    public var reblogged: Bool?
     /// Whether the authenticated user has favourited the status  ex. boolean
-    var favourited: Bool?
+    public var favourited: Bool?
     /// Whether media attachments should be hidden by default  ex. boolean
-    var sensitive: Bool?
+    public var sensitive: Bool?
     /// If not empty, warning text that should be displayed before the actual content
-    var spoiler_text: String
+    public var spoiler_text: String
     /// One of: `public`, `unlisted`, `private`, `direct`
-    var visibility: String
+    public var visibility: String
     /// An array of [Attachments](#attachment)  ex. []
-    var media_attachments: [Attachment]
+    public var media_attachments: [Attachment]
     /// An array of [Mentions](#mention)  ex. []
-    var mentions: [Mention]
+    public var mentions: [Mention]
     /// An array of [Tags](#tag)  ex. []
-    var tags: [Tag]
+    public var tags: [Tag]
     /// [Application](#application) from which the status was posted  ex. Application
-    var application: Application?
+    public var application: Application?
     /// The detected language for the status (default: en)
-    var language: String?
+    public var language: String?
     /// Whether the authenticated user has pinned the status in API response. app may use app level mark as pinned  ex. boolean
-    var pinned: Bool?
+    public var pinned: Bool?
+
+    // public memberwise init
+    public init(id: ID, uri: String, url: String?, account: Account, in_reply_to_id: ID?, in_reply_to_account_id: ID?, reblog: Indirect<Status>?, content: String, created_at: String, reblogs_count: Int, favourites_count: Int, reblogged: Bool?, favourited: Bool?, sensitive: Bool?, spoiler_text: String, visibility: String, media_attachments: [Attachment], mentions: [Mention], tags: [Tag], application: Application?, language: String?, pinned: Bool?) {
+        self.id = id
+        self.uri = uri
+        self.url = url
+        self.account = account
+        self.in_reply_to_id = in_reply_to_id
+        self.in_reply_to_account_id = in_reply_to_account_id
+        self.reblog = reblog
+        self.content = content
+        self.created_at = created_at
+        self.reblogs_count = reblogs_count
+        self.favourites_count = favourites_count
+        self.reblogged = reblogged
+        self.favourited = favourited
+        self.sensitive = sensitive
+        self.spoiler_text = spoiler_text
+        self.visibility = visibility
+        self.media_attachments = media_attachments
+        self.mentions = mentions
+        self.tags = tags
+        self.application = application
+        self.language = language
+        self.pinned = pinned
+    }
 }
 
-struct Application: Codable { 
+public struct Application: Codable { 
     /// Name of the app
-    var name: String
+    public var name: String
     /// Homepage URL of the app
-    var website: String?
+    public var website: String?
+
+    // public memberwise init
+    public init(name: String, website: String?) {
+        self.name = name
+        self.website = website
+    }
 }
 
-struct Tag: Codable { 
+public struct Tag: Codable { 
     /// The hashtag, not including the preceding `#`
-    var name: String
+    public var name: String
     /// The URL of the hashtag
-    var url: String
+    public var url: String
+
+    // public memberwise init
+    public init(name: String, url: String) {
+        self.name = name
+        self.url = url
+    }
 }
 
-struct Mention: Codable { 
+public struct Mention: Codable { 
     /// URL of user's profile (can be remote)
-    var url: String
+    public var url: String
     /// The username of the account
-    var username: String
+    public var username: String
     /// Equals `username` for local users, includes `@domain` for remote ones
-    var acct: String
+    public var acct: String
     /// Account ID  ex. ID
-    var id: ID
+    public var id: ID
+
+    // public memberwise init
+    public init(url: String, username: String, acct: String, id: ID) {
+        self.url = url
+        self.username = username
+        self.acct = acct
+        self.id = id
+    }
 }
 
-struct Attachment: Codable { 
+public struct Attachment: Codable { 
     /// ID of the attachment  ex. ID
-    var id: ID
+    public var id: ID
     /// One of: "image", "video", "gifv"
-    var type: String
+    public var type: String
     /// URL of the locally hosted version of the image
-    var url: String
+    public var url: String
     /// For remote images, the remote URL of the original image
-    var remote_url: String?
+    public var remote_url: String?
     /// URL of the preview image
-    var preview_url: String
+    public var preview_url: String
     /// Shorter URL for the image, for insertion into text (only present on local images)
-    var text_url: String?
+    public var text_url: String?
+
+    // public memberwise init
+    public init(id: ID, type: String, url: String, remote_url: String?, preview_url: String, text_url: String?) {
+        self.id = id
+        self.type = type
+        self.url = url
+        self.remote_url = remote_url
+        self.preview_url = preview_url
+        self.text_url = text_url
+    }
 }
 
-struct Notification: Codable { 
+public struct Notification: Codable { 
     /// The notification ID  ex. ID
-    var id: ID
+    public var id: ID
     /// One of: "mention", "reblog", "favourite", "follow"
-    var type: String
+    public var type: String
     /// The time the notification was created
-    var created_at: String
+    public var created_at: String
     /// The [Account](#account) sending the notification to the user  ex. Account
-    var account: Account
+    public var account: Account
     /// The [Status](#status) associated with the notification, if applicable  ex. Status
-    var status: Status?
+    public var status: Status?
+
+    // public memberwise init
+    public init(id: ID, type: String, created_at: String, account: Account, status: Status?) {
+        self.id = id
+        self.type = type
+        self.created_at = created_at
+        self.account = account
+        self.status = status
+    }
 }
 
-struct ClientApplication: Codable { 
+public struct ClientApplication: Codable { 
     ///  ex. ID
-    var id: ID
+    public var id: ID
     /// 
-    var redirect_uri: String
+    public var redirect_uri: String
     /// 
-    var client_id: String
+    public var client_id: String
     /// 
-    var client_secret: String
+    public var client_secret: String
+
+    // public memberwise init
+    public init(id: ID, redirect_uri: String, client_id: String, client_secret: String) {
+        self.id = id
+        self.redirect_uri = redirect_uri
+        self.client_id = client_id
+        self.client_secret = client_secret
+    }
 }
 
-struct LoginSettings: Codable { 
+public struct LoginSettings: Codable { 
     /// 
-    var access_token: String
+    public var access_token: String
     /// 
-    var token_type: String
+    public var token_type: String
     /// 
-    var scope: String
+    public var scope: String
     /// only here: UNIX timestamp
-    var created_at: Int
+    public var created_at: Int
+
+    // public memberwise init
+    public init(access_token: String, token_type: String, scope: String, created_at: Int) {
+        self.access_token = access_token
+        self.token_type = token_type
+        self.scope = scope
+        self.created_at = created_at
+    }
 }
 
-struct Context: Codable { 
+public struct Context: Codable { 
     /// The ancestors of the status in the conversation, as a list of Statuses  ex. []
-    var ancestors: [Status]
+    public var ancestors: [Status]
     /// The descendants of the status in the conversation, as a list of Statuses  ex. []
-    var descendants: [Status]
+    public var descendants: [Status]
+
+    // public memberwise init
+    public init(ancestors: [Status], descendants: [Status]) {
+        self.ancestors = ancestors
+        self.descendants = descendants
+    }
 }
 
-struct ID: Codable { 
+public struct ID: Codable { 
     /// actual id value
-    var value: String
+    public var value: String
+
+    // public memberwise init
+    public init(value: String) {
+        self.value = value
+    }
 }
 
