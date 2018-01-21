@@ -43,6 +43,10 @@ final class TimelineViewModel {
     func insert(status: Status) {
         timeline.value = [status] + timeline.value.prefix(345)
     }
+
+    func delete(id: ID) {
+        timeline.value = timeline.value.filter {$0.id != id}
+    }
 }
 
 final class LocalTLViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
@@ -101,18 +105,30 @@ final class LocalTLViewController: NSViewController, NSTableViewDataSource, NSTa
                 started: {NSLog("%@", "started ReactiveSSE for \(self.instanceAccount.instance.title)")},
                 completed: {NSLog("%@", "completed ReactiveSSE for \(self.instanceAccount.instance.title)")},
                 terminated: {NSLog("%@", "terminated ReactiveSSE for \(self.instanceAccount.instance.title)")})
-            .filter {$0.type == "update"}
-            .filterMap {$0.data.data(using: .utf8)}
-            .filterMap {try? JSONDecoder().decode(Status.self, from: $0)}
-            .observe(on: UIScheduler())
             .retry(upTo: 10, interval: 5, on: QueueScheduler.main)
-            .startWithResult { [unowned self] r in
-                switch r {
-                case .success(let s):
-                    // NSLog("%@", "\(s.textContent)")
-                    self.viewModel.insert(status: s)
-                case .failure(let e):
-                    NSLog("%@", "\(e)")
+            .startWithSignal { signal, disposable in
+                signal.filter {$0.type == "update"}
+                    .filterMap {$0.data.data(using: .utf8)}
+                    .filterMap {try? JSONDecoder().decode(Status.self, from: $0)}
+                    .observe(on: UIScheduler())
+                    .observeResult { [unowned self] r in
+                        switch r {
+                        case .success(let s):
+                            // NSLog("%@", "\(s.textContent)")
+                            self.viewModel.insert(status: s)
+                        case .failure(let e):
+                            NSLog("%@", "\(e)")
+                        }
+                }
+                signal.filter {$0.type == "delete"}
+                    .map {ID(stringLiteral: $0.data)}
+                    .observe(on: UIScheduler())
+                    .observeResult { [unowned self] r in
+                        switch r {
+                        case .success(let id):
+                            self.viewModel.delete(id: id)
+                        case .failure: break
+                        }
                 }
         }
     }
