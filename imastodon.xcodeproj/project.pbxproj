@@ -185,8 +185,9 @@
 		EAC55F211ED07C5700CD567D = {
 			isa = PBXGroup;
 			children = (
-				EAC55F2C1ED07C5700CD567D /* imastodon */,
 				EA72DC701EF14E2B00B5A7CD /* API */,
+				EAE6D4EC2014E2F800CB3036 /* Common */,
+				EAC55F2C1ED07C5700CD567D /* imastodon */,
 				EA30245B200B80100084FFD8 /* imastodon-mac */,
 				EAC55F2B1ED07C5700CD567D /* Products */,
 				D2EDDD2B062B302C18216BBE /* Pods */,
@@ -207,7 +208,6 @@
 			isa = PBXGroup;
 			children = (
 				EAC55F2D1ED07C5700CD567D /* AppDelegate.swift */,
-				EAE218BA1ED1615A001209F2 /* Client.swift */,
 				EAE218B41ED15494001209F2 /* Store.swift */,
 				EAE218BE1ED176C4001209F2 /* StatusRow.swift */,
 				EA0EDB491EE41FC000280536 /* Stream.swift */,
@@ -235,6 +235,14 @@
 				EAC55F391ED07C5700CD567D /* Info.plist */,
 			);
 			path = imastodon;
+			sourceTree = "<group>";
+		};
+		EAE6D4EC2014E2F800CB3036 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				EAE218BA1ED1615A001209F2 /* Client.swift */,
+			);
+			path = Common;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
