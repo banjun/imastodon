@@ -1,7 +1,9 @@
 import BrightFutures
 import Foundation
 import APIKit
+#if os(osx)
 import SwiftRichString
+#endif
 
 enum AppError: LocalizedError {
     case apikit(SessionTaskError)
@@ -58,8 +60,18 @@ extension Status {
 
 extension NSAttributedString {
     convenience init?(html: String) {
-        guard let rendered = MarkupString(source: html)?.render() else { return nil }
-        self.init(attributedString: rendered)
+        // TODO: unify logic for platforms
+        #if !os(osx)
+            guard let data = ("<style>body {font:-apple-system-body;line-height:100%;} p {margin:0;padding:0;display:inline;}</style>" + html).data(using: .utf8) else { return nil }
+            try? self.init(data: data,
+                           options: [
+                            .documentType: NSAttributedString.DocumentType.html,
+                            .characterEncoding: String.Encoding.utf8.rawValue],
+                           documentAttributes: nil)
+        #else
+            guard let rendered = MarkupString(source: html)?.render() else { return nil }
+            self.init(attributedString: rendered)
+        #endif
     }
 }
 
