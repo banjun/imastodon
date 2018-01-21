@@ -8,9 +8,24 @@
 
 /* Begin PBXBuildFile section */
 		1AA9E5D5D16230C8EA09FCAE /* Pods_imastodon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF693483815FAE1CC3AB6956 /* Pods_imastodon.framework */; };
+		BC21D433B90F4159776AE0E6 /* Pods_imastodon_mac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAC0BF8BE76D2E0BB1EC2987 /* Pods_imastodon_mac.framework */; };
 		EA0EDB4A1EE41FC400280536 /* Stream.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0EDB491EE41FC000280536 /* Stream.swift */; };
 		EA0EDB4C1EE429A600280536 /* TimelineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0EDB4B1EE429A600280536 /* TimelineViewController.swift */; };
 		EA2312241FA59B4F00526097 /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA2312231FA59B4F00526097 /* NotificationsViewController.swift */; };
+		EA2BBB95201225A900918725 /* PostWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA2BBB94201225A900918725 /* PostWindowController.swift */; };
+		EA30245D200B80100084FFD8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA30245C200B80100084FFD8 /* AppDelegate.swift */; };
+		EA302461200B80100084FFD8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA302460200B80100084FFD8 /* Assets.xcassets */; };
+		EA302464200B80100084FFD8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA302462200B80100084FFD8 /* Main.storyboard */; };
+		EA30246A200B84F40084FFD8 /* Mastodon.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA72DC741EF14E2B00B5A7CD /* Mastodon.swift */; };
+		EA30246B200B84F40084FFD8 /* MastodonHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB623AC1EF16AA500F7BE80 /* MastodonHelper.swift */; };
+		EA584F59200B8C1100D08656 /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE218BA1ED1615A001209F2 /* Client.swift */; };
+		EA584F5B200B98F800D08656 /* StatusCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA584F5A200B98F800D08656 /* StatusCellView.xib */; };
+		EA584F5D200E2E6C00D08656 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA584F5C200E2E6C00D08656 /* Store.swift */; };
+		EA584F5F200E37AF00D08656 /* InstanceAccountsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA584F5E200E37AF00D08656 /* InstanceAccountsWindowController.swift */; };
+		EA584F61200E38EB00D08656 /* NewAccountWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA584F60200E38EB00D08656 /* NewAccountWindowController.swift */; };
+		EA584F63200E442D00D08656 /* LocalTLWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA584F62200E442D00D08656 /* LocalTLWindowController.swift */; };
+		EA584F65200E4B3700D08656 /* AutolayoutLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA584F64200E4B3700D08656 /* AutolayoutLabel.swift */; };
+		EA584F67200E4B5A00D08656 /* StatusTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA584F66200E4B5A00D08656 /* StatusTableCellView.swift */; };
 		EA6429EC1FA50B18006A67C0 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6429EB1FA50B18006A67C0 /* FavoritesViewController.swift */; };
 		EA6429EE1FA5110D006A67C0 /* FollowingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6429ED1FA5110D006A67C0 /* FollowingsViewController.swift */; };
 		EA6429F01FA51738006A67C0 /* AccountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6429EF1FA51738006A67C0 /* AccountCell.swift */; };
@@ -34,17 +49,35 @@
 		EAE218BD1ED176B4001209F2 /* LocalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE218BC1ED176B4001209F2 /* LocalViewController.swift */; };
 		EAE218BF1ED176C4001209F2 /* StatusRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE218BE1ED176C4001209F2 /* StatusRow.swift */; };
 		EAE3BC401ED3373300B31AF5 /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE3BC3F1ED3373300B31AF5 /* PostViewController.swift */; };
+		EAE792A92010D1BB00E38831 /* Differ+AppKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE792A82010D1BB00E38831 /* Differ+AppKit.swift */; };
 		EAFB332C1FA61A1C00BB12C5 /* StatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAFB332B1FA61A1C00BB12C5 /* StatusViewController.swift */; };
 		EAFB332E1FA6344500BB12C5 /* StatusPreviewingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAFB332D1FA6344500BB12C5 /* StatusPreviewingDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		3395940DED0D0BA0835EFD0E /* Pods-imastodon.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-imastodon.release.xcconfig"; path = "Pods/Target Support Files/Pods-imastodon/Pods-imastodon.release.xcconfig"; sourceTree = "<group>"; };
+		7518B5189A465B5CDC2E2350 /* Pods-imastodon-mac.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-imastodon-mac.release.xcconfig"; path = "Pods/Target Support Files/Pods-imastodon-mac/Pods-imastodon-mac.release.xcconfig"; sourceTree = "<group>"; };
 		7C138BF5F063A0B55F519D11 /* Pods-imastodon.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-imastodon.debug.xcconfig"; path = "Pods/Target Support Files/Pods-imastodon/Pods-imastodon.debug.xcconfig"; sourceTree = "<group>"; };
 		CF693483815FAE1CC3AB6956 /* Pods_imastodon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_imastodon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D907FF16E22400E775461EBC /* Pods-imastodon-mac.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-imastodon-mac.debug.xcconfig"; path = "Pods/Target Support Files/Pods-imastodon-mac/Pods-imastodon-mac.debug.xcconfig"; sourceTree = "<group>"; };
 		EA0EDB491EE41FC000280536 /* Stream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stream.swift; sourceTree = "<group>"; };
 		EA0EDB4B1EE429A600280536 /* TimelineViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineViewController.swift; sourceTree = "<group>"; };
 		EA2312231FA59B4F00526097 /* NotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewController.swift; sourceTree = "<group>"; };
+		EA2BBB932012244400918725 /* imastodon-mac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "imastodon-mac.entitlements"; sourceTree = "<group>"; };
+		EA2BBB94201225A900918725 /* PostWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostWindowController.swift; sourceTree = "<group>"; };
+		EA30245A200B80100084FFD8 /* imastodon-mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "imastodon-mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EA30245C200B80100084FFD8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		EA302460200B80100084FFD8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		EA302463200B80100084FFD8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		EA302465200B80100084FFD8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EA302466200B80100084FFD8 /* imastodon_mac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = imastodon_mac.entitlements; sourceTree = "<group>"; };
+		EA584F5A200B98F800D08656 /* StatusCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StatusCellView.xib; sourceTree = "<group>"; };
+		EA584F5C200E2E6C00D08656 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
+		EA584F5E200E37AF00D08656 /* InstanceAccountsWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceAccountsWindowController.swift; sourceTree = "<group>"; };
+		EA584F60200E38EB00D08656 /* NewAccountWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAccountWindowController.swift; sourceTree = "<group>"; };
+		EA584F62200E442D00D08656 /* LocalTLWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalTLWindowController.swift; sourceTree = "<group>"; };
+		EA584F64200E4B3700D08656 /* AutolayoutLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutolayoutLabel.swift; sourceTree = "<group>"; };
+		EA584F66200E4B5A00D08656 /* StatusTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusTableCellView.swift; sourceTree = "<group>"; };
 		EA6429EB1FA50B18006A67C0 /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
 		EA6429ED1FA5110D006A67C0 /* FollowingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowingsViewController.swift; sourceTree = "<group>"; };
 		EA6429EF1FA51738006A67C0 /* AccountCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCell.swift; sourceTree = "<group>"; };
@@ -71,11 +104,21 @@
 		EAE218BC1ED176B4001209F2 /* LocalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalViewController.swift; sourceTree = "<group>"; };
 		EAE218BE1ED176C4001209F2 /* StatusRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusRow.swift; sourceTree = "<group>"; };
 		EAE3BC3F1ED3373300B31AF5 /* PostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
+		EAE792A82010D1BB00E38831 /* Differ+AppKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Differ+AppKit.swift"; sourceTree = "<group>"; };
 		EAFB332B1FA61A1C00BB12C5 /* StatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusViewController.swift; sourceTree = "<group>"; };
 		EAFB332D1FA6344500BB12C5 /* StatusPreviewingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusPreviewingDelegate.swift; sourceTree = "<group>"; };
+		FAC0BF8BE76D2E0BB1EC2987 /* Pods_imastodon_mac.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_imastodon_mac.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		EA302457200B80100084FFD8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BC21D433B90F4159776AE0E6 /* Pods_imastodon_mac.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EAC55F271ED07C5700CD567D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -91,6 +134,7 @@
 			isa = PBXGroup;
 			children = (
 				CF693483815FAE1CC3AB6956 /* Pods_imastodon.framework */,
+				FAC0BF8BE76D2E0BB1EC2987 /* Pods_imastodon_mac.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -100,8 +144,32 @@
 			children = (
 				7C138BF5F063A0B55F519D11 /* Pods-imastodon.debug.xcconfig */,
 				3395940DED0D0BA0835EFD0E /* Pods-imastodon.release.xcconfig */,
+				D907FF16E22400E775461EBC /* Pods-imastodon-mac.debug.xcconfig */,
+				7518B5189A465B5CDC2E2350 /* Pods-imastodon-mac.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		EA30245B200B80100084FFD8 /* imastodon-mac */ = {
+			isa = PBXGroup;
+			children = (
+				EA2BBB932012244400918725 /* imastodon-mac.entitlements */,
+				EA30245C200B80100084FFD8 /* AppDelegate.swift */,
+				EA584F5C200E2E6C00D08656 /* Store.swift */,
+				EA584F66200E4B5A00D08656 /* StatusTableCellView.swift */,
+				EA584F64200E4B3700D08656 /* AutolayoutLabel.swift */,
+				EA584F5E200E37AF00D08656 /* InstanceAccountsWindowController.swift */,
+				EA584F60200E38EB00D08656 /* NewAccountWindowController.swift */,
+				EA584F62200E442D00D08656 /* LocalTLWindowController.swift */,
+				EA2BBB94201225A900918725 /* PostWindowController.swift */,
+				EAE792A82010D1BB00E38831 /* Differ+AppKit.swift */,
+				EA302460200B80100084FFD8 /* Assets.xcassets */,
+				EA302462200B80100084FFD8 /* Main.storyboard */,
+				EA584F5A200B98F800D08656 /* StatusCellView.xib */,
+				EA302465200B80100084FFD8 /* Info.plist */,
+				EA302466200B80100084FFD8 /* imastodon_mac.entitlements */,
+			);
+			path = "imastodon-mac";
 			sourceTree = "<group>";
 		};
 		EA72DC701EF14E2B00B5A7CD /* API */ = {
@@ -119,6 +187,7 @@
 			children = (
 				EAC55F2C1ED07C5700CD567D /* imastodon */,
 				EA72DC701EF14E2B00B5A7CD /* API */,
+				EA30245B200B80100084FFD8 /* imastodon-mac */,
 				EAC55F2B1ED07C5700CD567D /* Products */,
 				D2EDDD2B062B302C18216BBE /* Pods */,
 				59B677ACA5033BA3109A0B7F /* Frameworks */,
@@ -129,6 +198,7 @@
 			isa = PBXGroup;
 			children = (
 				EAC55F2A1ED07C5700CD567D /* imastodon.app */,
+				EA30245A200B80100084FFD8 /* imastodon-mac.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -170,6 +240,26 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		EA302459200B80100084FFD8 /* imastodon-mac */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EA302469200B80100084FFD8 /* Build configuration list for PBXNativeTarget "imastodon-mac" */;
+			buildPhases = (
+				370ECB91D44A3F5F8BDD4A15 /* [CP] Check Pods Manifest.lock */,
+				EA302456200B80100084FFD8 /* Sources */,
+				EA302457200B80100084FFD8 /* Frameworks */,
+				EA302458200B80100084FFD8 /* Resources */,
+				A1B635027D4D913C7C894A65 /* [CP] Embed Pods Frameworks */,
+				5D85F814FD81DCBBD8BFA833 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "imastodon-mac";
+			productName = "imastodon-mac";
+			productReference = EA30245A200B80100084FFD8 /* imastodon-mac.app */;
+			productType = "com.apple.product-type.application";
+		};
 		EAC55F291ED07C5700CD567D /* imastodon */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = EAC55F3C1ED07C5700CD567D /* Build configuration list for PBXNativeTarget "imastodon" */;
@@ -196,10 +286,20 @@
 		EAC55F221ED07C5700CD567D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0830;
+				LastSwiftUpdateCheck = 0920;
 				LastUpgradeCheck = 0920;
 				ORGANIZATIONNAME = banjun;
 				TargetAttributes = {
+					EA302459200B80100084FFD8 = {
+						CreatedOnToolsVersion = 9.2;
+						DevelopmentTeam = FPZK4WRGW7;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 1;
+							};
+						};
+					};
 					EAC55F291ED07C5700CD567D = {
 						CreatedOnToolsVersion = 8.3.1;
 						DevelopmentTeam = FPZK4WRGW7;
@@ -221,11 +321,22 @@
 			projectRoot = "";
 			targets = (
 				EAC55F291ED07C5700CD567D /* imastodon */,
+				EA302459200B80100084FFD8 /* imastodon-mac */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		EA302458200B80100084FFD8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EA302461200B80100084FFD8 /* Assets.xcassets in Resources */,
+				EA584F5B200B98F800D08656 /* StatusCellView.xib in Resources */,
+				EA302464200B80100084FFD8 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EAC55F281ED07C5700CD567D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -253,6 +364,24 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-imastodon/Pods-imastodon-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		370ECB91D44A3F5F8BDD4A15 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-imastodon-mac-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		5B5A2FDBB989939885304443 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -260,20 +389,20 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-imastodon/Pods-imastodon-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/APIKit/APIKit.framework",
-				"${BUILT_PRODUCTS_DIR}/BrightFutures/BrightFutures.framework",
+				"${BUILT_PRODUCTS_DIR}/APIKit-iOS/APIKit.framework",
+				"${BUILT_PRODUCTS_DIR}/BrightFutures-iOS/BrightFutures.framework",
 				"${BUILT_PRODUCTS_DIR}/Dwifft/Dwifft.framework",
 				"${BUILT_PRODUCTS_DIR}/Eureka/Eureka.framework",
-				"${BUILT_PRODUCTS_DIR}/FootlessParser/FootlessParser.framework",
-				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
-				"${BUILT_PRODUCTS_DIR}/NorthLayout/NorthLayout.framework",
-				"${BUILT_PRODUCTS_DIR}/ReactiveSSE/ReactiveSSE.framework",
-				"${BUILT_PRODUCTS_DIR}/ReactiveSwift/ReactiveSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/Result/Result.framework",
+				"${BUILT_PRODUCTS_DIR}/FootlessParser-iOS/FootlessParser.framework",
+				"${BUILT_PRODUCTS_DIR}/Kingfisher-iOS/Kingfisher.framework",
+				"${BUILT_PRODUCTS_DIR}/NorthLayout-iOS/NorthLayout.framework",
+				"${BUILT_PRODUCTS_DIR}/ReactiveSSE-iOS/ReactiveSSE.framework",
+				"${BUILT_PRODUCTS_DIR}/ReactiveSwift-iOS/ReactiveSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/Result-iOS/Result.framework",
 				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftBeaker/SwiftBeaker.framework",
-				"${BUILT_PRODUCTS_DIR}/URITemplate/URITemplate.framework",
-				"${BUILT_PRODUCTS_DIR}/※ikemen/Ikemen.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftBeaker-iOS/SwiftBeaker.framework",
+				"${BUILT_PRODUCTS_DIR}/URITemplate-iOS/URITemplate.framework",
+				"${BUILT_PRODUCTS_DIR}/※ikemen-iOS/Ikemen.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -297,6 +426,65 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-imastodon/Pods-imastodon-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		5D85F814FD81DCBBD8BFA833 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-imastodon-mac/Pods-imastodon-mac-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A1B635027D4D913C7C894A65 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-imastodon-mac/Pods-imastodon-mac-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/APIKit-macOS/APIKit.framework",
+				"${BUILT_PRODUCTS_DIR}/BrightFutures-macOS/BrightFutures.framework",
+				"${BUILT_PRODUCTS_DIR}/FootlessParser-macOS/FootlessParser.framework",
+				"${BUILT_PRODUCTS_DIR}/Kingfisher-macOS/Kingfisher.framework",
+				"${BUILT_PRODUCTS_DIR}/NorthLayout-macOS/NorthLayout.framework",
+				"${BUILT_PRODUCTS_DIR}/ReactiveSSE-macOS/ReactiveSSE.framework",
+				"${BUILT_PRODUCTS_DIR}/ReactiveSwift-macOS/ReactiveSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/Result-macOS/Result.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftBeaker-macOS/SwiftBeaker.framework",
+				"${BUILT_PRODUCTS_DIR}/URITemplate-macOS/URITemplate.framework",
+				"${BUILT_PRODUCTS_DIR}/※ikemen-macOS/Ikemen.framework",
+				"${BUILT_PRODUCTS_DIR}/Differ/Differ.framework",
+				"${BUILT_PRODUCTS_DIR}/ReactiveCocoa/ReactiveCocoa.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftRichString/SwiftRichString.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/APIKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BrightFutures.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FootlessParser.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NorthLayout.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactiveSSE.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactiveSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftBeaker.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/URITemplate.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Ikemen.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Differ.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactiveCocoa.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftRichString.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-imastodon-mac/Pods-imastodon-mac-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		FD174175ECEBE32229D17E94 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -318,6 +506,25 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		EA302456200B80100084FFD8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EA30246B200B84F40084FFD8 /* MastodonHelper.swift in Sources */,
+				EA584F5D200E2E6C00D08656 /* Store.swift in Sources */,
+				EAE792A92010D1BB00E38831 /* Differ+AppKit.swift in Sources */,
+				EA30246A200B84F40084FFD8 /* Mastodon.swift in Sources */,
+				EA584F63200E442D00D08656 /* LocalTLWindowController.swift in Sources */,
+				EA584F65200E4B3700D08656 /* AutolayoutLabel.swift in Sources */,
+				EA584F61200E38EB00D08656 /* NewAccountWindowController.swift in Sources */,
+				EA584F59200B8C1100D08656 /* Client.swift in Sources */,
+				EA30245D200B80100084FFD8 /* AppDelegate.swift in Sources */,
+				EA584F5F200E37AF00D08656 /* InstanceAccountsWindowController.swift in Sources */,
+				EA584F67200E4B5A00D08656 /* StatusTableCellView.swift in Sources */,
+				EA2BBB95201225A900918725 /* PostWindowController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EAC55F261ED07C5700CD567D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -354,6 +561,14 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		EA302462200B80100084FFD8 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EA302463200B80100084FFD8 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
 		EAC55F361ED07C5700CD567D /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -365,6 +580,54 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		EA302467200B80100084FFD8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D907FF16E22400E775461EBC /* Pods-imastodon-mac.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "imastodon-mac/imastodon-mac.entitlements";
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = FPZK4WRGW7;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = "imastodon-mac/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				PRODUCT_BUNDLE_IDENTIFIER = "jp.banjun.imastodon-mac";
+				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 4.0;
+			};
+			name = Debug;
+		};
+		EA302468200B80100084FFD8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7518B5189A465B5CDC2E2350 /* Pods-imastodon-mac.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "imastodon-mac/imastodon-mac.entitlements";
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = FPZK4WRGW7;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = "imastodon-mac/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				PRODUCT_BUNDLE_IDENTIFIER = "jp.banjun.imastodon-mac";
+				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 4.0;
+			};
+			name = Release;
+		};
 		EAC55F3A1ED07C5700CD567D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -505,6 +768,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		EA302469200B80100084FFD8 /* Build configuration list for PBXNativeTarget "imastodon-mac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EA302467200B80100084FFD8 /* Debug */,
+				EA302468200B80100084FFD8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		EAC55F251ED07C5700CD567D /* Build configuration list for PBXProject "imastodon" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

@@ -1,12 +1,13 @@
 import BrightFutures
 import Foundation
 import APIKit
+import SwiftRichString
 
-enum AppError: Error {
+enum AppError: LocalizedError {
     case apikit(SessionTaskError)
     case eventstream(Error?)
 
-    var localizedDescription: String {
+    var errorDescription: String? {
         switch self {
         case let .apikit(.connectionError(e)): return "connectionError(\(e))"
         case let .apikit(.requestError(e)): return "requestError(\(e))"
@@ -57,12 +58,8 @@ extension Status {
 
 extension NSAttributedString {
     convenience init?(html: String) {
-        guard let data = ("<style>body {font:-apple-system-body;line-height:100%;} p {margin:0;padding:0;display:inline;}</style>" + html).data(using: .utf8) else { return nil }
-        try? self.init(data: data,
-                       options: [
-                        .documentType: NSAttributedString.DocumentType.html,
-                        .characterEncoding: String.Encoding.utf8.rawValue],
-                       documentAttributes: nil)
+        guard let rendered = MarkupString(source: html)?.render() else { return nil }
+        self.init(attributedString: rendered)
     }
 }
 
@@ -106,9 +103,9 @@ struct Client {
 }
 
 extension Client {
-    func registerApp() -> Future<ClientApplication, AppError> {
+    func registerApp(clientName: String? = nil) -> Future<ClientApplication, AppError> {
         return run(RegisterApp(baseURL: baseURL, pathVars: .init(
-            client_name: "iM@STODON-banjun",
+            client_name: clientName ?? "imastodon-banjun",
             redirect_uris: "urn:ietf:wg:oauth:2.0:oob",
             scopes: "read write follow",
             website: "https://imastodon.banjun.jp/"))).map { r in
@@ -210,14 +207,14 @@ extension Client {
 }
 
 extension Client {
-    func post(message: String) -> Future<Status, AppError> {
+    func post(message: String, visibility: Visibility = .public) -> Future<Status, AppError> {
         return run(PostStatus(baseURL: baseURL, pathVars: .init(
             status: message,
             in_reply_to_id: nil,
             media_ids: nil,
             sensitive: nil,
             spoiler_text: nil,
-            visibility: "public"))).map { r in
+            visibility: visibility.rawValue))).map { r in
                 switch r {
                 case let .http200_(status): return status
                 }

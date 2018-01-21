@@ -3,53 +3,63 @@ PODS:
     - Result (~> 3.0)
   - BrightFutures (6.0.0):
     - Result (~> 3.2.4)
+  - Differ (1.0.3)
   - Dwifft (0.8)
   - Eureka (4.0.1)
   - FootlessParser (0.4.1)
   - Kingfisher (4.6.1)
   - NorthLayout (5.0.0):
     - FootlessParser (~> 0.4)
-  - ReactiveSSE (0.1.0):
+  - ReactiveCocoa (7.1.0):
+    - ReactiveSwift (~> 3.1)
+  - ReactiveSSE (0.1.1):
     - FootlessParser (~> 0.4)
     - ReactiveSwift (~> 3.0)
   - ReactiveSwift (3.1.0):
     - Result (~> 3.2)
   - Result (3.2.4)
   - SVProgressHUD (2.2.2)
-  - SwiftBeaker (1.0.0):
+  - SwiftBeaker (1.0.1):
     - APIKit
     - URITemplate
+  - SwiftRichString (1.1.0)
   - URITemplate (2.0.3)
   - ※ikemen (0.5.0)
 
 DEPENDENCIES:
   - BrightFutures
+  - Differ
   - Dwifft
   - Eureka
   - Kingfisher
   - NorthLayout
+  - ReactiveCocoa
   - ReactiveSSE
   - ReactiveSwift
   - SVProgressHUD
   - SwiftBeaker
+  - SwiftRichString
   - ※ikemen
 
 SPEC CHECKSUMS:
   APIKit: 7460983f490d3bde6aaaaa4164d18c9865a6f91d
   BrightFutures: 9e7604f511aed9f0d6a49b04ac9b3fca6b117758
+  Differ: 0c220ac75542f5f17f91b1303b85bf07d871ecd7
   Dwifft: 463e61d07322fdf83b32ee6975ca1b20708db746
   Eureka: c8bd5cc07143b6f66268c208d28a246c99b41955
   FootlessParser: 4705a9a740675b7439d9563f2fad83f7b84fc773
   Kingfisher: 1f9157d9c02b380cbd0b7cc890161195164eb634
   NorthLayout: 718fecaf16d90c82788e452b1280ff3d39c193c5
-  ReactiveSSE: 1a9bb744c8b2b2c14da6bb0dfb5007b133b04394
+  ReactiveCocoa: 105ad96f6b8711f1ee7d165fc96587479298053b
+  ReactiveSSE: 662bfc2c088c89aac810cc0bb079717d0f0a67bb
   ReactiveSwift: 5b26d2e988fe0eed2daf48c4054d1de74db50184
   Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
   SVProgressHUD: 59b2d3dabacbd051576d21d32293ca7228dc18b0
-  SwiftBeaker: c5e91c64394a15f095006c43172b8c06db263e46
+  SwiftBeaker: 49a89e7a664189936b6555738a38d066320ede9a
+  SwiftRichString: 49c75726140c7f780fad1d067f804491d51188fa
   URITemplate: ace0c4c46dcf8afe6e89b4060621852886b15c3b
   ※ikemen: 0cf85af52790db21a846ad31abca356e99da1ffb
 
-PODFILE CHECKSUM: 2d908ba5e2e1eb48a001eaf4554e5fae346eae4b
+PODFILE CHECKSUM: 4b578e327d0d8bd94b80d6890cbc37c5f94ceb49
 
 COCOAPODS: 1.3.1
