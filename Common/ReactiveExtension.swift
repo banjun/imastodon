@@ -2,7 +2,7 @@ import Foundation
 import ReactiveSwift
 
 func timestampEventLog(identifier: String, event: String, fileName: String, functionName: String, lineNumber: Int) {
-    print("\(Date()) [\(identifier)] \(event) fileName: \(fileName), functionName: \(functionName), lineNumber: \(lineNumber)")
+    NSLog("%@", "[\(identifier)] \(event) fileName: \(fileName), functionName: \(functionName), lineNumber: \(lineNumber)")
 }
 
 extension SignalProducer {
