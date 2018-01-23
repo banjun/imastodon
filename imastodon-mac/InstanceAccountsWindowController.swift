@@ -12,15 +12,17 @@ final class InstanceAccountsWindowController: NSWindowController, NSTableViewDat
         tv.dataSource = self
         tv.delegate = self
         tv.target = self
-        tv.doubleAction = #selector(tableViewDidDoubleClick)
     }
     private lazy var accountsColumn: NSTableColumn = .init(identifier: .init("Account")) ※ { c in
         c.title = "\(StoreFile.shared.store.instanceAccounts.count) Accounts"
     }
     private lazy var addButton: NSButton = .init(title: "Add Mastodon Account...", target: self, action: #selector(addAccount))
 
+    private lazy var homeTLButton: NSButton = .init(title: "Open Home Timeline", target: self, action: #selector(openHome))
+    private lazy var localTLButton: NSButton = .init(title: "Open Local Timeline...", target: self, action: #selector(openLocal))
+
     init() {
-        let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 256, height: 256),
+        let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 420, height: 256),
                               styleMask: [.titled, .closable, .miniaturizable, .resizable],
                               backing: .buffered,
                               defer: false)
@@ -32,10 +34,17 @@ final class InstanceAccountsWindowController: NSWindowController, NSTableViewDat
         let scrollView = NSScrollView()
         scrollView.documentView = accountsView
 
-        let autolayout = view.northLayoutFormat([:], ["sv": scrollView, "add": addButton])
-        autolayout("H:|[sv]|")
-        autolayout("H:|-[add]-(>=8)-|")
-        autolayout("V:|[sv]-[add]-|")
+        let autolayout = view.northLayoutFormat(["p": 20], [
+            "sv": scrollView,
+            "add": addButton,
+            "home": homeTLButton,
+            "local": localTLButton])
+        autolayout("H:|[sv]")
+        autolayout("H:[sv]-p-[home]-p-|")
+        autolayout("H:[sv]-p-[local(==home)]-p-|")
+        autolayout("H:|-p-[add]-(>=p)-|")
+        autolayout("V:|[sv]-p-[add]-p-|")
+        autolayout("V:|-p-[home]-[local(==home)]-(>=p)-|")
     }
 
     required init?(coder: NSCoder) {fatalError()}
@@ -59,6 +68,18 @@ final class InstanceAccountsWindowController: NSWindowController, NSTableViewDat
             _ = wc // capture & release
             self.accountsView.reloadData()
         }
+    }
+
+    @objc private func openHome() {
+        let row = accountsView.selectedRow
+        guard case 0..<accounts.count = row else { return }
+        appDelegate.appendWindowControllerAndShowWindow(HomeTLWindowController(instanceAccount: accounts[row]))
+    }
+
+    @objc private func openLocal() {
+        let row = accountsView.selectedRow
+        guard case 0..<accounts.count = row else { return }
+        appDelegate.appendWindowControllerAndShowWindow(LocalTLWindowController(instanceAccount: accounts[row]))
     }
 }
 

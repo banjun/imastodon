@@ -1,23 +1,19 @@
 import Cocoa
-import NorthLayout
-import Ikemen
-import Differ
+import API
 import ReactiveSSE
 import ReactiveSwift
-import ReactiveCocoa
-import Result
-import API
+import Ikemen
 
-final class LocalTLWindowController: TimelineWindowController {
+final class HomeTLWindowController: TimelineWindowController {
     init(instanceAccount: InstanceAccout) {
         super.init(
-            title: "LocalTL @ \(instanceAccount.instance.title)",
-            content: LocalTLViewController(instanceAccount: instanceAccount))
+            title: "HomeTL @ \(instanceAccount.instance.title)",
+            content: HomeTLViewController(instanceAccount: instanceAccount))
     }
     required init?(coder: NSCoder) {fatalError()}
 }
 
-final class LocalTLViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
+final class HomeTLViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
     private let instanceAccount: InstanceAccout
     private let viewModel = TimelineViewModel()
     private lazy var scrollView = NSScrollView() ※ { sv in
@@ -67,11 +63,11 @@ final class LocalTLViewController: NSViewController, NSTableViewDataSource, NSTa
         autolayout("H:|[sv(>=128)]|")
         autolayout("V:|[search][sv(>=128)]|")
 
-        var req = URLRequest(url: URL(string: instanceAccount.instance.baseURL!.absoluteString + "/api/v1/streaming/public/local")!)
+        var req = URLRequest(url: URL(string: instanceAccount.instance.baseURL!.absoluteString + "/api/v1/streaming/user")!)
         req.addValue("Bearer \(instanceAccount.accessToken)", forHTTPHeaderField: "Authorization")
         ReactiveSSE(urlRequest: req).producer
             .logEvents(identifier: instanceAccount.instance.title,
-                events: [.starting, .started, .completed, .interrupted, .terminated, .disposed], logger: timestampEventLog)
+                       events: [.starting, .started, .completed, .interrupted, .terminated, .disposed], logger: timestampEventLog)
             .retry(throttling: 10)
             .take(duringLifetimeOf: self)
             .startWithSignal { signal, disposable in
@@ -96,6 +92,19 @@ final class LocalTLViewController: NSViewController, NSTableViewDataSource, NSTa
                         case .success(let id):
                             self.viewModel.delete(id: id)
                         case .failure: break
+                        }
+                }
+                signal.filter {$0.type == "notification"}
+                    .filterMap {$0.data.data(using: .utf8)}
+                    .filterMap {try? JSONDecoder().decode(Notification.self, from: $0)}
+                    .observe(on: UIScheduler())
+                    .observeResult { [unowned self] r in
+                        switch r {
+                        case .success(let n):
+                            // TODO: post as user notification
+                            NSLog("%@", String(describing: n))
+                        case .failure(let e):
+                            NSLog("%@", "\(e)")
                         }
                 }
         }
