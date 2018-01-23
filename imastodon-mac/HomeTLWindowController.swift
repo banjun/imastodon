@@ -27,7 +27,7 @@ final class HomeTLViewController: NSViewController, NSTableViewDataSource, NSTab
     }
     private let timelineView = NSTableView(frame: .zero)
 
-    private lazy var postWindowController: PostWindowController = PostWindowController(instanceAccount: instanceAccount, visibility: .public)
+    private lazy var postWindowController: PostWindowController = PostWindowController(instanceAccount: instanceAccount, visibility: .unlisted)
 
     init(instanceAccount: InstanceAccout) {
         self.instanceAccount = instanceAccount

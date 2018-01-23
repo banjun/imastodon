@@ -4,10 +4,12 @@ import Ikemen
 import BrightFutures
 import Kingfisher
 import API
+import ReactiveSwift
+import ReactiveCocoa
 
 final class PostWindowController: NSWindowController, NSTextViewDelegate {
     let instanceAccount: InstanceAccout
-    let visibility: Visibility
+    private let visibility: MutableProperty<Visibility>
 
     private lazy var iconView: NSImageView = NSImageView() ※ { iv in
         guard let baseURL = instanceAccount.instance.baseURL,
@@ -34,10 +36,16 @@ final class PostWindowController: NSWindowController, NSTextViewDelegate {
     private lazy var postButton: NSButton = .init(title: "Toot", target: self, action: #selector(post)) ※ { b in
          b.keyEquivalent = "\r" // does not trigger when tootView is focused. safe enough not to post by mistake.
     }
+    private let visibilities: [Visibility] = [.public, .unlisted, .private, .direct]
+    private lazy var visibilityPopup: NSPopUpButton = .init(frame: .zero, pullsDown: false) ※ {
+        $0.addItems(withTitles: visibilities.map {$0.rawValue})
+        visibility <~ $0.reactive.selectedIndexes.map {[unowned self] in self.visibilities[$0]}
+        $0.reactive.selectedIndex <~ visibility.map {[unowned self] in self.visibilities.index(of: $0)}
+    }
 
     init(instanceAccount: InstanceAccout, visibility: Visibility) {
         self.instanceAccount = instanceAccount
-        self.visibility = visibility
+        self.visibility = .init(visibility)
         let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 320, height: 192),
                               styleMask: [.titled, .closable, .miniaturizable, .resizable],
                               backing: .buffered,
@@ -55,12 +63,14 @@ final class PostWindowController: NSWindowController, NSTextViewDelegate {
             "name": nameLabel,
             "text": scrollView,
             "cancel": cancelButton,
-            "post": postButton])
+            "post": postButton,
+            "visibility": visibilityPopup])
         autolayout("H:|-p-[icon(==32)]-[name]-p-|")
         autolayout("H:|-p-[text]-p-|")
-        autolayout("H:|-p-[cancel]-(>=p)-[post(==cancel)]-p-|")
+        autolayout("H:|-p-[cancel]-(>=p)-[visibility]-p-[post(==cancel)]-p-|")
         autolayout("V:|-p-[icon(==32)]-[text(>=64)]-p-[cancel]-p-|")
         autolayout("V:|-p-[name]-(>=8)-[text]-p-[post]-p-|")
+        autolayout("V:[text]-p-[visibility]-p-|")
 
         tootView.delegate = self
     }
@@ -76,7 +86,7 @@ final class PostWindowController: NSWindowController, NSTextViewDelegate {
         let text = tootView.string
 
         postButton.isEnabled = false
-        client.post(message: text, visibility: visibility)
+        client.post(message: text, visibility: visibility.value)
             .onComplete {_ in self.postButton.isEnabled = true}
             .onSuccess { _ in
                 self.tootView.string = ""
