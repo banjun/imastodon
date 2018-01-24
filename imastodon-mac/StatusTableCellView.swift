@@ -6,18 +6,22 @@ import API
 
 // instantiated from xib
 @objc class StatusTableCellView: NSTableCellView {
-    let iconView = NSImageView() ※ { iv in
-        iv.animates = false // heavy GIF performance
-    }
+    let iconView = IconView()
     let nameLabel = AutolayoutLabel() ※ { l in
         l.font = .systemFont(ofSize: 14)
         l.isBezeled = false
         l.drawsBackground = false
+        l.lineBreakMode = .byCharWrapping
+        l.cell?.truncatesLastVisibleLine = true
+        l.maximumNumberOfLines = 2
     }
     let bodyLabel = AutolayoutLabel() ※ { l in
         l.font = .systemFont(ofSize: 15)
         l.isBezeled = false
         l.drawsBackground = false
+        l.lineBreakMode = .byWordWrapping
+        l.cell?.truncatesLastVisibleLine = true
+        l.maximumNumberOfLines = 0
     }
 
     override func awakeFromNib() {
@@ -27,14 +31,17 @@ import API
             "icon": iconView,
             "name": nameLabel,
             "body": bodyLabel])
-        autolayout("H:|-4-[icon(==32)]-4-[name]|")
+        autolayout("H:|-4-[icon(==48)]-4-[name]|")
         autolayout("H:[icon]-4-[body]|")
-        autolayout("V:|-4-[icon(==32)]-(>=4)-|")
-        autolayout("V:|-4-[name][body]-(>=4)-|")
+        autolayout("V:|-4-[icon(==48)]-(>=4)-|")
+        autolayout("V:|[name][body]-(>=4)-|")
     }
 
     func setStatus(_ status: Status, baseURL: URL?, widthConstraintConstant: CGFloat? = nil) {
-        _ = widthConstraintConstant.map {bodyLabel.preferredMaxLayoutWidth = $0 - 40}
+        _ = widthConstraintConstant.map {
+            nameLabel.preferredMaxLayoutWidth = ($0 - 2) - 56
+            bodyLabel.preferredMaxLayoutWidth = ($0 - 2) - 56
+        }
 
         bodyLabel.stringValue = status.textContent
         nameLabel.stringValue = status.account.displayNameOrUserName

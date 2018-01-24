@@ -11,7 +11,7 @@ final class PostWindowController: NSWindowController, NSTextViewDelegate {
     let instanceAccount: InstanceAccout
     private let visibility: MutableProperty<Visibility>
 
-    private lazy var iconView: NSImageView = NSImageView() ※ { iv in
+    private lazy var iconView: IconView = IconView() ※ { iv in
         guard let baseURL = instanceAccount.instance.baseURL,
             let avatarURL = instanceAccount.account.avatarURL(baseURL: baseURL) else { return }
         iv.kf.setImage(with: avatarURL)
@@ -65,10 +65,10 @@ final class PostWindowController: NSWindowController, NSTextViewDelegate {
             "cancel": cancelButton,
             "post": postButton,
             "visibility": visibilityPopup])
-        autolayout("H:|-p-[icon(==32)]-[name]-p-|")
+        autolayout("H:|-p-[icon(==48)]-[name]-p-|")
         autolayout("H:|-p-[text]-p-|")
         autolayout("H:|-p-[cancel]-(>=p)-[visibility]-p-[post(==cancel)]-p-|")
-        autolayout("V:|-p-[icon(==32)]-[text(>=64)]-p-[cancel]-p-|")
+        autolayout("V:|-p-[icon(==48)]-[text(>=64)]-p-[cancel]-p-|")
         autolayout("V:|-p-[name]-(>=8)-[text]-p-[post]-p-|")
         autolayout("V:[text]-p-[visibility]-p-|")
 
