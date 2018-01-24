@@ -43,6 +43,7 @@
 		EAE1C02D2017780100D4765F /* TimelineWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE1C02C2017780100D4765F /* TimelineWindowController.swift */; };
 		EAE1C02F201778A100D4765F /* HomeTLWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE1C02E201778A100D4765F /* HomeTLWindowController.swift */; };
 		EAE1C0312018C19700D4765F /* IconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE1C0302018C19700D4765F /* IconView.swift */; };
+		EAE1C0332018CA8A00D4765F /* HashtagTLWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE1C0322018CA8A00D4765F /* HashtagTLWindowController.swift */; };
 		EAE218B11ED1460B001209F2 /* InstanceListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE218B01ED1460B001209F2 /* InstanceListViewController.swift */; };
 		EAE218B31ED147E2001209F2 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE218B21ED147E2001209F2 /* LoginViewController.swift */; };
 		EAE218B51ED15494001209F2 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE218B41ED15494001209F2 /* Store.swift */; };
@@ -103,6 +104,7 @@
 		EAE1C02C2017780100D4765F /* TimelineWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineWindowController.swift; sourceTree = "<group>"; };
 		EAE1C02E201778A100D4765F /* HomeTLWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTLWindowController.swift; sourceTree = "<group>"; };
 		EAE1C0302018C19700D4765F /* IconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconView.swift; sourceTree = "<group>"; };
+		EAE1C0322018CA8A00D4765F /* HashtagTLWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashtagTLWindowController.swift; sourceTree = "<group>"; };
 		EAE218B01ED1460B001209F2 /* InstanceListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstanceListViewController.swift; sourceTree = "<group>"; };
 		EAE218B21ED147E2001209F2 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		EAE218B41ED15494001209F2 /* Store.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
@@ -172,6 +174,7 @@
 				EAE1C02A2017774400D4765F /* TimelineViewModel.swift */,
 				EA584F62200E442D00D08656 /* LocalTLWindowController.swift */,
 				EAE1C02E201778A100D4765F /* HomeTLWindowController.swift */,
+				EAE1C0322018CA8A00D4765F /* HashtagTLWindowController.swift */,
 				EA2BBB94201225A900918725 /* PostWindowController.swift */,
 				EAE792A82010D1BB00E38831 /* Differ+AppKit.swift */,
 				EA302460200B80100084FFD8 /* Assets.xcassets */,
@@ -540,6 +543,7 @@
 				EAE792A92010D1BB00E38831 /* Differ+AppKit.swift in Sources */,
 				EA584F63200E442D00D08656 /* LocalTLWindowController.swift in Sources */,
 				EA584F65200E4B3700D08656 /* AutolayoutLabel.swift in Sources */,
+				EAE1C0332018CA8A00D4765F /* HashtagTLWindowController.swift in Sources */,
 				EA584F61200E38EB00D08656 /* NewAccountWindowController.swift in Sources */,
 				EA584F59200B8C1100D08656 /* Client.swift in Sources */,
 				EA30245D200B80100084FFD8 /* AppDelegate.swift in Sources */,

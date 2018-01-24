@@ -20,6 +20,10 @@ final class InstanceAccountsWindowController: NSWindowController, NSTableViewDat
 
     private lazy var homeTLButton: NSButton = .init(title: "Open Home Timeline", target: self, action: #selector(openHome))
     private lazy var localTLButton: NSButton = .init(title: "Open Local Timeline...", target: self, action: #selector(openLocal))
+    private lazy var hashtagTLButton: NSButton = .init(title: "Open Hashtag...", target: self, action: #selector(openHashtag))
+    private let hashtagField = NSTextField() ※ { tf in
+        tf.placeholderString = "Hashtag"
+    }
 
     init() {
         let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 420, height: 256),
@@ -38,13 +42,17 @@ final class InstanceAccountsWindowController: NSWindowController, NSTableViewDat
             "sv": scrollView,
             "add": addButton,
             "home": homeTLButton,
-            "local": localTLButton])
+            "local": localTLButton,
+            "hashtagName": hashtagField,
+            "hashtagTL": hashtagTLButton])
         autolayout("H:|[sv]")
         autolayout("H:[sv]-p-[home]-p-|")
         autolayout("H:[sv]-p-[local(==home)]-p-|")
+        autolayout("H:[sv]-(>=p)-[hashtagName(==hashtagTL)]-p-|")
+        autolayout("H:[sv]-(>=p)-[hashtagTL]-p-|")
         autolayout("H:|-p-[add]-(>=p)-|")
         autolayout("V:|[sv]-p-[add]-p-|")
-        autolayout("V:|-p-[home]-[local(==home)]-(>=p)-|")
+        autolayout("V:|-p-[home]-[local(==home)]-p-[hashtagName(==hashtagTL)]-[hashtagTL]-(>=p)-|")
     }
 
     required init?(coder: NSCoder) {fatalError()}
@@ -80,6 +88,14 @@ final class InstanceAccountsWindowController: NSWindowController, NSTableViewDat
         let row = accountsView.selectedRow
         guard case 0..<accounts.count = row else { return }
         appDelegate.appendWindowControllerAndShowWindow(LocalTLWindowController(instanceAccount: accounts[row]))
+    }
+
+    @objc private func openHashtag() {
+        let row = accountsView.selectedRow
+        guard case 0..<accounts.count = row else { return }
+        let hashtag = hashtagField.stringValue
+        guard !hashtag.isEmpty else { return }
+        appDelegate.appendWindowControllerAndShowWindow(HashtagTLWindowController(instanceAccount: accounts[row], hashtag: hashtag))
     }
 }
 
