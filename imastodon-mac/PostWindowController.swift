@@ -10,6 +10,7 @@ import ReactiveCocoa
 final class PostWindowController: NSWindowController, NSTextViewDelegate {
     let instanceAccount: InstanceAccout
     private let visibility: MutableProperty<Visibility>
+    private let defaultVisibility: Visibility?
 
     private lazy var iconView: IconView = IconView() ※ { iv in
         guard let baseURL = instanceAccount.instance.baseURL,
@@ -44,9 +45,10 @@ final class PostWindowController: NSWindowController, NSTextViewDelegate {
         $0.reactive.selectedIndex <~ visibility.map {[unowned self] in self.visibilities.index(of: $0)}
     }
 
-    init(instanceAccount: InstanceAccout, visibility: Visibility) {
+    init(instanceAccount: InstanceAccout, visibility: Visibility?) {
         self.instanceAccount = instanceAccount
-        self.visibility = .init(visibility)
+        self.visibility = .init(visibility ?? .public)
+        self.defaultVisibility = visibility
         let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 320, height: 192),
                               styleMask: [.titled, .closable, .miniaturizable, .resizable],
                               backing: .buffered,
@@ -74,6 +76,10 @@ final class PostWindowController: NSWindowController, NSTextViewDelegate {
         autolayout("V:[text]-p-[visibility]-p-|")
 
         tootView.delegate = self
+
+        NotificationCenter.default.reactive.notifications(forName: NSWindow.didBecomeKeyNotification, object: window)
+            .take(duringLifetimeOf: self)
+            .observeValues {[unowned self] _ in self.window?.makeFirstResponder(self.tootView)}
     }
 
     required init?(coder: NSCoder) {fatalError()}
@@ -91,6 +97,7 @@ final class PostWindowController: NSWindowController, NSTextViewDelegate {
             .onComplete {_ in self.postButton.isEnabled = true}
             .onSuccess { _ in
                 self.tootView.string = ""
+                _ = self.defaultVisibility.map {self.visibility.value = $0}
                 window.sheetParent?.endSheet(window, returnCode: .OK)
             }
             .onFailure {NSAlert(error: $0).beginSheetModal(for: window)}
