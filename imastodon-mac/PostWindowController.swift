@@ -29,6 +29,7 @@ final class PostWindowController: NSWindowController, NSTextViewDelegate {
         tv.font = .systemFont(ofSize: 15)
         tv.autoresizingMask = [.width] // fit to scrollView width
         tv.isEditable = true
+        tv.isRichText = false
     }
     private lazy var cancelButton: NSButton = .init(title: "Cancel", target: self, action: #selector(cancel)) ※ { b in
         b.keyEquivalent = "\u{1b}" // ESC
