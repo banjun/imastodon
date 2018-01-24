@@ -234,3 +234,15 @@ extension Client {
         }
     }
 }
+
+extension Visibility {
+    var displayName: String {return displayPrefix + " " + rawValue}
+    var displayPrefix: String {
+        switch self {
+        case .public: return "🌐"
+        case .unlisted: return "🏠"
+        case .private: return "🔒"
+        case .direct: return "✉️"
+        }
+    }
+}
