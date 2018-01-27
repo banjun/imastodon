@@ -66,10 +66,6 @@ final class InstanceAccountsWindowController: NSWindowController, NSTableViewDat
         return "\(a.account.display_name) (@\(a.account.username)) at \(a.instance.title)"
     }
 
-    @objc private func tableViewDidDoubleClick(_ sender: Any?) {
-        appDelegate.appendWindowControllerAndShowWindow(LocalTLWindowController(instanceAccount: accounts[accountsView.clickedRow]))
-    }
-
     @objc private func addAccount() {
         let wc = NewAccountWindowController()
         window?.beginSheet(wc.window!) { r in
@@ -81,13 +77,23 @@ final class InstanceAccountsWindowController: NSWindowController, NSTableViewDat
     @objc private func openHome() {
         let row = accountsView.selectedRow
         guard case 0..<accounts.count = row else { return }
-        appDelegate.appendWindowControllerAndShowWindow(HomeTLWindowController(instanceAccount: accounts[row]))
+        let a = accounts[row]
+        let k = a.instance.baseURL!
+        let sc = streamClients[k, default: StreamClient(instanceAccount: a)]
+        streamClients[k] = sc
+        appDelegate.appendWindowControllerAndShowWindow(HomeTLWindowController(instanceAccount: accounts[row], streamClient: sc))
     }
+
+    private var streamClients: [URL: StreamClient] = [:]
 
     @objc private func openLocal() {
         let row = accountsView.selectedRow
         guard case 0..<accounts.count = row else { return }
-        appDelegate.appendWindowControllerAndShowWindow(LocalTLWindowController(instanceAccount: accounts[row]))
+        let a = accounts[row]
+        let k = a.instance.baseURL!
+        let sc = streamClients[k, default: StreamClient(instanceAccount: a)]
+        streamClients[k] = sc
+        appDelegate.appendWindowControllerAndShowWindow(LocalTLWindowController(instanceAccount: accounts[row], streamClient: sc))
     }
 
     @objc private func openHashtag() {
