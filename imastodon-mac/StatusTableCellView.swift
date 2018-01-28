@@ -8,6 +8,7 @@ import API
 @objc class StatusTableCellView: NSTableCellView {
     let iconView = IconView()
     let nameLabel = AutolayoutLabel() ※ { l in
+        l.wantsLayer = false // draw to cellview layer
         l.font = .systemFont(ofSize: 14)
         l.isBezeled = false
         l.drawsBackground = false
@@ -16,6 +17,7 @@ import API
         l.maximumNumberOfLines = 2
     }
     let bodyLabel = AutolayoutLabel() ※ { l in
+        l.wantsLayer = false // draw to cellview layer
         l.font = .systemFont(ofSize: 15)
         l.isBezeled = false
         l.drawsBackground = false
@@ -23,8 +25,11 @@ import API
         l.cell?.truncatesLastVisibleLine = true
         l.maximumNumberOfLines = 0
     }
-
     override func awakeFromNib() {
+        // draw contents into single layer
+        wantsLayer = true
+        layerContentsRedrawPolicy = .onSetNeedsDisplay
+        canDrawSubviewsIntoLayer = true
         super.awakeFromNib()
 
         let autolayout = northLayoutFormat([:], [
