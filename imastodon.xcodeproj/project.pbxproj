@@ -40,6 +40,7 @@
 		EAC55F381ED07C5700CD567D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EAC55F361ED07C5700CD567D /* LaunchScreen.storyboard */; };
 		EACE4E11201C9F600005D2BE /* StreamClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = EACE4E10201C9F600005D2BE /* StreamClient.swift */; };
 		EACE4E12201C9F600005D2BE /* StreamClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = EACE4E10201C9F600005D2BE /* StreamClient.swift */; };
+		EACE4E14201E0ABC0005D2BE /* VisibleLimitedTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EACE4E13201E0ABC0005D2BE /* VisibleLimitedTableView.swift */; };
 		EAD8AD961EF2ADE0002648F9 /* UnifiedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD8AD951EF2ADE0002648F9 /* UnifiedViewController.swift */; };
 		EAE1C02B2017774400D4765F /* TimelineViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE1C02A2017774400D4765F /* TimelineViewModel.swift */; };
 		EAE1C02D2017780100D4765F /* TimelineWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE1C02C2017780100D4765F /* TimelineWindowController.swift */; };
@@ -102,6 +103,7 @@
 		EAC55F371ED07C5700CD567D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EAC55F391ED07C5700CD567D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EACE4E10201C9F600005D2BE /* StreamClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamClient.swift; sourceTree = "<group>"; };
+		EACE4E13201E0ABC0005D2BE /* VisibleLimitedTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisibleLimitedTableView.swift; sourceTree = "<group>"; };
 		EAD8AD951EF2ADE0002648F9 /* UnifiedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedViewController.swift; sourceTree = "<group>"; };
 		EAE1C02A2017774400D4765F /* TimelineViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineViewModel.swift; sourceTree = "<group>"; };
 		EAE1C02C2017780100D4765F /* TimelineWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineWindowController.swift; sourceTree = "<group>"; };
@@ -180,6 +182,7 @@
 				EAE1C0322018CA8A00D4765F /* HashtagTLWindowController.swift */,
 				EA2BBB94201225A900918725 /* PostWindowController.swift */,
 				EAE792A82010D1BB00E38831 /* Differ+AppKit.swift */,
+				EACE4E13201E0ABC0005D2BE /* VisibleLimitedTableView.swift */,
 				EA302460200B80100084FFD8 /* Assets.xcassets */,
 				EA302462200B80100084FFD8 /* Main.storyboard */,
 				EA584F5A200B98F800D08656 /* StatusCellView.xib */,
@@ -548,6 +551,7 @@
 				EAE792A92010D1BB00E38831 /* Differ+AppKit.swift in Sources */,
 				EA584F63200E442D00D08656 /* LocalTLWindowController.swift in Sources */,
 				EA584F65200E4B3700D08656 /* AutolayoutLabel.swift in Sources */,
+				EACE4E14201E0ABC0005D2BE /* VisibleLimitedTableView.swift in Sources */,
 				EAE1C0332018CA8A00D4765F /* HashtagTLWindowController.swift in Sources */,
 				EA584F61200E38EB00D08656 /* NewAccountWindowController.swift in Sources */,
 				EA584F59200B8C1100D08656 /* Client.swift in Sources */,

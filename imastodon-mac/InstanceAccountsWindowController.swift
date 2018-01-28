@@ -7,7 +7,7 @@ final class InstanceAccountsWindowController: NSWindowController, NSTableViewDat
         get {return StoreFile.shared.store.instanceAccounts}
         set {StoreFile.shared.store.instanceAccounts = accounts}
     }
-    private lazy var accountsView: NSTableView = .init() ※ { tv in
+    private lazy var accountsView: VisibleLimitedTableView = .init() ※ { tv in
         tv.addTableColumn(accountsColumn)
         tv.dataSource = self
         tv.delegate = self

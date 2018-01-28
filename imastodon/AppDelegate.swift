@@ -2,6 +2,7 @@ import UIKit
 import Ikemen
 import SVProgressHUD
 import UserNotifications
+import Kingfisher
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
@@ -15,6 +16,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             w.makeKeyAndVisible()
         }
         SVProgressHUD.setDefaultMaskType(.black)
+
+        ImageCache.default.maxMemoryCost = 100 * 120 * 120 // avatar * 100
 
         return true
     }

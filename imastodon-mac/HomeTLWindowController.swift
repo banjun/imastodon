@@ -26,7 +26,7 @@ final class HomeTLViewController: NSViewController, NSTableViewDataSource, NSTab
         viewModel.filterText <~ sf.reactive.continuousStringValues
         sf.nextKeyView = timelineView
     }
-    private let timelineView = NSTableView(frame: .zero)
+    private let timelineView: VisibleLimitedTableView = .init(frame: .zero)
 
     private lazy var postWindowController: PostWindowController = PostWindowController(instanceAccount: instanceAccount, visibility: .unlisted)
 
@@ -40,7 +40,7 @@ final class HomeTLViewController: NSViewController, NSTableViewDataSource, NSTab
 
     override func loadView() {
         view = NSView()
-        view.wantsLayer = true
+        scrollView.wantsLayer = true
 
         timelineView.dataSource = self
         timelineView.delegate = self
@@ -57,7 +57,9 @@ final class HomeTLViewController: NSViewController, NSTableViewDataSource, NSTab
         viewModel.filteredTimeline.combinePrevious([]).producer.startWithValues { [unowned self] in
             self.timelineView.animateRowAndSectionChanges(
                 oldData: $0.map {$0.id.value},
-                newData: $1.map {$0.id.value})
+                newData: $1.map {$0.id.value},
+                rowDeletionAnimation: [], // fade cause memory issue (generates unreused cell views)
+                rowInsertionAnimation: .slideDown)
         }
 
         let autolayout = view.northLayoutFormat([:], ["search": searchField, "sv": scrollView])
