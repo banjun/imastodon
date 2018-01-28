@@ -9,16 +9,17 @@ import Result
 import API
 
 final class LocalTLWindowController: TimelineWindowController {
-    init(instanceAccount: InstanceAccout) {
+    init(instanceAccount: InstanceAccout, streamClient: StreamClient) {
         super.init(
             title: "LocalTL @ \(instanceAccount.instance.title)",
-            content: LocalTLViewController(instanceAccount: instanceAccount))
+            content: LocalTLViewController(instanceAccount: instanceAccount, streamClient: streamClient))
     }
     required init?(coder: NSCoder) {fatalError()}
 }
 
 final class LocalTLViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
     private let instanceAccount: InstanceAccout
+    private let streamClient: StreamClient
     private let viewModel = TimelineViewModel()
     private lazy var scrollView = NSScrollView() ※ { sv in
         sv.hasVerticalScroller = true
@@ -33,8 +34,9 @@ final class LocalTLViewController: NSViewController, NSTableViewDataSource, NSTa
 
     private lazy var postWindowController: PostWindowController = PostWindowController(instanceAccount: instanceAccount, visibility: .public)
 
-    init(instanceAccount: InstanceAccout) {
+    init(instanceAccount: InstanceAccout, streamClient: StreamClient) {
         self.instanceAccount = instanceAccount
+        self.streamClient = streamClient
         super.init(nibName: nil, bundle: nil)
     }
     required init?(coder: NSCoder) {fatalError()}
@@ -67,38 +69,14 @@ final class LocalTLViewController: NSViewController, NSTableViewDataSource, NSTa
         autolayout("H:|[sv(>=128)]|")
         autolayout("V:|[search][sv(>=128)]|")
 
-        var req = URLRequest(url: URL(string: instanceAccount.instance.baseURL!.absoluteString + "/api/v1/streaming/public/local")!)
-        req.addValue("Bearer \(instanceAccount.accessToken)", forHTTPHeaderField: "Authorization")
-        ReactiveSSE(urlRequest: req).producer
-            .logEvents(identifier: instanceAccount.instance.title,
-                events: [.starting, .started, .completed, .interrupted, .terminated, .disposed], logger: timestampEventLog)
-            .retry(throttling: 10)
-            .take(duringLifetimeOf: self)
-            .startWithSignal { signal, disposable in
-                signal.filter {$0.type == "update"}
-                    .filterMap {$0.data.data(using: .utf8)}
-                    .filterMap {try? JSONDecoder().decode(Status.self, from: $0)}
-                    .observe(on: UIScheduler())
-                    .observeResult { [unowned self] r in
-                        switch r {
-                        case .success(let s):
-                            // NSLog("%@", "\(s.textContent)")
-                            self.viewModel.insert(status: s)
-                        case .failure(let e):
-                            NSLog("%@", "\(e)")
-                        }
-                }
-                signal.filter {$0.type == "delete"}
-                    .map {ID(stringLiteral: $0.data)}
-                    .observe(on: UIScheduler())
-                    .observeResult { [unowned self] r in
-                        switch r {
-                        case .success(let id):
-                            self.viewModel.delete(id: id)
-                        case .failure: break
-                        }
-                }
-        }
+        streamClient.localToots(during: reactive.lifetime)
+            .take(during: reactive.lifetime)
+            .observe(on: UIScheduler())
+            .observeValues {[unowned self] in self.viewModel.insert(status: $0)}
+        streamClient.localDeletedIDs(during: reactive.lifetime)
+            .take(during: reactive.lifetime)
+            .observe(on: UIScheduler())
+            .observeValues {[unowned self] in self.viewModel.delete(id: $0)}
     }
 
     override func viewWillAppear() {

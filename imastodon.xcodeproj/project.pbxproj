@@ -38,6 +38,8 @@
 		EAC55F301ED07C5700CD567D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC55F2F1ED07C5700CD567D /* ViewController.swift */; };
 		EAC55F351ED07C5700CD567D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EAC55F341ED07C5700CD567D /* Assets.xcassets */; };
 		EAC55F381ED07C5700CD567D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EAC55F361ED07C5700CD567D /* LaunchScreen.storyboard */; };
+		EACE4E11201C9F600005D2BE /* StreamClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = EACE4E10201C9F600005D2BE /* StreamClient.swift */; };
+		EACE4E12201C9F600005D2BE /* StreamClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = EACE4E10201C9F600005D2BE /* StreamClient.swift */; };
 		EAD8AD961EF2ADE0002648F9 /* UnifiedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD8AD951EF2ADE0002648F9 /* UnifiedViewController.swift */; };
 		EAE1C02B2017774400D4765F /* TimelineViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE1C02A2017774400D4765F /* TimelineViewModel.swift */; };
 		EAE1C02D2017780100D4765F /* TimelineWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE1C02C2017780100D4765F /* TimelineWindowController.swift */; };
@@ -99,6 +101,7 @@
 		EAC55F341ED07C5700CD567D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EAC55F371ED07C5700CD567D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EAC55F391ED07C5700CD567D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EACE4E10201C9F600005D2BE /* StreamClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamClient.swift; sourceTree = "<group>"; };
 		EAD8AD951EF2ADE0002648F9 /* UnifiedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedViewController.swift; sourceTree = "<group>"; };
 		EAE1C02A2017774400D4765F /* TimelineViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineViewModel.swift; sourceTree = "<group>"; };
 		EAE1C02C2017780100D4765F /* TimelineWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineWindowController.swift; sourceTree = "<group>"; };
@@ -255,6 +258,7 @@
 			isa = PBXGroup;
 			children = (
 				EAE218BA1ED1615A001209F2 /* Client.swift */,
+				EACE4E10201C9F600005D2BE /* StreamClient.swift */,
 				EAC4F2412014FE5000A35E9D /* ReactiveExtension.swift */,
 			);
 			path = Common;
@@ -539,6 +543,7 @@
 			files = (
 				EAE1C02F201778A100D4765F /* HomeTLWindowController.swift in Sources */,
 				EA584F5D200E2E6C00D08656 /* Store.swift in Sources */,
+				EACE4E12201C9F600005D2BE /* StreamClient.swift in Sources */,
 				EAE1C02B2017774400D4765F /* TimelineViewModel.swift in Sources */,
 				EAE792A92010D1BB00E38831 /* Differ+AppKit.swift in Sources */,
 				EA584F63200E442D00D08656 /* LocalTLWindowController.swift in Sources */,
@@ -576,6 +581,7 @@
 				EAC55F301ED07C5700CD567D /* ViewController.swift in Sources */,
 				EA65F7C41F9F68F700071B4D /* HeaderImageView.swift in Sources */,
 				EA6429EC1FA50B18006A67C0 /* FavoritesViewController.swift in Sources */,
+				EACE4E11201C9F600005D2BE /* StreamClient.swift in Sources */,
 				EA2312241FA59B4F00526097 /* NotificationsViewController.swift in Sources */,
 				EA0EDB4C1EE429A600280536 /* TimelineViewController.swift in Sources */,
 				EAE3BC401ED3373300B31AF5 /* PostViewController.swift in Sources */,
