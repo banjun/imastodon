@@ -84,6 +84,12 @@ final class PostWindowController: NSWindowController, NSTextViewDelegate {
 
     required init?(coder: NSCoder) {fatalError()}
 
+    func setFooter(text: String) {
+        guard tootView.string.range(of: text) == nil else { return }
+        tootView.string = tootView.string + " " + text
+        tootView.moveToBeginningOfDocument(nil)
+    }
+
     @objc func cancel() {
         window!.sheetParent?.endSheet(window!, returnCode: NSApplication.ModalResponse.cancel)
     }

@@ -142,6 +142,7 @@ final class HashtagTLViewController: NSViewController, NSTableViewDataSource, NS
 
     @IBAction func post(_ sender: Any?) {
         guard let sheet = postWindowController.window else { return }
+        postWindowController.setFooter(text: "#" + hashtag)
         view.window?.beginSheet(sheet)
     }
 }
