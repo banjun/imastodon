@@ -17,7 +17,6 @@
 		EA302461200B80100084FFD8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA302460200B80100084FFD8 /* Assets.xcassets */; };
 		EA302464200B80100084FFD8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA302462200B80100084FFD8 /* Main.storyboard */; };
 		EA584F59200B8C1100D08656 /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE218BA1ED1615A001209F2 /* Client.swift */; };
-		EA584F5B200B98F800D08656 /* StatusCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA584F5A200B98F800D08656 /* StatusCellView.xib */; };
 		EA584F5D200E2E6C00D08656 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA584F5C200E2E6C00D08656 /* Store.swift */; };
 		EA584F5F200E37AF00D08656 /* InstanceAccountsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA584F5E200E37AF00D08656 /* InstanceAccountsWindowController.swift */; };
 		EA584F61200E38EB00D08656 /* NewAccountWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA584F60200E38EB00D08656 /* NewAccountWindowController.swift */; };
@@ -41,6 +40,7 @@
 		EACE4E11201C9F600005D2BE /* StreamClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = EACE4E10201C9F600005D2BE /* StreamClient.swift */; };
 		EACE4E12201C9F600005D2BE /* StreamClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = EACE4E10201C9F600005D2BE /* StreamClient.swift */; };
 		EACE4E14201E0ABC0005D2BE /* VisibleLimitedTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EACE4E13201E0ABC0005D2BE /* VisibleLimitedTableView.swift */; };
+		EAD2FD4B202748C200599DF6 /* NibLessLoadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD2FD4A202748C200599DF6 /* NibLessLoadable.swift */; };
 		EAD8AD961EF2ADE0002648F9 /* UnifiedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD8AD951EF2ADE0002648F9 /* UnifiedViewController.swift */; };
 		EAE1C02B2017774400D4765F /* TimelineViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE1C02A2017774400D4765F /* TimelineViewModel.swift */; };
 		EAE1C02D2017780100D4765F /* TimelineWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE1C02C2017780100D4765F /* TimelineWindowController.swift */; };
@@ -77,7 +77,6 @@
 		EA302463200B80100084FFD8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		EA302465200B80100084FFD8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EA302466200B80100084FFD8 /* imastodon_mac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = imastodon_mac.entitlements; sourceTree = "<group>"; };
-		EA584F5A200B98F800D08656 /* StatusCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StatusCellView.xib; sourceTree = "<group>"; };
 		EA584F5C200E2E6C00D08656 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		EA584F5E200E37AF00D08656 /* InstanceAccountsWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceAccountsWindowController.swift; sourceTree = "<group>"; };
 		EA584F60200E38EB00D08656 /* NewAccountWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAccountWindowController.swift; sourceTree = "<group>"; };
@@ -104,6 +103,7 @@
 		EAC55F391ED07C5700CD567D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EACE4E10201C9F600005D2BE /* StreamClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamClient.swift; sourceTree = "<group>"; };
 		EACE4E13201E0ABC0005D2BE /* VisibleLimitedTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisibleLimitedTableView.swift; sourceTree = "<group>"; };
+		EAD2FD4A202748C200599DF6 /* NibLessLoadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NibLessLoadable.swift; sourceTree = "<group>"; };
 		EAD8AD951EF2ADE0002648F9 /* UnifiedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedViewController.swift; sourceTree = "<group>"; };
 		EAE1C02A2017774400D4765F /* TimelineViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineViewModel.swift; sourceTree = "<group>"; };
 		EAE1C02C2017780100D4765F /* TimelineWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineWindowController.swift; sourceTree = "<group>"; };
@@ -173,6 +173,7 @@
 				EA584F66200E4B5A00D08656 /* StatusTableCellView.swift */,
 				EAE1C0302018C19700D4765F /* IconView.swift */,
 				EA584F64200E4B3700D08656 /* AutolayoutLabel.swift */,
+				EAD2FD4A202748C200599DF6 /* NibLessLoadable.swift */,
 				EA584F5E200E37AF00D08656 /* InstanceAccountsWindowController.swift */,
 				EA584F60200E38EB00D08656 /* NewAccountWindowController.swift */,
 				EAE1C02C2017780100D4765F /* TimelineWindowController.swift */,
@@ -185,7 +186,6 @@
 				EACE4E13201E0ABC0005D2BE /* VisibleLimitedTableView.swift */,
 				EA302460200B80100084FFD8 /* Assets.xcassets */,
 				EA302462200B80100084FFD8 /* Main.storyboard */,
-				EA584F5A200B98F800D08656 /* StatusCellView.xib */,
 				EA302465200B80100084FFD8 /* Info.plist */,
 				EA302466200B80100084FFD8 /* imastodon_mac.entitlements */,
 			);
@@ -362,7 +362,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA302461200B80100084FFD8 /* Assets.xcassets in Resources */,
-				EA584F5B200B98F800D08656 /* StatusCellView.xib in Resources */,
 				EA302464200B80100084FFD8 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -551,6 +550,7 @@
 				EAE792A92010D1BB00E38831 /* Differ+AppKit.swift in Sources */,
 				EA584F63200E442D00D08656 /* LocalTLWindowController.swift in Sources */,
 				EA584F65200E4B3700D08656 /* AutolayoutLabel.swift in Sources */,
+				EAD2FD4B202748C200599DF6 /* NibLessLoadable.swift in Sources */,
 				EACE4E14201E0ABC0005D2BE /* VisibleLimitedTableView.swift in Sources */,
 				EAE1C0332018CA8A00D4765F /* HashtagTLWindowController.swift in Sources */,
 				EA584F61200E38EB00D08656 /* NewAccountWindowController.swift in Sources */,

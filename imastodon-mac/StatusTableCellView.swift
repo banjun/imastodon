@@ -3,9 +3,14 @@ import Ikemen
 import NorthLayout
 import Kingfisher
 import API
+import ReactiveCocoa
+import ReactiveSwift
 
-// instantiated from xib
-@objc class StatusTableCellView: NSTableCellView {
+final class StatusTableCellView: NSTableCellView, NibLessLoadable {
+    private let spoilerText = MutableProperty<String>("")
+    private lazy var hasSpoiler = Property<Bool>(capturing: spoilerText.map {!$0.isEmpty})
+    private let showsSpoiler = MutableProperty<Bool>(false)
+
     let iconView = IconView()
     let nameLabel = AutolayoutLabel() ※ { l in
         l.wantsLayer = false // draw to cellview layer
@@ -16,7 +21,7 @@ import API
         l.cell?.truncatesLastVisibleLine = true
         l.maximumNumberOfLines = 2
     }
-    let bodyLabel = AutolayoutLabel() ※ { l in
+    let spoilerLabel = AutolayoutLabel() ※ { l in
         l.wantsLayer = false // draw to cellview layer
         l.font = .systemFont(ofSize: 15)
         l.isBezeled = false
@@ -25,31 +30,75 @@ import API
         l.cell?.truncatesLastVisibleLine = true
         l.maximumNumberOfLines = 0
     }
-    override func awakeFromNib() {
+    let spoilerButton = NSButton() ※ { b in
+        b.wantsLayer = false // draw to cellview layer
+        b.title = "More"
+        b.alternateTitle = "Hide"
+        b.setButtonType(.toggle)
+        b.bezelStyle = .recessed
+        b.isBordered = true
+    }
+    private lazy var bodyLabel = AutolayoutLabel() ※ { l in
+        l.wantsLayer = false // draw to cellview layer
+        l.font = .systemFont(ofSize: 15)
+        l.isBezeled = false
+        l.drawsBackground = false
+        l.lineBreakMode = .byWordWrapping
+        l.cell?.truncatesLastVisibleLine = true
+        l.maximumNumberOfLines = 0
+        l.cell?.isScrollable = false
+    }
+    let contentStackView = NSStackView() ※ { s in
+        s.wantsLayer = false // draw to cellview layer
+        s.orientation = .vertical
+        s.alignment = .left
+        s.distribution = .equalSpacing
+        s.spacing = 4
+    }
+
+    init() {
+        super.init(frame: .zero)
+
         // draw contents into single layer
         wantsLayer = true
         layerContentsRedrawPolicy = .onSetNeedsDisplay
         canDrawSubviewsIntoLayer = true
-        super.awakeFromNib()
 
         let autolayout = northLayoutFormat([:], [
             "icon": iconView,
-            "name": nameLabel,
-            "body": bodyLabel])
-        autolayout("H:|-4-[icon(==48)]-4-[name]|")
-        autolayout("H:[icon]-4-[body]|")
+            "content": contentStackView,
+            "spacer": MinView() ※ {$0.setContentHuggingPriority(.init(rawValue: 751), for: .vertical)}])
+        autolayout("H:|-4-[icon(==48)]-4-[content]|")
         autolayout("V:|-4-[icon(==48)]-(>=4)-|")
-        autolayout("V:|[name][body]-(>=4)-|")
+        autolayout("H:|[spacer]|")
+        autolayout("V:|[content][spacer]|")
+
+        ([nameLabel, spoilerLabel, spoilerButton, bodyLabel] as [NSView]).forEach {
+            contentStackView.addArrangedSubview($0)
+            $0.setContentCompressionResistancePriority(.required, for: .vertical)
+            $0.setContentHuggingPriority(.required, for: .vertical)
+        }
+        [nameLabel, spoilerLabel, bodyLabel].forEach {
+            contentStackView.widthAnchor.constraint(equalTo: $0.widthAnchor).isActive = true
+        }
+        contentStackView.setContentHuggingPriority(.required, for: .vertical)
+        contentStackView.setHuggingPriority(.required, for: .vertical)
+
+        spoilerLabel.reactive.stringValue <~ spoilerText
+        spoilerLabel.reactive[\.isHidden] <~ hasSpoiler.negate()
+        spoilerButton.reactive[\.isHidden] <~ hasSpoiler.negate()
+        spoilerButton.reactive.state <~ showsSpoiler.map {$0 ? .on : .off}
+        showsSpoiler <~ spoilerButton.reactive.boolValues
+        bodyLabel.reactive[\.isHidden] <~ hasSpoiler.and(showsSpoiler.negate()).map {[unowned self] b in self.needsUpdateConstraints = true; return b}
     }
 
-    func setStatus(_ status: Status, baseURL: URL?, widthConstraintConstant: CGFloat? = nil) {
-        _ = widthConstraintConstant.map {
-            nameLabel.preferredMaxLayoutWidth = ($0 - 2) - 56
-            bodyLabel.preferredMaxLayoutWidth = ($0 - 2) - 56
-        }
+    required init?(coder decoder: NSCoder) {fatalError()}
 
-        bodyLabel.stringValue = status.textContent
+    func setStatus(_ status: Status, baseURL: URL?) {
         nameLabel.stringValue = status.account.displayNameOrUserName
+        bodyLabel.stringValue = status.textContent
+        spoilerText.value = status.spoiler_text
+        showsSpoiler.value = false
         if let avatarURL = (baseURL.flatMap {status.account.avatarURL(baseURL: $0)}) {
             iconView.kf.setImage(with: avatarURL)
         }
@@ -61,10 +110,10 @@ import API
             super.backgroundStyle = newValue
             switch newValue {
             case .dark:
-                nameLabel.textColor = .white
-                bodyLabel.textColor = .white
+                [nameLabel, spoilerLabel, bodyLabel].forEach {$0.textColor = .white}
             case .light:
                 nameLabel.textColor = .gray
+                spoilerLabel.textColor = .black
                 bodyLabel.textColor = .black
             case .raised, .lowered:
                 break

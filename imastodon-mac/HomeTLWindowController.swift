@@ -47,13 +47,12 @@ final class HomeTLViewController: NSViewController, NSTableViewDataSource, NSTab
         timelineView.headerView = nil
         timelineView.target = self
         timelineView.doubleAction = #selector(tableViewDidDoubleClick)
-        //        timelineView.usesAutomaticRowHeights = true
+        timelineView.usesAutomaticRowHeights = true
         let tc = NSTableColumn() ※ {
             $0.identifier = NSUserInterfaceItemIdentifier(rawValue: "Status")
             $0.title = ""
         }
         timelineView.addTableColumn(tc)
-        timelineView.register(NSNib(nibNamed: NSNib.Name(rawValue: "StatusCellView"), bundle: nil), forIdentifier: tc.identifier)
         viewModel.filteredTimeline.combinePrevious([]).producer.startWithValues { [unowned self] in
             self.timelineView.animateRowAndSectionChanges(
                 oldData: $0.map {$0.id.value},
@@ -101,16 +100,9 @@ final class HomeTLViewController: NSViewController, NSTableViewDataSource, NSTab
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
         guard let tableColumn = tableColumn else { return nil }
         let s = viewModel.filteredTimeline.value[row]
-        let cellView = tableView.makeView(withIdentifier: tableColumn.identifier, owner: self) as! StatusTableCellView
+        let cellView = tableView.makeView(type: StatusTableCellView.self, identifier: tableColumn.identifier, owner: self)
         cellView.setStatus(s, baseURL: instanceAccount.instance.baseURL!)
         return cellView
-    }
-
-    private lazy var layoutCell = StatusTableCellView() ※ {$0.awakeFromNib()}
-
-    func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
-        layoutCell.setStatus(viewModel.filteredTimeline.value[row], baseURL: nil, widthConstraintConstant: scrollView.contentView.bounds.width)
-        return layoutCell.fittingSize.height
     }
 
     @objc private func tableViewDidDoubleClick(_ sender: Any?) {
