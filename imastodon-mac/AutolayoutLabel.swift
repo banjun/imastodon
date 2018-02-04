@@ -15,5 +15,6 @@ final class AutolayoutLabel: NSTextField {
         // NOTE: preferredMaxLayoutWidth should be set as desired
         isEditable = false // makes multiline intrinsic content size work
         maximumNumberOfLines = 0 // multiline
+        setContentCompressionResistancePriority(.init(rawValue: 9), for: .horizontal) // make lower , same as xib-defined preferredMaxLayoutWidth = Automatic
     }
 }
