@@ -38,7 +38,7 @@ final class StatusTableCellView: NSTableCellView, NibLessLoadable {
         b.bezelStyle = .recessed
         b.isBordered = true
     }
-    private lazy var bodyLabel = AutolayoutLabel() ※ { l in
+    let bodyLabel = AutolayoutLabel() ※ { l in
         l.wantsLayer = false // draw to cellview layer
         l.font = .systemFont(ofSize: 15)
         l.isBezeled = false
@@ -66,30 +66,28 @@ final class StatusTableCellView: NSTableCellView, NibLessLoadable {
 
         let autolayout = northLayoutFormat([:], [
             "icon": iconView,
-            "content": contentStackView,
-            "spacer": MinView() ※ {$0.setContentHuggingPriority(.init(rawValue: 751), for: .vertical)}])
+            "content": contentStackView ※ { s in
+                ([nameLabel, spoilerLabel, spoilerButton, bodyLabel] as [NSView]).forEach {
+                    s.addArrangedSubview($0)
+                    $0.setContentCompressionResistancePriority(.required, for: .vertical)
+                    $0.setContentHuggingPriority(.required, for: .vertical)
+                }
+                [nameLabel, spoilerLabel, bodyLabel].forEach {
+                    s.widthAnchor.constraint(equalTo: $0.widthAnchor).isActive = true
+                }
+                s.setHuggingPriority(.required, for: .vertical)
+            },
+            "spacer": MinView() ※ {$0.setContentHuggingPriority(.windowSizeStayPut , for: .vertical)}])
         autolayout("H:|-4-[icon(==48)]-4-[content]|")
         autolayout("V:|-4-[icon(==48)]-(>=4)-|")
-        autolayout("H:|[spacer]|")
         autolayout("V:|[content][spacer]|")
-
-        ([nameLabel, spoilerLabel, spoilerButton, bodyLabel] as [NSView]).forEach {
-            contentStackView.addArrangedSubview($0)
-            $0.setContentCompressionResistancePriority(.required, for: .vertical)
-            $0.setContentHuggingPriority(.required, for: .vertical)
-        }
-        [nameLabel, spoilerLabel, bodyLabel].forEach {
-            contentStackView.widthAnchor.constraint(equalTo: $0.widthAnchor).isActive = true
-        }
-        contentStackView.setContentHuggingPriority(.required, for: .vertical)
-        contentStackView.setHuggingPriority(.required, for: .vertical)
 
         spoilerLabel.reactive.stringValue <~ spoilerText
         spoilerLabel.reactive[\.isHidden] <~ hasSpoiler.negate()
         spoilerButton.reactive[\.isHidden] <~ hasSpoiler.negate()
         spoilerButton.reactive.state <~ showsSpoiler.map {$0 ? .on : .off}
         showsSpoiler <~ spoilerButton.reactive.boolValues
-        bodyLabel.reactive[\.isHidden] <~ hasSpoiler.and(showsSpoiler.negate()).map {[unowned self] b in self.needsUpdateConstraints = true; return b}
+        bodyLabel.reactive[\.isHidden] <~ hasSpoiler.and(showsSpoiler.negate())
     }
 
     required init?(coder decoder: NSCoder) {fatalError()}
@@ -105,10 +103,8 @@ final class StatusTableCellView: NSTableCellView, NibLessLoadable {
     }
 
     override var backgroundStyle: NSView.BackgroundStyle {
-        get {return super.backgroundStyle}
-        set {
-            super.backgroundStyle = newValue
-            switch newValue {
+        didSet {
+            switch backgroundStyle {
             case .dark:
                 [nameLabel, spoilerLabel, bodyLabel].forEach {$0.textColor = .white}
             case .light:

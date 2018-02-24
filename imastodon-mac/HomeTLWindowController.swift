@@ -88,11 +88,6 @@ final class HomeTLViewController: NSViewController, NSTableViewDataSource, NSTab
         view.window?.initialFirstResponder = timelineView
     }
 
-    override func viewDidLayout() {
-        super.viewDidLayout()
-        timelineView.noteHeightOfRows(withIndexesChanged: NSIndexSet(indexesIn: timelineView.rows(in: scrollView.contentView.bounds)) as IndexSet)
-    }
-
     func numberOfRows(in tableView: NSTableView) -> Int {
         return viewModel.filteredTimeline.value.count
     }
