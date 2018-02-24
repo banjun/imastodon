@@ -55,6 +55,13 @@ final class StatusTableCellView: NSTableCellView, NibLessLoadable {
         s.distribution = .equalSpacing
         s.spacing = 4
     }
+    let attachmentStackView = NSStackView() ※ { s in
+        s.wantsLayer = false // draw to cellview layer
+        s.orientation = .horizontal
+        s.distribution = .fillEqually
+        s.spacing = 4
+        s.heightAnchor.constraint(equalToConstant: 128).isActive = true
+    }
 
     init() {
         super.init(frame: .zero)
@@ -67,12 +74,12 @@ final class StatusTableCellView: NSTableCellView, NibLessLoadable {
         let autolayout = northLayoutFormat([:], [
             "icon": iconView,
             "content": contentStackView ※ { s in
-                ([nameLabel, spoilerLabel, spoilerButton, bodyLabel] as [NSView]).forEach {
+                ([nameLabel, spoilerLabel, spoilerButton, bodyLabel, attachmentStackView] as [NSView]).forEach {
                     s.addArrangedSubview($0)
                     $0.setContentCompressionResistancePriority(.required, for: .vertical)
                     $0.setContentHuggingPriority(.required, for: .vertical)
                 }
-                [nameLabel, spoilerLabel, bodyLabel].forEach {
+                [nameLabel, spoilerLabel, bodyLabel, attachmentStackView].forEach {
                     s.widthAnchor.constraint(equalTo: $0.widthAnchor).isActive = true
                 }
                 s.setHuggingPriority(.required, for: .vertical)
@@ -99,6 +106,25 @@ final class StatusTableCellView: NSTableCellView, NibLessLoadable {
         showsSpoiler.value = false
         if let avatarURL = (baseURL.flatMap {status.account.avatarURL(baseURL: $0)}) {
             iconView.kf.setImage(with: avatarURL)
+        }
+
+        let attachments = status.media_attachments
+        attachmentStackView.isHidden = attachments.isEmpty
+        attachmentStackView.arrangedSubviews.reversed().forEach { v in
+            attachmentStackView.removeArrangedSubview(v)
+        }
+        attachments
+            .flatMap {URL(string: $0.preview_url)}
+            .map {url in LayerImageView(contentMode: .scaleAspectFill) ※ {
+                $0.layer?.cornerRadius = 4
+                $0.layer?.masksToBounds = true
+                $0.kf.setImage(with: url)
+                }}
+            .forEach { v in
+                attachmentStackView.addArrangedSubview(v)
+                v.heightAnchor.constraint(equalTo: attachmentStackView.heightAnchor).isActive = true
+                v.setContentCompressionResistancePriority(.fittingSizeCompression, for: .horizontal)
+                v.setContentHuggingPriority(.fittingSizeCompression, for: .vertical)
         }
     }
 

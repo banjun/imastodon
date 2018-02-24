@@ -30,6 +30,7 @@
 		EA6429F41FA5694E006A67C0 /* UserHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6429F31FA5694E006A67C0 /* UserHeaderView.swift */; };
 		EA65F7C21F9E2AFE00071B4D /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65F7C11F9E2AFE00071B4D /* UserViewController.swift */; };
 		EA65F7C41F9F68F700071B4D /* HeaderImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65F7C31F9F68F700071B4D /* HeaderImageView.swift */; };
+		EA85B2612041BDFB00B5287B /* LayerImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA85B2602041BDFB00B5287B /* LayerImageView.swift */; };
 		EAB868271EF6B4A700B38879 /* AttachmentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB868261EF6B4A700B38879 /* AttachmentViewController.swift */; };
 		EAC4F2422014FE5000A35E9D /* ReactiveExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC4F2412014FE5000A35E9D /* ReactiveExtension.swift */; };
 		EAC4F2432014FE5000A35E9D /* ReactiveExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC4F2412014FE5000A35E9D /* ReactiveExtension.swift */; };
@@ -92,6 +93,7 @@
 		EA65F7C31F9F68F700071B4D /* HeaderImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderImageView.swift; sourceTree = "<group>"; };
 		EA72DC721EF14E2B00B5A7CD /* Mastodon.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Mastodon.md; sourceTree = "<group>"; };
 		EA72DC741EF14E2B00B5A7CD /* Mastodon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mastodon.swift; sourceTree = "<group>"; };
+		EA85B2602041BDFB00B5287B /* LayerImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerImageView.swift; sourceTree = "<group>"; };
 		EAB623AC1EF16AA500F7BE80 /* MastodonHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonHelper.swift; sourceTree = "<group>"; };
 		EAB868261EF6B4A700B38879 /* AttachmentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentViewController.swift; sourceTree = "<group>"; };
 		EAC4F2412014FE5000A35E9D /* ReactiveExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactiveExtension.swift; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 				EAE1C0302018C19700D4765F /* IconView.swift */,
 				EA584F64200E4B3700D08656 /* AutolayoutLabel.swift */,
 				EAD2FD4A202748C200599DF6 /* NibLessLoadable.swift */,
+				EA85B2602041BDFB00B5287B /* LayerImageView.swift */,
 				EA584F5E200E37AF00D08656 /* InstanceAccountsWindowController.swift */,
 				EA584F60200E38EB00D08656 /* NewAccountWindowController.swift */,
 				EAE1C02C2017780100D4765F /* TimelineWindowController.swift */,
@@ -549,6 +552,7 @@
 				EAE1C02B2017774400D4765F /* TimelineViewModel.swift in Sources */,
 				EAE792A92010D1BB00E38831 /* Differ+AppKit.swift in Sources */,
 				EA584F63200E442D00D08656 /* LocalTLWindowController.swift in Sources */,
+				EA85B2612041BDFB00B5287B /* LayerImageView.swift in Sources */,
 				EA584F65200E4B3700D08656 /* AutolayoutLabel.swift in Sources */,
 				EAD2FD4B202748C200599DF6 /* NibLessLoadable.swift in Sources */,
 				EACE4E14201E0ABC0005D2BE /* VisibleLimitedTableView.swift in Sources */,
