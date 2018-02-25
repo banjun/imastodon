@@ -84,10 +84,11 @@ final class StatusTableCellView: NSTableCellView, NibLessLoadable {
                 }
                 s.setHuggingPriority(.required, for: .vertical)
             },
-            "spacer": MinView() ※ {$0.setContentHuggingPriority(.windowSizeStayPut , for: .vertical)}])
+            "spacer": MinView() ※ {$0.setContentHuggingPriority(.init(rawValue: 751) , for: .vertical)}]) // should cause shrink on click more/hide
         autolayout("H:|-4-[icon(==48)]-4-[content]|")
         autolayout("V:|-4-[icon(==48)]-(>=4)-|")
         autolayout("V:|[content][spacer]|")
+        autolayout("H:|[spacer]|") // suppress ambiguous warning in view debugger
 
         spoilerLabel.reactive.stringValue <~ spoilerText
         spoilerLabel.reactive[\.isHidden] <~ hasSpoiler.negate()
