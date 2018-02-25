@@ -54,6 +54,7 @@ final class StatusTableCellView: NSTableCellView, NibLessLoadable {
         s.alignment = .left
         s.distribution = .equalSpacing
         s.spacing = 4
+        s.edgeInsets.bottom = s.spacing
     }
     let attachmentStackView = NSStackView() ※ { s in
         s.wantsLayer = false // draw to cellview layer
