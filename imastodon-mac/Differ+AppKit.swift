@@ -34,9 +34,7 @@ extension NSTableView {
         rowInsertionAnimation: AnimationOptions = .effectFade,
         indexTransform: (Int) -> Int = { $0 }
         )
-        where T.Iterator.Element: Collection,
-        T.Iterator.Element: Equatable,
-        T.Iterator.Element.Iterator.Element: Equatable {
+        where T.Iterator.Element: Equatable {
             apply(
                 oldData.extendedDiff(newData),
                 rowDeletionAnimation: rowDeletionAnimation,

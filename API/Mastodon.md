@@ -190,6 +190,16 @@ Fetching a user's notifications
 + Response 200
     + Attributes (Status)
 
+# UnFavouriting [/api/v1/statuses/{id}/unfavourite]
+
+## UnFavorite [POST]
+
++ Parameters
+    + id (ID, required)
+
++ Response 200
+    + Attributes (Status)
+
 # Posting a new statuses [/api/v1/statuses{?status,in_reply_to_id,media_ids,sensitive,spoiler_text,visibility}]
 
 ## PostStatus [POST]

@@ -1,5 +1,7 @@
 import ReactiveSwift
 import API
+import Ikemen
+import BrightFutures
 
 final class TimelineViewModel {
     let timeline = MutableProperty<[Status]>([])
@@ -26,5 +28,30 @@ final class TimelineViewModel {
 
     func delete(id: ID) {
         timeline.value = timeline.value.filter {$0.id != id}
+    }
+
+    func toggleFavorite(status: Status, client: Client) -> Future<Void, AppError> {
+        let toggle = status.favourited == true ? client.unfavorite(status) : client.favorite(status)
+        return toggle.onComplete {
+            let newStatus: Status
+            switch $0 {
+            case .success(let s): newStatus = s
+            case .failure: newStatus = status
+            }
+
+            self.timeline.value = self.timeline.value.map { s in
+                guard s.id == status.id else { return s }
+                return newStatus
+            }
+        }.asVoid()
+    }
+}
+
+struct TimelineStatus: Equatable {
+    let status: Status
+
+    static func == (lhs: TimelineStatus, rhs: TimelineStatus) -> Bool {
+        return lhs.status.id.value == rhs.status.id.value
+            && lhs.status.favourited == rhs.status.favourited
     }
 }

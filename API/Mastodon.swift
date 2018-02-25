@@ -788,6 +788,45 @@ public struct Favorite: APIBlueprintRequest, URITemplateRequest {
 }
 
 
+public struct UnFavorite: APIBlueprintRequest, URITemplateRequest {
+    public let baseURL: URL
+    public var method: HTTPMethod {return .post}
+
+    public let path = "" // see intercept(urlRequest:)
+    static let pathTemplate: URITemplate = "/api/v1/statuses/{id}/unfavourite"
+    public var pathVars: PathVars
+    public struct PathVars: URITemplateContextConvertible {
+        /// 
+        public var id: String
+
+        // public memberwise init
+        public init(id: String) {
+            self.id = id
+        }
+    }
+
+    public enum Responses {
+        case http200_(Status)
+    }
+
+    // public memberwise init
+    public init(baseURL: URL, pathVars: PathVars) {
+        self.baseURL = baseURL
+        self.pathVars = pathVars
+    }
+
+    public func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Responses {
+        let contentType = contentMIMEType(in: urlResponse)
+        switch (urlResponse.statusCode, contentType) {
+        case (200, _):
+            return .http200_(try decodeJSON(from: object, urlResponse: urlResponse))
+        default:
+            throw ResponseError.undefined(urlResponse.statusCode, contentType)
+        }
+    }
+}
+
+
 public struct PostStatus: APIBlueprintRequest, URITemplateRequest {
     public let baseURL: URL
     public var method: HTTPMethod {return .post}
