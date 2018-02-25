@@ -110,8 +110,8 @@ final class StatusTableCellView: NSTableCellView, NibLessLoadable {
 
         let attachments = status.media_attachments
         attachmentStackView.isHidden = attachments.isEmpty
-        attachmentStackView.arrangedSubviews.reversed().forEach { v in
-            attachmentStackView.removeArrangedSubview(v)
+        attachmentStackView.views.reversed().forEach { v in
+            attachmentStackView.removeView(v)
         }
         attachments
             .flatMap {URL(string: $0.preview_url)}
