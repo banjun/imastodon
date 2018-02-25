@@ -56,11 +56,11 @@ final class StatusTableCellView: NSTableCellView, NibLessLoadable {
         s.spacing = 4
         s.edgeInsets.bottom = s.spacing
     }
-    let attachmentStackView = NSStackView() ※ { s in
-        s.wantsLayer = false // draw to cellview layer
+    let attachmentStackView = AttachmentStackView() ※ { s in
         s.orientation = .horizontal
         s.distribution = .fillEqually
-        s.spacing = 4
+        s.spacing = 2
+        s.edgeInsets.right = 2
         s.heightAnchor.constraint(equalToConstant: 128).isActive = true
     }
 
@@ -112,22 +112,8 @@ final class StatusTableCellView: NSTableCellView, NibLessLoadable {
 
         let attachments = status.media_attachments
         attachmentStackView.isHidden = attachments.isEmpty
-        attachmentStackView.views.reversed().forEach { v in
-            attachmentStackView.removeView(v)
-        }
-        attachments
-            .flatMap {URL(string: $0.preview_url)}
-            .map {url in LayerImageView(contentMode: .scaleAspectFill) ※ {
-                $0.layer?.cornerRadius = 4
-                $0.layer?.masksToBounds = true
-                $0.kf.setImage(with: url)
-                }}
-            .forEach { v in
-                attachmentStackView.addArrangedSubview(v)
-                v.heightAnchor.constraint(equalTo: attachmentStackView.heightAnchor).isActive = true
-                v.setContentCompressionResistancePriority(.fittingSizeCompression, for: .horizontal)
-                v.setContentHuggingPriority(.fittingSizeCompression, for: .vertical)
-        }
+        attachmentStackView.reactive.attachmentURLs.action(
+            attachments.flatMap {URL(string: $0.preview_url)})
     }
 
     override var backgroundStyle: NSView.BackgroundStyle {
@@ -141,6 +127,44 @@ final class StatusTableCellView: NSTableCellView, NibLessLoadable {
                 bodyLabel.textColor = .black
             case .raised, .lowered:
                 break
+            }
+        }
+    }
+}
+
+final class AttachmentStackView: NSStackView {
+    let attachmentViews: [LayerImageView] = [.init(contentMode: .scaleAspectFill),
+                                             .init(contentMode: .scaleAspectFill),
+                                             .init(contentMode: .scaleAspectFill),
+                                             .init(contentMode: .scaleAspectFill)]
+    init() {
+        super.init(frame: .zero)
+        wantsLayer = true
+        layerContentsRedrawPolicy = .onSetNeedsDisplay
+        canDrawSubviewsIntoLayer = true
+        attachmentViews.forEach { v in
+            v.isHidden = true
+            addArrangedSubview(v)
+            v.layer?.cornerRadius = 4
+            v.layer?.masksToBounds = true
+            v.heightAnchor.constraint(equalTo: heightAnchor).isActive = true
+            v.setContentCompressionResistancePriority(.fittingSizeCompression, for: .horizontal)
+        }
+    }
+    required init?(coder decoder: NSCoder) {fatalError("init(coder:) has not been implemented")}
+}
+
+extension Reactive where Base: AttachmentStackView {
+    var attachmentURLs: BindingTarget<[URL]> {
+        return makeBindingTarget { base, urls in
+            base.attachmentViews.enumerated().forEach { i, v in
+                if let url = i < urls.count ? urls[i] : nil {
+                    v.kf.setImage(with: url)
+                    v.isHidden = false
+                } else {
+                    v.image = nil
+                    v.isHidden = true
+                }
             }
         }
     }
