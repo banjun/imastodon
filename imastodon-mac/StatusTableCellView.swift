@@ -56,13 +56,15 @@ final class StatusTableCellView: NSTableCellView, NibLessLoadable {
         s.spacing = 4
         s.edgeInsets.bottom = s.spacing
     }
-    let attachmentStackView = NSStackView() ※ { s in
+    let attachmentStackView = AttachmentStackView() ※ { s in
         s.wantsLayer = false // draw to cellview layer
         s.orientation = .horizontal
         s.distribution = .fillEqually
-        s.spacing = 4
-        s.heightAnchor.constraint(equalToConstant: 128).isActive = true
+        s.spacing = 2
+        s.edgeInsets.left = 4
+        s.edgeInsets.right = 4
     }
+    private lazy var attachmentStackViewHeight: NSLayoutConstraint = .init(item: attachmentStackView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 0, constant: 0)
 
     init() {
         super.init(frame: .zero)
@@ -75,21 +77,24 @@ final class StatusTableCellView: NSTableCellView, NibLessLoadable {
         let autolayout = northLayoutFormat([:], [
             "icon": iconView,
             "content": contentStackView ※ { s in
-                ([nameLabel, spoilerLabel, spoilerButton, bodyLabel, attachmentStackView] as [NSView]).forEach {
+                ([nameLabel, spoilerLabel, spoilerButton, bodyLabel] as [NSView]).forEach {
                     s.addArrangedSubview($0)
                     $0.setContentCompressionResistancePriority(.required, for: .vertical)
                     $0.setContentHuggingPriority(.required, for: .vertical)
                 }
-                [nameLabel, spoilerLabel, bodyLabel, attachmentStackView].forEach {
+                [nameLabel, spoilerLabel, bodyLabel].forEach {
                     s.widthAnchor.constraint(equalTo: $0.widthAnchor).isActive = true
                 }
                 s.setHuggingPriority(.required, for: .vertical)
             },
+            "attachments": attachmentStackView,
             "spacer": MinView() ※ {$0.setContentHuggingPriority(.init(rawValue: 751) , for: .vertical)}]) // should cause shrink on click more/hide
         autolayout("H:|-4-[icon(==48)]-4-[content]|")
-        autolayout("V:|-4-[icon(==48)]-(>=4)-|")
-        autolayout("V:|[content][spacer]|")
+        autolayout("H:|[attachments]|")
+        autolayout("V:|-4-[icon(==48)]-(>=4)-[attachments]-4-|")
+        autolayout("V:|[content][spacer][attachments]")
         autolayout("H:|[spacer]|") // suppress ambiguous warning in view debugger
+        attachmentStackViewHeight.isActive = true
 
         spoilerLabel.reactive.stringValue <~ spoilerText
         spoilerLabel.reactive[\.isHidden] <~ hasSpoiler.negate()
@@ -112,22 +117,9 @@ final class StatusTableCellView: NSTableCellView, NibLessLoadable {
 
         let attachments = status.media_attachments
         attachmentStackView.isHidden = attachments.isEmpty
-        attachmentStackView.views.reversed().forEach { v in
-            attachmentStackView.removeView(v)
-        }
-        attachments
-            .flatMap {URL(string: $0.preview_url)}
-            .map {url in LayerImageView(contentMode: .scaleAspectFill) ※ {
-                $0.layer?.cornerRadius = 4
-                $0.layer?.masksToBounds = true
-                $0.kf.setImage(with: url)
-                }}
-            .forEach { v in
-                attachmentStackView.addArrangedSubview(v)
-                v.heightAnchor.constraint(equalTo: attachmentStackView.heightAnchor).isActive = true
-                v.setContentCompressionResistancePriority(.fittingSizeCompression, for: .horizontal)
-                v.setContentHuggingPriority(.fittingSizeCompression, for: .vertical)
-        }
+        attachmentStackViewHeight.constant = attachmentStackView.isHidden ? 0 : 128 // as nested stackview layout calculation is heavy, manually set height to auto-shrink attachments view
+        attachmentStackView.reactive.attachmentURLs.action(
+            attachments.flatMap {URL(string: $0.preview_url)})
     }
 
     override var backgroundStyle: NSView.BackgroundStyle {
@@ -141,6 +133,41 @@ final class StatusTableCellView: NSTableCellView, NibLessLoadable {
                 bodyLabel.textColor = .black
             case .raised, .lowered:
                 break
+            }
+        }
+    }
+}
+
+final class AttachmentStackView: NSStackView {
+    let attachmentViews: [LayerImageView] = [.init(contentMode: .scaleAspectFill),
+                                             .init(contentMode: .scaleAspectFill),
+                                             .init(contentMode: .scaleAspectFill),
+                                             .init(contentMode: .scaleAspectFill)]
+    init() {
+        super.init(frame: .zero)
+        attachmentViews.forEach { v in
+            v.isHidden = true
+            addArrangedSubview(v)
+            v.layer?.cornerRadius = 4
+            v.layer?.masksToBounds = true
+            v.heightAnchor.constraint(equalTo: heightAnchor).isActive = true
+            v.setContentCompressionResistancePriority(.fittingSizeCompression, for: .horizontal)
+        }
+    }
+    required init?(coder decoder: NSCoder) {fatalError("init(coder:) has not been implemented")}
+}
+
+extension Reactive where Base: AttachmentStackView {
+    var attachmentURLs: BindingTarget<[URL]> {
+        return makeBindingTarget { base, urls in
+            base.attachmentViews.enumerated().forEach { i, v in
+                if let url = i < urls.count ? urls[i] : nil {
+                    v.kf.setImage(with: url)
+                    v.isHidden = false
+                } else {
+                    v.image = nil
+                    v.isHidden = true
+                }
             }
         }
     }

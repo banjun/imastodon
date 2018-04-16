@@ -54,6 +54,7 @@ final class LocalTLViewController: NSViewController, NSTableViewDataSource, NSTa
         timelineView.target = self
         timelineView.doubleAction = #selector(tableViewDidDoubleClick)
         timelineView.usesAutomaticRowHeights = true
+        timelineView.intercellSpacing = .zero
         let tc = NSTableColumn() ※ {
             $0.identifier = NSUserInterfaceItemIdentifier(rawValue: "Status")
             $0.title = ""
