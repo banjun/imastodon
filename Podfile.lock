@@ -3,7 +3,7 @@ PODS:
     - SwiftBeaker
   - APIKit (3.1.1):
     - Result (~> 3.0)
-  - BrightFutures (6.0.0):
+  - BrightFutures (6.0.1):
     - Result (~> 3.2.4)
   - Differ (1.0.3)
   - Dwifft (0.8)
@@ -51,7 +51,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   API: 8db0665ea8ddc9dcb32c586b6456437c492d10e3
   APIKit: 7460983f490d3bde6aaaaa4164d18c9865a6f91d
-  BrightFutures: 9e7604f511aed9f0d6a49b04ac9b3fca6b117758
+  BrightFutures: 9c03dab79e73ffe504b7bafc15c5bfdaeee54890
   Differ: 0c220ac75542f5f17f91b1303b85bf07d871ecd7
   Dwifft: 463e61d07322fdf83b32ee6975ca1b20708db746
   Eureka: c8bd5cc07143b6f66268c208d28a246c99b41955
