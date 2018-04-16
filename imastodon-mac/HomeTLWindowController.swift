@@ -15,6 +15,7 @@ final class HomeTLWindowController: TimelineWindowController {
 
 final class HomeTLViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
     private let instanceAccount: InstanceAccout
+    private let client: Client?
     private let streamClient: StreamClient
     private let viewModel = TimelineViewModel()
     private lazy var scrollView = NSScrollView() ※ { sv in
@@ -32,6 +33,7 @@ final class HomeTLViewController: NSViewController, NSTableViewDataSource, NSTab
 
     init(instanceAccount: InstanceAccout, streamClient: StreamClient) {
         self.instanceAccount = instanceAccount
+        self.client = Client(instanceAccount)
         self.streamClient = streamClient
         super.init(nibName: nil, bundle: nil)
     }
@@ -55,10 +57,10 @@ final class HomeTLViewController: NSViewController, NSTableViewDataSource, NSTab
         timelineView.addTableColumn(tc)
         viewModel.filteredTimeline.combinePrevious([]).producer.startWithValues { [unowned self] in
             self.timelineView.animateRowAndSectionChanges(
-                oldData: $0.map {$0.id.value},
-                newData: $1.map {$0.id.value},
+                oldData: $0.map {TimelineStatus(status: $0)},
+                newData: $1.map {TimelineStatus(status: $0)},
                 rowDeletionAnimation: [], // fade cause memory issue (generates unreused cell views)
-                rowInsertionAnimation: .slideDown)
+                rowInsertionAnimation: .slideDown) // TODO: appropriate animation for just reloaded cells
         }
 
         let autolayout = view.northLayoutFormat([:], ["search": searchField, "sv": scrollView])
@@ -104,6 +106,24 @@ final class HomeTLViewController: NSViewController, NSTableViewDataSource, NSTab
         let s = viewModel.filteredTimeline.value[timelineView.clickedRow]
         guard let url = ((s.mainContentStatus.url ?? s.url).flatMap {URL(string: $0)}) else { return }
         NSWorkspace.shared.open(url)
+    }
+
+    func tableView(_ tableView: NSTableView, rowActionsForRow row: Int, edge: NSTableView.RowActionEdge) -> [NSTableViewRowAction] {
+        switch edge {
+        case .leading:
+            return []
+        case .trailing:
+            let s = viewModel.filteredTimeline.value[row]
+            let client = self.client
+            let window = self.view.window
+            return [
+                NSTableViewRowAction(style: .regular, title: s.favourited == true ? "★" : "☆") { [weak viewModel] _, _ in
+                    guard let viewModel = viewModel, let client = client, let window = window else { return }
+                    viewModel.toggleFavorite(status: s, client: client)
+                        .onFailure {NSAlert(error: $0).beginSheetModal(for: window)}
+                    tableView.rowActionsVisible = false
+                }]
+        }
     }
 
     @IBAction func filter(_ sender: Any?) {

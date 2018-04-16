@@ -184,9 +184,15 @@ extension Client {
     func boost(_ status: Status) -> Future<Void, AppError> {
         return run(Boost(baseURL: baseURL, pathVars: .init(id: status.id.value))).asVoid()
     }
-    
-    func favorite(_ status: Status) -> Future<Void, AppError> {
-        return run(Favorite(baseURL: baseURL, pathVars: .init(id: status.id.value))).asVoid()
+
+    func favorite(_ status: Status) -> Future<Status, AppError> {
+        return run(Favorite(baseURL: baseURL, pathVars: .init(id: status.id.value)))
+            .map {switch $0 {case .http200_(let s): return s}}
+    }
+
+    func unfavorite(_ status: Status) -> Future<Status, AppError> {
+        return run(UnFavorite(baseURL: baseURL, pathVars: .init(id: status.id.value)))
+            .map {switch $0 {case .http200_(let s): return s}}
     }
 
     // caution: mastodon before 1.6.0 does not support pins and response with normal toots regardless of pineed=true query.
