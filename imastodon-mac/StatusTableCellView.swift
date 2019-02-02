@@ -126,11 +126,11 @@ final class StatusTableCellView: NSTableCellView, NibLessLoadable {
         didSet {
             switch backgroundStyle {
             case .dark:
-                [nameLabel, spoilerLabel, bodyLabel].forEach {$0.textColor = .white}
+                [nameLabel, spoilerLabel, bodyLabel].forEach {$0.textColor = .controlTextColor}
             case .light, .normal, .emphasized:
-                nameLabel.textColor = .gray
-                spoilerLabel.textColor = .black
-                bodyLabel.textColor = .black
+                nameLabel.textColor = .systemGray
+                spoilerLabel.textColor = .controlTextColor
+                bodyLabel.textColor = .controlTextColor
             case .raised, .lowered:
                 break
             }
