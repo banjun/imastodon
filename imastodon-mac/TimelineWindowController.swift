@@ -10,7 +10,7 @@ class TimelineWindowController: NSWindowController {
         super.init(window: window)
         window.contentViewController = content
         window.title = title
-        window.tabbingIdentifier = .init("TimelineWindowController")
+        window.tabbingIdentifier = "TimelineWindowController"
         NotificationCenter.default.reactive.notifications(forName: NSWindow.willCloseNotification, object: window)
             .take(duringLifetimeOf: self)
             .observeValues {[unowned self] _ in appDelegate.removeWindowController(self)}

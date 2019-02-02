@@ -9,14 +9,14 @@ public struct BatchUpdate {
         diff: ExtendedDiff,
         indexTransform: (Int) -> Int = { $0 }
         ) {
-        deletions = IndexSet(diff.flatMap { element -> Int? in
+        deletions = IndexSet(diff.compactMap { element -> Int? in
             switch element {
             case let .delete(at):
                 return indexTransform(at)
             default: return nil
             }
         })
-        insertions = IndexSet(diff.flatMap { element -> Int? in
+        insertions = IndexSet(diff.compactMap { element -> Int? in
             switch element {
             case let .insert(at):
                 return indexTransform(at)
