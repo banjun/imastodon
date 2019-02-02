@@ -20,16 +20,14 @@ func stubImage(_ size: CGSize = CGSize(width: 44, height: 44), _ color: UIColor 
 private let stubIcon = stubImage(CGSize(width: 32, height: 32))
 private let iconResizer = ResizingImageProcessor(referenceSize: stubIcon.size, mode: .aspectFill)
 
-extension Kingfisher where Base: UIImageView {
+extension KingfisherWrapper where Base: UIImageView {
     func setImageWithStub(_ url: URL) {
         let size = base.frame.size
         let resizer = ResizingImageProcessor(referenceSize: size.width * size.height > 0 ? size : stubIcon.size, mode: .aspectFill)
         setImage(
             with: url,
             placeholder: stubIcon,
-            options: [.scaleFactor(2), .processor(resizer), .cacheOriginalImage],
-            progressBlock: nil,
-            completionHandler: nil)
+            options: [.scaleFactor(2), .processor(resizer), .cacheOriginalImage])
     }
 }
 
@@ -55,7 +53,7 @@ extension UIAlertController {
         [("Show \(status.mainContentStatus.account.display_name)", showAccount),
          ("🔁", boost),
          ("⭐️", favorite)]
-            .flatMap {r in r.1.map {(r.0, $0)}}.forEach { title, action in
+            .compactMap {r in r.1.map {(r.0, $0)}}.forEach { title, action in
                 addAction(UIAlertAction(title: title, style: .default) {_ in action()})
         }
         addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
@@ -216,7 +214,7 @@ final class StatusView: UIView {
         self.thumbnailViewHeight = thumbnailViewHeight
         thumbnailViewHeight.priority = .required
         thumbnailView.addConstraint(thumbnailViewHeight)
-        bringSubview(toFront: iconView)
+        bringSubviewToFront(iconView)
         thumbnailView.isHidden = true
         pinLabel.isHidden = true
     }
@@ -275,8 +273,8 @@ final class StatusCollectionViewCell: UICollectionViewCell {
         autolayout("H:[shadowR(==shadowL)]|")
         autolayout("V:|[shadowL]|")
         autolayout("V:|[shadowR]|")
-        contentView.bringSubview(toFront: leftShadow)
-        contentView.bringSubview(toFront: rightShadow)
+        contentView.bringSubviewToFront(leftShadow)
+        contentView.bringSubviewToFront(rightShadow)
     }
 
     required init?(coder aDecoder: NSCoder) {fatalError()}
@@ -295,7 +293,7 @@ final class StatusCollectionViewCell: UICollectionViewCell {
 final class StatusTableViewCell: UITableViewCell {
     let statusView: StatusView
 
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         self.statusView = StatusView(frame: .zero)
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
@@ -406,7 +404,7 @@ final class NotificationCollectionViewCell: UICollectionViewCell {
 final class NotificationTableViewCell: UITableViewCell {
     let notificationView: NotificationView
 
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         self.notificationView = NotificationView(frame: .zero)
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 

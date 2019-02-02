@@ -10,7 +10,7 @@ class UnifiedViewController: TimelineViewController, ClientContainer {
 
     private var localStream: Stream?
     private var userStream: Stream?
-    private var streams: [Stream] {return [localStream, userStream].flatMap {$0}}
+    private var streams: [Stream] {return [localStream, userStream].compactMap {$0}}
     private var unifiedSignal: Signal<(Stream.Event, TimelineEvent?), AppError>?
 
     private let refreshControl = UIRefreshControl()
@@ -91,7 +91,7 @@ class UnifiedViewController: TimelineViewController, ClientContainer {
 
     private func fetch() {
         SVProgressHUD.show()
-        let since = timelineEvents.flatMap {$0.status?.id}.first {$0 != "0"}
+        let since = timelineEvents.compactMap {$0.status?.id}.first {$0 != "0"}
         client.local(since: since)
             .zip(client.home(since: since))
             .onComplete {_ in SVProgressHUD.dismiss()}

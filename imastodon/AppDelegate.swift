@@ -8,7 +8,7 @@ import Kingfisher
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     var window: UIWindow?
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         setupNotifications()
         window = UIWindow() ※ { w in
             let vc = ViewController()
@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
         SVProgressHUD.setDefaultMaskType(.black)
 
-        ImageCache.default.maxMemoryCost = 100 * 120 * 120 // avatar * 100
+        ImageCache.default.memoryStorage.config.totalCostLimit = 100 * 120 * 120 // avatar * 100
 
         return true
     }

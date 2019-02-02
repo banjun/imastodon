@@ -84,7 +84,7 @@ class TimelineViewController: UICollectionViewController {
         self.timelineEvents = timelineEvents
         super.init(collectionViewLayout: layout)
 
-        NotificationCenter.default.addObserver(forName: .UIContentSizeCategoryDidChange, object: nil, queue: .main) { [weak self] _ in
+        NotificationCenter.default.addObserver(forName: UIContentSizeCategory.didChangeNotification, object: nil, queue: .main) { [weak self] _ in
             // for NSAttributedString, label cannot be adjusted for size calculation corresponding to Dynamic Type Change.
             // as a workaround, we re-create a cell.
             self?.layoutCell = StatusCollectionViewCell(frame: .zero)
@@ -219,7 +219,7 @@ extension TimelineViewController: UICollectionViewDelegateFlowLayout {
         let e = timelineDiff.value(atIndexPath: indexPath)
         switch e {
         case let .home(s, a): return statusSize(s, a, constraint: size)
-        case let .local(s, a): return statusSize(s, a, constraint: UILayoutFittingCompressedSize)
+        case let .local(s, a): return statusSize(s, a, constraint: UIView.layoutFittingCompressedSize)
         case let .notification(n, s):
             notificationLayoutCell.notificationView.setNotification(n, text: s, baseURL: nil)
             let layoutSize = notificationLayoutCell.systemLayoutSizeFitting(size, withHorizontalFittingPriority: UILayoutPriority.required, verticalFittingPriority: UILayoutPriority.fittingSizeLevel)

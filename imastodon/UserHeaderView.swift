@@ -46,7 +46,7 @@ final class UserHeaderView: UIView {
         headerLayout("V:|[image]-[bio]||")
         headerLayout("V:|[bg]-[bio]||")
         bg.widthAnchor.constraint(lessThanOrEqualTo: widthAnchor, multiplier: 0.4).isActive = true
-        bringSubview(toFront: bg)
+        bringSubviewToFront(bg)
 
         let iconWidth: CGFloat = 48
         iconView.layer.cornerRadius = iconWidth / 2
