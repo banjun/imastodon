@@ -70,14 +70,22 @@ extension NSAttributedString {
                             .characterEncoding: String.Encoding.utf8.rawValue],
                            documentAttributes: nil)
         #else
-        let base = Style {$0.font = NSFont.systemFont(ofSize: NSFont.systemFontSize)}
-        self.init(attributedString: html
+        let text = html
             .replacingOccurrences(of: "<br />", with: "\n")
             .set(style: StyleGroup(
-                base: base,
-                ["a": base,
-                 "span": base,
-                 "p": base])))
+                base: Style(),
+                ["a": Style(),
+                 "span": Style(),
+                 "p": Style()]))
+            .string
+            .replacingOccurrences(of: "&lt;", with: "<")
+            .replacingOccurrences(of: "&gt;", with: ">")
+            .replacingOccurrences(of: "&quot;", with: "\"")
+            .replacingOccurrences(of: "&apos;", with: "'")
+            .replacingOccurrences(of: "&amp;", with: "&")
+        self.init(attributedString: text.set(style: Style {
+            $0.font = NSFont.systemFont(ofSize: NSFont.systemFontSize)
+        }))
         #endif
     }
 }
