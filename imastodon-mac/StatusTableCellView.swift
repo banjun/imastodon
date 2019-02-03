@@ -119,18 +119,18 @@ final class StatusTableCellView: NSTableCellView, NibLessLoadable {
         attachmentStackView.isHidden = attachments.isEmpty
         attachmentStackViewHeight.constant = attachmentStackView.isHidden ? 0 : 128 // as nested stackview layout calculation is heavy, manually set height to auto-shrink attachments view
         attachmentStackView.reactive.attachmentURLs.action(
-            attachments.flatMap {URL(string: $0.preview_url)})
+            attachments.compactMap {URL(string: $0.preview_url)})
     }
 
     override var backgroundStyle: NSView.BackgroundStyle {
         didSet {
             switch backgroundStyle {
             case .dark:
-                [nameLabel, spoilerLabel, bodyLabel].forEach {$0.textColor = .white}
-            case .light:
-                nameLabel.textColor = .gray
-                spoilerLabel.textColor = .black
-                bodyLabel.textColor = .black
+                [nameLabel, spoilerLabel, bodyLabel].forEach {$0.textColor = .controlTextColor}
+            case .light, .normal, .emphasized:
+                nameLabel.textColor = .systemGray
+                spoilerLabel.textColor = .controlTextColor
+                bodyLabel.textColor = .controlTextColor
             case .raised, .lowered:
                 break
             }
@@ -139,10 +139,10 @@ final class StatusTableCellView: NSTableCellView, NibLessLoadable {
 }
 
 final class AttachmentStackView: NSStackView {
-    let attachmentViews: [LayerImageView] = [.init(contentMode: .scaleAspectFill),
-                                             .init(contentMode: .scaleAspectFill),
-                                             .init(contentMode: .scaleAspectFill),
-                                             .init(contentMode: .scaleAspectFill)]
+    let attachmentViews: [LayerImageView] = [.init(contentMode: .resizeAspectFill),
+                                             .init(contentMode: .resizeAspectFill),
+                                             .init(contentMode: .resizeAspectFill),
+                                             .init(contentMode: .resizeAspectFill)]
     init() {
         super.init(frame: .zero)
         attachmentViews.forEach { v in

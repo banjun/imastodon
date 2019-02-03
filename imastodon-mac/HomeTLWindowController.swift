@@ -80,7 +80,7 @@ final class HomeTLViewController: NSViewController, NSTableViewDataSource, NSTab
         streamClient.notifications(during: reactive.lifetime)
             .take(during: reactive.lifetime)
             .observe(on: UIScheduler())
-            .observeValues {[unowned self] n in
+            .observeValues { n in
                 // TODO: post as user notification
                 NSLog("%@", String(describing: n))
         }

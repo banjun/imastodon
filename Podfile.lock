@@ -1,32 +1,32 @@
 PODS:
   - API (0.0.1):
     - SwiftBeaker
-  - APIKit (3.1.1):
-    - Result (~> 3.0)
-  - BrightFutures (6.0.1):
-    - Result (~> 3.2.4)
-  - Differ (1.0.3)
-  - Dwifft (0.8)
-  - Eureka (4.0.1)
-  - FootlessParser (0.4.1)
-  - Kingfisher (4.6.1)
-  - NorthLayout (5.0.0):
+  - APIKit (4.0.0):
+    - Result (~> 4.0)
+  - BrightFutures (7.0.0):
+    - Result (~> 4.0.0)
+  - Differ (1.3.0)
+  - Dwifft (0.9)
+  - Eureka (4.3.1)
+  - FootlessParser (0.5.1)
+  - Kingfisher (5.1.0)
+  - NorthLayout (5.2.0):
     - FootlessParser (~> 0.4)
-  - ReactiveCocoa (7.1.0):
-    - ReactiveSwift (~> 3.1)
-  - ReactiveSSE (0.1.1):
-    - FootlessParser (~> 0.4)
-    - ReactiveSwift (~> 3.0)
-  - ReactiveSwift (3.1.0):
-    - Result (~> 3.2)
-  - Result (3.2.4)
-  - SVProgressHUD (2.2.2)
+  - ReactiveCocoa (8.0.2):
+    - ReactiveSwift (~> 4.0)
+  - ReactiveSSE (0.3.1):
+    - FootlessParser (~> 0.5)
+    - ReactiveSwift (~> 4.0)
+  - ReactiveSwift (4.0.0):
+    - Result (~> 4.0)
+  - Result (4.0.1)
+  - SVProgressHUD (2.2.5)
   - SwiftBeaker (1.0.1):
     - APIKit
     - URITemplate
-  - SwiftRichString (1.1.0)
+  - SwiftRichString (2.1.0)
   - URITemplate (2.0.3)
-  - ※ikemen (0.5.0)
+  - "※ikemen (0.5.0)"
 
 DEPENDENCIES:
   - API (from `.`)
@@ -42,32 +42,52 @@ DEPENDENCIES:
   - SVProgressHUD
   - SwiftBeaker
   - SwiftRichString
-  - ※ikemen
+  - "※ikemen"
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - APIKit
+    - BrightFutures
+    - Differ
+    - Dwifft
+    - Eureka
+    - FootlessParser
+    - Kingfisher
+    - NorthLayout
+    - ReactiveCocoa
+    - ReactiveSSE
+    - ReactiveSwift
+    - Result
+    - SVProgressHUD
+    - SwiftBeaker
+    - SwiftRichString
+    - URITemplate
+    - "※ikemen"
 
 EXTERNAL SOURCES:
   API:
-    :path: .
+    :path: "."
 
 SPEC CHECKSUMS:
-  API: 8db0665ea8ddc9dcb32c586b6456437c492d10e3
-  APIKit: 7460983f490d3bde6aaaaa4164d18c9865a6f91d
-  BrightFutures: 9c03dab79e73ffe504b7bafc15c5bfdaeee54890
-  Differ: 0c220ac75542f5f17f91b1303b85bf07d871ecd7
-  Dwifft: 463e61d07322fdf83b32ee6975ca1b20708db746
-  Eureka: c8bd5cc07143b6f66268c208d28a246c99b41955
-  FootlessParser: 4705a9a740675b7439d9563f2fad83f7b84fc773
-  Kingfisher: 1f9157d9c02b380cbd0b7cc890161195164eb634
-  NorthLayout: 718fecaf16d90c82788e452b1280ff3d39c193c5
-  ReactiveCocoa: 105ad96f6b8711f1ee7d165fc96587479298053b
-  ReactiveSSE: 662bfc2c088c89aac810cc0bb079717d0f0a67bb
-  ReactiveSwift: 5b26d2e988fe0eed2daf48c4054d1de74db50184
-  Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
-  SVProgressHUD: 59b2d3dabacbd051576d21d32293ca7228dc18b0
+  API: 95e94e685b18138cd7c84a912ebd81a415071bba
+  APIKit: 23ddce4be7eccd746d2ab3c62713cd80d5846d5a
+  BrightFutures: 7d7436e937dfc83d814c11920f157fc2a53f5bd5
+  Differ: 9fcee7602542d7c6484ce05a0faec1c11258ed63
+  Dwifft: 42912068ed2a8146077d1a1404df18625bd086e1
+  Eureka: 28ea296f06710f6745266b71f17862048941a32d
+  FootlessParser: d59a9266ec55ed5a801fb171e25be43abfb42927
+  Kingfisher: fcec238063d17404fca89bf0a850583211c4cbf6
+  NorthLayout: 308a58a8f7d96f316e6399ff6432f8769321bbdf
+  ReactiveCocoa: fbd26e9ba60e98417ee47433e59465a98ed9da0f
+  ReactiveSSE: c127ae1baff76d4fe1209622b4e90affd1151716
+  ReactiveSwift: a2bb9ace428a109e9c0209615645d9d286c8c433
+  Result: a6e784bebf48b471d59cddc1adb81f41f678c487
+  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwiftBeaker: 49a89e7a664189936b6555738a38d066320ede9a
-  SwiftRichString: 49c75726140c7f780fad1d067f804491d51188fa
+  SwiftRichString: 810a93f438ee273619d0023c389584d6aeef015d
   URITemplate: ace0c4c46dcf8afe6e89b4060621852886b15c3b
-  ※ikemen: 0cf85af52790db21a846ad31abca356e99da1ffb
+  "※ikemen": 0cf85af52790db21a846ad31abca356e99da1ffb
 
 PODFILE CHECKSUM: bfe0cc393a5f5d327d4d246fbfc46940719df6f5
 
-COCOAPODS: 1.3.1
+COCOAPODS: 1.5.3

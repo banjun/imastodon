@@ -70,8 +70,14 @@ extension NSAttributedString {
                             .characterEncoding: String.Encoding.utf8.rawValue],
                            documentAttributes: nil)
         #else
-            guard let rendered = MarkupString(source: html)?.render() else { return nil }
-            self.init(attributedString: rendered)
+        let base = Style {$0.font = NSFont.systemFont(ofSize: NSFont.systemFontSize)}
+        self.init(attributedString: html
+            .replacingOccurrences(of: "<br />", with: "\n")
+            .set(style: StyleGroup(
+                base: base,
+                ["a": base,
+                 "span": base,
+                 "p": base])))
         #endif
     }
 }
