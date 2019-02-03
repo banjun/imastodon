@@ -1,4 +1,5 @@
 import Cocoa
+import Kingfisher
 
 let appDelegate = NSApp.delegate as! AppDelegate
 
@@ -25,5 +26,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func removeWindowController(_ wc: NSWindowController) {
         windowControllers = windowControllers.filter {$0 != wc}
+    }
+
+    func applicationWillResignActive(_ notification: Notification) {
+        ImageCache.default.cleanExpiredDiskCache()
     }
 }
