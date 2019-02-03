@@ -27,6 +27,9 @@ struct Store: Codable {
     }
 
     var windowState: [UUID: Data]
+    mutating func cleanNotUsedUUIDs(usedUUIDs uuids: [UUID]) {
+        windowState = windowState.filter {uuids.contains($0.key)}
+    }
 }
 
 struct StoreV1: Codable {
