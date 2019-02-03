@@ -23,7 +23,7 @@ final class AccountCell: UITableViewCell {
     private let thumbnailView = AttachmentsCollectionView()
     private var thumbnailViewHeight: NSLayoutConstraint?
 
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         let autolayout = northLayoutFormat([:], [

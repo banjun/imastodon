@@ -11,7 +11,7 @@ final class HeaderImageView: UIView, UIScrollViewDelegate {
     let imageView = UIImageView() ※ {_ in}
     private var imageKVO: NSKeyValueObservation?
 
-    override open class var requiresConstraintBasedLayout: Bool {return true}
+    override public class var requiresConstraintBasedLayout: Bool {return true}
 
     override init(frame: CGRect) {
         super.init(frame: frame)

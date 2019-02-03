@@ -22,7 +22,7 @@ final class StatusViewController: UITableViewController, ClientContainer {
             context.map {("ancestors", $0.ancestors.map {.init(status: $0, attributedString: nil)})},
             ("status", [attributedStatus]),
             context.map {("descendants", $0.descendants.map {.init(status: $0, attributedString: nil)})}
-            ].flatMap {$0}.filter {!$0.1.isEmpty})
+            ].compactMap {$0}.filter {!$0.1.isEmpty})
     }
 
     override var previewActionItems: [UIPreviewActionItem] {

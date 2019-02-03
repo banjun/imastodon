@@ -49,16 +49,21 @@ final class AttachmentViewController: UIViewController, UIGestureRecognizerDeleg
 
     func load() {
         let previewURL = URL(string: attachment.preview_url)
-        let previewImage = previewURL.flatMap {imageCache.retrieveImageInMemoryCache(forKey: $0.cacheKey) ?? imageCache.retrieveImageInDiskCache(forKey: $0.cacheKey)} ?? stubImage()
         let url = URL(string: attachment.url)
-
-        imageView.kf.indicatorType = .activity
-        imageView.kf.setImage(
-            with: url ?? previewURL,
-            placeholder: previewImage,
-            options: nil,
-            progressBlock: nil,
-            completionHandler: nil)
+        
+        var imageViewKf = imageView.kf
+        imageViewKf.indicatorType = .activity
+        if let previewURL = previewURL {
+            imageCache.retrieveImage(forKey: previewURL.cacheKey, options: nil, callbackQueue: .mainCurrentOrAsync) { [weak imageView] r in
+                imageView?.kf.setImage(
+                    with: url ?? previewURL,
+                    placeholder: r.value?.image ?? stubImage())
+            }
+        } else {
+            imageViewKf.setImage(
+                with: url ?? previewURL,
+                placeholder: stubImage())
+        }
 
         imageView.alpha = 0
         imageView.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)

@@ -64,7 +64,7 @@ final class UserViewController: UIViewController, ClientContainer {
         tootsDiff.sectionedValues = SectionedValues([
             currentUserSection.map {(0, $0.enumerated().map {"currentUserSection.\($0)"})},
             (1, toots.map {$0.0.id.value})]
-            .flatMap {$0})
+            .compactMap {$0})
     }
 
     private lazy var previewingDelegate: StatusPreviewingDelegate = StatusPreviewingDelegate(vc: self, client: self.client, context: { [weak self] p in
@@ -95,7 +95,7 @@ final class UserViewController: UIViewController, ClientContainer {
         autolayout("H:|[header]|")
         autolayout("H:|[timeline]|")
         autolayout("V:|[timeline]|")
-        view.bringSubview(toFront: headerView)
+        view.bringSubviewToFront(headerView)
         loadTimelineView()
         registerForPreviewing(with: previewingDelegate, sourceView: timelineView)
 

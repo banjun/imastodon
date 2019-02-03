@@ -12,6 +12,7 @@ target 'imastodon' do
   pod 'BrightFutures'
   pod 'ReactiveSSE'
   pod 'ReactiveSwift'
+  pod 'ReactiveCocoa'
   pod 'Dwifft'
 end
 
