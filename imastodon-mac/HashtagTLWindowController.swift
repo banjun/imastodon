@@ -54,7 +54,7 @@ final class HashtagTLViewController: NSViewController, NSTableViewDataSource, NS
             $0.title = ""
         }
         timelineView.addTableColumn(tc)
-        viewModel.filteredTimeline.combinePrevious([]).producer.startWithValues { [unowned self] in
+        viewModel.filteredTimeline.combinePrevious([]).producer.take(duringLifetimeOf: self).startWithValues { [unowned self] in
             self.timelineView.animateRowAndSectionChanges(
                 oldData: $0.map {$0.id.value},
                 newData: $1.map {$0.id.value},

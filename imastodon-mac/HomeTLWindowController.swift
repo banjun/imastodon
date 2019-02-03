@@ -56,7 +56,7 @@ final class HomeTLViewController: NSViewController, NSTableViewDataSource, NSTab
             $0.title = ""
         }
         timelineView.addTableColumn(tc)
-        viewModel.filteredTimeline.combinePrevious([]).producer.startWithValues { [unowned self] in
+        viewModel.filteredTimeline.combinePrevious([]).producer.take(duringLifetimeOf: self).startWithValues { [unowned self] in
             self.timelineView.animateRowAndSectionChanges(
                 oldData: $0.map {TimelineStatus(status: $0)},
                 newData: $1.map {TimelineStatus(status: $0)},
