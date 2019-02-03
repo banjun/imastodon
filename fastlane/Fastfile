@@ -9,7 +9,6 @@ lane :bump do
 end
 
 platform :ios do
-  
   desc "Submit a new Beta Build to Apple TestFlight"
   desc "This will also make sure the profile is up to date"
   lane :beta do |options|
@@ -22,9 +21,16 @@ end
 
 platform :mac do
   lane :archive do
-    gym(scheme: 'imastodon-mac',
-        clean: true,
-        codesigning_identity: 'Developer ID Application')
+    build = 'build'
+    scheme = 'imastodon-mac'
+    app = "#{build}/#{scheme}.app"
+    sh "rm -rf ../#{app}"
+    gym(
+      scheme: scheme,
+      clean: true,
+      output_directory: build,
+      codesigning_identity: 'Developer ID Application')
+    notarize(package: app)
   end
 end
 
