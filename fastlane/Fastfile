@@ -2,12 +2,13 @@ fastlane_version "2.66.0"
 
 default_platform :ios
 
+lane :bump do
+  ensure_git_status_clean
+  increment_build_number
+  commit_version_bump
+end
+
 platform :ios do
-  lane :bump do
-    ensure_git_status_clean
-    increment_build_number
-    commit_version_bump
-  end
   
   desc "Submit a new Beta Build to Apple TestFlight"
   desc "This will also make sure the profile is up to date"
@@ -16,6 +17,14 @@ platform :ios do
     gym
     pilot(changelog: options[:changelog], distribute_external: true, groups: ['External Testers'])
     push_to_git_remote
+  end
+end
+
+platform :mac do
+  lane :archive do
+    gym(scheme: 'imastodon-mac',
+        clean: true,
+        codesigning_identity: 'Developer ID Application')
   end
 end
 
