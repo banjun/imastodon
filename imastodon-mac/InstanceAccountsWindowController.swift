@@ -3,7 +3,7 @@ import NorthLayout
 import Ikemen
 
 final class InstanceAccountsWindowController: NSWindowController, NSTableViewDataSource, NSTableViewDelegate {
-    private var accounts: [InstanceAccout] {
+    private var accounts: [Store.IDAndInstanceAccount] {
         get {return StoreFile.shared.store.instanceAccounts}
         set {StoreFile.shared.store.instanceAccounts = accounts}
     }
@@ -62,7 +62,7 @@ final class InstanceAccountsWindowController: NSWindowController, NSTableViewDat
     }
 
     func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?, row: Int) -> Any? {
-        let a = accounts[row]
+        let a = accounts[row].instanceAccount
         return "\(a.account.display_name) (@\(a.account.username)) at \(a.instance.title)"
     }
 
@@ -77,11 +77,11 @@ final class InstanceAccountsWindowController: NSWindowController, NSTableViewDat
     @objc private func openHome() {
         let row = accountsView.selectedRow
         guard case 0..<accounts.count = row else { return }
-        let a = accounts[row]
+        let a = accounts[row].instanceAccount
         let k = a.instance.baseURL!
         let sc = streamClients[k, default: StreamClient(instanceAccount: a)]
         streamClients[k] = sc
-        appDelegate.appendWindowControllerAndShowWindow(HomeTLWindowController(instanceAccount: accounts[row], streamClient: sc))
+        appDelegate.appendWindowControllerAndShowWindow(HomeTLWindowController(instanceAccount: a, streamClient: sc))
     }
 
     private var streamClients: [URL: StreamClient] = [:]
@@ -90,10 +90,10 @@ final class InstanceAccountsWindowController: NSWindowController, NSTableViewDat
         let row = accountsView.selectedRow
         guard case 0..<accounts.count = row else { return }
         let a = accounts[row]
-        let k = a.instance.baseURL!
-        let sc = streamClients[k, default: StreamClient(instanceAccount: a)]
+        let k = a.instanceAccount.instance.baseURL!
+        let sc = streamClients[k, default: StreamClient(instanceAccount: a.instanceAccount)]
         streamClients[k] = sc
-        appDelegate.appendWindowControllerAndShowWindow(LocalTLWindowController(instanceAccount: accounts[row], streamClient: sc))
+        appDelegate.appendWindowControllerAndShowWindow(LocalTLWindowController(savedInstanceAccount: a, streamClient: sc))
     }
 
     @objc private func openHashtag() {
@@ -101,7 +101,8 @@ final class InstanceAccountsWindowController: NSWindowController, NSTableViewDat
         guard case 0..<accounts.count = row else { return }
         let hashtag = hashtagField.stringValue
         guard !hashtag.isEmpty else { return }
-        appDelegate.appendWindowControllerAndShowWindow(HashtagTLWindowController(instanceAccount: accounts[row], hashtag: hashtag))
+        let a = accounts[row].instanceAccount
+        appDelegate.appendWindowControllerAndShowWindow(HashtagTLWindowController(instanceAccount: a, hashtag: hashtag))
     }
 }
 

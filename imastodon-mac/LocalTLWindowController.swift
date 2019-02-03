@@ -8,13 +8,33 @@ import ReactiveCocoa
 import Result
 import API
 
-final class LocalTLWindowController: TimelineWindowController {
-    init(instanceAccount: InstanceAccout, streamClient: StreamClient) {
+final class LocalTLWindowController: TimelineWindowController, NSWindowRestoration, NSWindowDelegate {
+    init(savedInstanceAccount: Store.IDAndInstanceAccount, streamClient: StreamClient) {
         super.init(
-            title: "LocalTL @ \(instanceAccount.instance.title)",
-            content: LocalTLViewController(instanceAccount: instanceAccount, streamClient: streamClient))
+            title: "LocalTL @ \(savedInstanceAccount.instanceAccount.instance.title)",
+            content: LocalTLViewController(instanceAccount: savedInstanceAccount.instanceAccount, streamClient: streamClient))
+        let uuid = UUID()
+        window?.isRestorable = true
+        window?.identifier = NSUserInterfaceItemIdentifier(rawValue: uuid.uuidString)
+        window?.restorationClass = type(of: self)
+        StoreFile.shared.store.windowState[uuid] = try? JSONEncoder().encode(Restoration(savedInstanceAccountUUID: savedInstanceAccount.uuid))
     }
     required init?(coder: NSCoder) {fatalError()}
+
+    struct Restoration: Codable {
+        let savedInstanceAccountUUID: UUID
+    }
+
+    static func restoreWindow(withIdentifier identifier: NSUserInterfaceItemIdentifier, state: NSCoder, completionHandler: @escaping (NSWindow?, Error?) -> Void) {
+        guard let uuid = UUID(uuidString: identifier.rawValue),
+            let data = StoreFile.shared.store.windowState[uuid] as Data?,
+            let savedInstanceAccountUUID = try? JSONDecoder().decode(Restoration.self, from: data).savedInstanceAccountUUID,
+            let savedInstanceAccount = (StoreFile.shared.store.instanceAccounts.first {$0.uuid == savedInstanceAccountUUID}) else { return completionHandler(nil, nil) }
+        let wc = self.init(savedInstanceAccount: savedInstanceAccount,
+                           streamClient: StreamClient(instanceAccount: savedInstanceAccount.instanceAccount)) // TODO: share underlying streamclient
+        completionHandler(wc.window, nil)
+        appDelegate.appendWindowControllerAndShowWindow(wc)
+    }
 }
 
 final class LocalTLViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
