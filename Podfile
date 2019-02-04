@@ -14,6 +14,7 @@ target 'imastodon' do
   pod 'ReactiveSwift'
   pod 'ReactiveCocoa'
   pod 'Dwifft'
+  pod 'Fuzi'
 end
 
 target 'imastodon-mac' do
@@ -29,6 +30,6 @@ target 'imastodon-mac' do
   pod 'ReactiveCocoa'
   pod 'SwiftBeaker'
   pod 'Differ'
-  pod 'SwiftRichString'
+  pod 'Fuzi'
 end
 
