@@ -1,9 +1,7 @@
 import BrightFutures
 import Foundation
 import APIKit
-#if os(OSX)
-import SwiftRichString
-#endif
+import Fuzi
 import API
 
 enum AppError: LocalizedError {
@@ -61,32 +59,15 @@ extension Status {
 
 extension NSAttributedString {
     convenience init?(html: String) {
-        // TODO: unify logic for platforms
-        #if !os(OSX)
-            guard let data = ("<style>body {font:-apple-system-body;line-height:100%;} p {margin:0;padding:0;display:inline;}</style>" + html).data(using: .utf8) else { return nil }
-            try? self.init(data: data,
-                           options: [
-                            .documentType: NSAttributedString.DocumentType.html,
-                            .characterEncoding: String.Encoding.utf8.rawValue],
-                           documentAttributes: nil)
-        #else
-        let text = html
-            .replacingOccurrences(of: "<br />", with: "\n")
-            .set(style: StyleGroup(
-                base: Style(),
-                ["a": Style(),
-                 "span": Style(),
-                 "p": Style()]))
-            .string
-            .replacingOccurrences(of: "&lt;", with: "<")
-            .replacingOccurrences(of: "&gt;", with: ">")
-            .replacingOccurrences(of: "&quot;", with: "\"")
-            .replacingOccurrences(of: "&apos;", with: "'")
-            .replacingOccurrences(of: "&amp;", with: "&")
-        self.init(attributedString: text.set(style: Style {
-            $0.font = NSFont.systemFont(ofSize: NSFont.systemFontSize)
-        }))
-        #endif
+        // TODO: apply attributes
+        guard let doc = try? HTMLDocument(string: html) else { return nil }
+        let text = doc.xpath("//node()[self::text() or self::br or self::p]").map { node in
+            switch node.tag {
+            case "br"?: return "\n"
+            case "p"?: return "\n\n"
+            default: return node.stringValue
+            }}.joined().trimmingCharacters(in: .whitespacesAndNewlines)
+        self.init(string: text)
     }
 }
 
