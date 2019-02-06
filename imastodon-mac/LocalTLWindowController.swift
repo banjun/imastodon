@@ -31,7 +31,7 @@ final class LocalTLWindowController: TimelineWindowController, NSWindowRestorati
             let savedInstanceAccountUUID = try? JSONDecoder().decode(Restoration.self, from: data).savedInstanceAccountUUID,
             let savedInstanceAccount = (StoreFile.shared.store.instanceAccounts.first {$0.uuid == savedInstanceAccountUUID}) else { return completionHandler(nil, nil) }
         let wc = self.init(savedInstanceAccount: savedInstanceAccount,
-                           streamClient: StreamClient(instanceAccount: savedInstanceAccount.instanceAccount)) // TODO: share underlying streamclient
+                           streamClient: SharedStreamClients.shared.streamClient(savedInstanceAccount.instanceAccount))
         completionHandler(wc.window, nil)
         appDelegate.appendWindowControllerAndShowWindow(wc)
     }

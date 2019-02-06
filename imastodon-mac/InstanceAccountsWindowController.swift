@@ -77,22 +77,16 @@ final class InstanceAccountsWindowController: NSWindowController, NSTableViewDat
     @objc private func openHome() {
         let row = accountsView.selectedRow
         guard case 0..<accounts.count = row else { return }
-        let a = accounts[row].instanceAccount
-        let k = a.instance.baseURL!
-        let sc = streamClients[k, default: StreamClient(instanceAccount: a)]
-        streamClients[k] = sc
-        appDelegate.appendWindowControllerAndShowWindow(HomeTLWindowController(instanceAccount: a, streamClient: sc))
+        let a = accounts[row]
+        let sc = SharedStreamClients.shared.streamClient(a.instanceAccount)
+        appDelegate.appendWindowControllerAndShowWindow(HomeTLWindowController(savedInstanceAccount: a, streamClient: sc))
     }
-
-    private var streamClients: [URL: StreamClient] = [:]
 
     @objc private func openLocal() {
         let row = accountsView.selectedRow
         guard case 0..<accounts.count = row else { return }
         let a = accounts[row]
-        let k = a.instanceAccount.instance.baseURL!
-        let sc = streamClients[k, default: StreamClient(instanceAccount: a.instanceAccount)]
-        streamClients[k] = sc
+        let sc = SharedStreamClients.shared.streamClient(a.instanceAccount)
         appDelegate.appendWindowControllerAndShowWindow(LocalTLWindowController(savedInstanceAccount: a, streamClient: sc))
     }
 
