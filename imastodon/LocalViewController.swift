@@ -1,5 +1,4 @@
 import Foundation
-import SVProgressHUD
 import UserNotifications
 import Kingfisher
 
@@ -84,9 +83,9 @@ class LocalViewController: TimelineViewController, ClientContainer {
     }
 
     private func fetch() {
-        SVProgressHUD.show()
+        showHUD()
         client.local(since: timelineEvents.compactMap {$0.status?.id}.first {$0 != "0"})
-            .onComplete {_ in SVProgressHUD.dismiss()}
+            .onComplete {_ in self.dismissHUD()}
             .onSuccess { statuses in
                 self.append(statuses.map {.local($0, nil)})
             }.onFailure { e in

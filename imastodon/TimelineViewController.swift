@@ -1,5 +1,4 @@
 import Foundation
-import SVProgressHUD
 import SafariServices
 import Ikemen
 import Dwifft
@@ -183,15 +182,15 @@ extension TimelineViewController {
 
 extension ClientContainer where Self: UIViewController {
     func boost(_ s: Status) {
-        SVProgressHUD.show()
+        showHUD()
         client.boost(s)
-            .onComplete {_ in SVProgressHUD.dismiss()}
+            .onComplete {_ in self.dismissHUD()}
     }
     
     func favorite(_ s: Status) {
-        SVProgressHUD.show()
+        showHUD()
         client.favorite(s)
-            .onComplete {_ in SVProgressHUD.dismiss()}
+            .onComplete {_ in self.dismissHUD()}
     }
 }
 

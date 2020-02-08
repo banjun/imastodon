@@ -1,5 +1,4 @@
 import Foundation
-import SVProgressHUD
 import UserNotifications
 import Kingfisher
 import ReactiveSwift
@@ -90,11 +89,11 @@ class UnifiedViewController: TimelineViewController, ClientContainer {
     }
 
     private func fetch() {
-        SVProgressHUD.show()
+        showHUD()
         let since = timelineEvents.compactMap {$0.status?.id}.first {$0 != "0"}
         client.local(since: since)
             .zip(client.home(since: since))
-            .onComplete {_ in SVProgressHUD.dismiss()}
+            .onComplete {_ in self.dismissHUD()}
             .onSuccess { ls, hs in
                 let events: [TimelineEvent] = ls.map {.local($0, nil)} + hs.map {.home($0, nil)}
                 self.append(events.sorted {($0.status?.createdAt?.timeIntervalSinceReferenceDate ?? 0) > ($1.status?.createdAt?.timeIntervalSinceReferenceDate ?? 0)})

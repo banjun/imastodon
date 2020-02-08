@@ -1,6 +1,5 @@
 import UIKit
 import Ikemen
-import SVProgressHUD
 import UserNotifications
 import Kingfisher
 
@@ -10,7 +9,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         setupNotifications()
-        SVProgressHUD.setDefaultMaskType(.black)
 
         ImageCache.default.memoryStorage.config.totalCostLimit = 100 * 120 * 120 // avatar * 100
 
