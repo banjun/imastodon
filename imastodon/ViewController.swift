@@ -17,7 +17,7 @@ class ViewController: FormViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .white
+        view.backgroundColor = ThemeColor.background
     }
 
     @objc private func showInstances() {

@@ -6,7 +6,7 @@ import API
 
 final class UserHeaderView: UIView {
     private let imageView = HeaderImageView() ※ {
-        $0.backgroundColor = .lightGray
+        $0.backgroundColor = ThemeColor.secondaryBackground
     }
     private let iconView = UIImageView() ※ {
         $0.contentMode = .scaleAspectFill
@@ -27,14 +27,14 @@ final class UserHeaderView: UIView {
     private let bioLabel = UILabel() ※ {
         $0.font = .systemFont(ofSize: UIFont.smallSystemFontSize)
         $0.numberOfLines = 0
-        $0.textColor = .black
+        $0.textColor = ThemeColor.label
         $0.textAlignment = .center
     }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        backgroundColor = .white
+        backgroundColor = ThemeColor.background
         isOpaque = true
 
         let bg = MinView() ※ {$0.backgroundColor = UIColor(white: 0, alpha: 0.8)}
