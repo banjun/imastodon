@@ -22,10 +22,11 @@ class ViewController: FormViewController {
 
     @objc private func showInstances() {
         let vc = InstanceListViewController(instances: Store.shared.instanceAccounts)
-        vc.onNewInstance = { instanceAccount in
+        vc.onNewInstance = { [weak self] instanceAccount in
             var store = Store.shared
             store.instanceAccounts.append(instanceAccount)
             store.writeToShared()
+            self?.reload()
         }
         present(UINavigationController(rootViewController: vc), animated: true)
     }

@@ -1,6 +1,5 @@
 import Foundation
 import Eureka
-import SVProgressHUD
 import UserNotifications
 
 class HomeViewController: TimelineViewController, ClientContainer {
@@ -67,9 +66,9 @@ class HomeViewController: TimelineViewController, ClientContainer {
     }
 
     private func fetch() {
-        SVProgressHUD.show()
+        showHUD()
         client.home()
-            .onComplete {_ in SVProgressHUD.dismiss()}
+            .onComplete {_ in self.dismissHUD()}
             .onSuccess { statuses in
                 self.append(statuses.map {.home($0, nil)})
             }.onFailure { e in
