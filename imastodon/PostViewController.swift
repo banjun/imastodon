@@ -6,7 +6,7 @@ class PostViewController: UIViewController {
     private let client: Client
 
     private let contentView = UIView() ※ { v in
-        v.backgroundColor = .white
+        v.backgroundColor = ThemeColor.background
     }
 
     private let postField = UITextView() ※ { tv in

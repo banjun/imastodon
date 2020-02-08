@@ -33,6 +33,7 @@
 		EA85B2612041BDFB00B5287B /* LayerImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA85B2602041BDFB00B5287B /* LayerImageView.swift */; };
 		EAA1219B23EF187A00A95F37 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA1219A23EF187A00A95F37 /* SceneDelegate.swift */; };
 		EAA1219D23EF1DE600A95F37 /* HUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA1219C23EF1DE600A95F37 /* HUD.swift */; };
+		EAA1219F23EF23D900A95F37 /* ThemeColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA1219E23EF23D900A95F37 /* ThemeColor.swift */; };
 		EAB868271EF6B4A700B38879 /* AttachmentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB868261EF6B4A700B38879 /* AttachmentViewController.swift */; };
 		EAC4F2422014FE5000A35E9D /* ReactiveExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC4F2412014FE5000A35E9D /* ReactiveExtension.swift */; };
 		EAC4F2432014FE5000A35E9D /* ReactiveExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC4F2412014FE5000A35E9D /* ReactiveExtension.swift */; };
@@ -98,6 +99,7 @@
 		EA85B2602041BDFB00B5287B /* LayerImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerImageView.swift; sourceTree = "<group>"; };
 		EAA1219A23EF187A00A95F37 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		EAA1219C23EF1DE600A95F37 /* HUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUD.swift; sourceTree = "<group>"; };
+		EAA1219E23EF23D900A95F37 /* ThemeColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeColor.swift; sourceTree = "<group>"; };
 		EAB623AC1EF16AA500F7BE80 /* MastodonHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonHelper.swift; sourceTree = "<group>"; };
 		EAB868261EF6B4A700B38879 /* AttachmentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentViewController.swift; sourceTree = "<group>"; };
 		EAC4F2412014FE5000A35E9D /* ReactiveExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactiveExtension.swift; sourceTree = "<group>"; };
@@ -237,6 +239,7 @@
 				EAC55F2D1ED07C5700CD567D /* AppDelegate.swift */,
 				EAA1219A23EF187A00A95F37 /* SceneDelegate.swift */,
 				EAA1219C23EF1DE600A95F37 /* HUD.swift */,
+				EAA1219E23EF23D900A95F37 /* ThemeColor.swift */,
 				EAE218B41ED15494001209F2 /* Store.swift */,
 				EAE218BE1ED176C4001209F2 /* StatusRow.swift */,
 				EA0EDB491EE41FC000280536 /* Stream.swift */,
@@ -564,6 +567,7 @@
 				EA6429F01FA51738006A67C0 /* AccountCell.swift in Sources */,
 				EA6429F21FA518F6006A67C0 /* FollowersViewController.swift in Sources */,
 				EAE218BF1ED176C4001209F2 /* StatusRow.swift in Sources */,
+				EAA1219F23EF23D900A95F37 /* ThemeColor.swift in Sources */,
 				EAA1219B23EF187A00A95F37 /* SceneDelegate.swift in Sources */,
 				EAFB332C1FA61A1C00BB12C5 /* StatusViewController.swift in Sources */,
 				EA65F7C21F9E2AFE00071B4D /* UserViewController.swift in Sources */,

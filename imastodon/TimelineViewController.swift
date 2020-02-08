@@ -94,7 +94,7 @@ class TimelineViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         guard let collectionView = collectionView else { return }
-        collectionView.backgroundColor = .white
+        collectionView.backgroundColor = ThemeColor.background
         collectionView.showsVerticalScrollIndicator = false
         collectionView.register(StatusCollectionViewCell.self, forCellWithReuseIdentifier: TimelineEvent.homeCellID)
         collectionView.register(StatusCollectionViewCell.self, forCellWithReuseIdentifier: TimelineEvent.localCellID)
