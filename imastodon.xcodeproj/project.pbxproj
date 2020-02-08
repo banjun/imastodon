@@ -318,7 +318,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0920;
-				LastUpgradeCheck = 1010;
+				LastUpgradeCheck = 1130;
 				ORGANIZATIONNAME = banjun;
 				TargetAttributes = {
 					EA302459200B80100084FFD8 = {
@@ -338,7 +338,7 @@
 					EAC55F291ED07C5700CD567D = {
 						CreatedOnToolsVersion = 8.3.1;
 						DevelopmentTeam = FPZK4WRGW7;
-						LastSwiftMigration = 1010;
+						LastSwiftMigration = 1130;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -348,6 +348,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -408,7 +409,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-imastodon/Pods-imastodon-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-imastodon/Pods-imastodon-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/API-iOS/API.framework",
 				"${BUILT_PRODUCTS_DIR}/APIKit-iOS/APIKit.framework",
 				"${BUILT_PRODUCTS_DIR}/BrightFutures-iOS/BrightFutures.framework",
@@ -421,7 +422,6 @@
 				"${BUILT_PRODUCTS_DIR}/ReactiveCocoa-iOS/ReactiveCocoa.framework",
 				"${BUILT_PRODUCTS_DIR}/ReactiveSSE-iOS/ReactiveSSE.framework",
 				"${BUILT_PRODUCTS_DIR}/ReactiveSwift-iOS/ReactiveSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/Result-iOS/Result.framework",
 				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftBeaker-iOS/SwiftBeaker.framework",
 				"${BUILT_PRODUCTS_DIR}/URITemplate-iOS/URITemplate.framework",
@@ -441,7 +441,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactiveCocoa.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactiveSSE.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactiveSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftBeaker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/URITemplate.framework",
@@ -449,7 +448,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-imastodon/Pods-imastodon-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-imastodon/Pods-imastodon-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		A1B635027D4D913C7C894A65 /* [CP] Embed Pods Frameworks */ = {
@@ -458,7 +457,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-imastodon-mac/Pods-imastodon-mac-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-imastodon-mac/Pods-imastodon-mac-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/API-macOS/API.framework",
 				"${BUILT_PRODUCTS_DIR}/APIKit-macOS/APIKit.framework",
 				"${BUILT_PRODUCTS_DIR}/BrightFutures-macOS/BrightFutures.framework",
@@ -469,7 +468,6 @@
 				"${BUILT_PRODUCTS_DIR}/ReactiveCocoa-macOS/ReactiveCocoa.framework",
 				"${BUILT_PRODUCTS_DIR}/ReactiveSSE-macOS/ReactiveSSE.framework",
 				"${BUILT_PRODUCTS_DIR}/ReactiveSwift-macOS/ReactiveSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/Result-macOS/Result.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftBeaker-macOS/SwiftBeaker.framework",
 				"${BUILT_PRODUCTS_DIR}/URITemplate-macOS/URITemplate.framework",
 				"${BUILT_PRODUCTS_DIR}/※ikemen-macOS/Ikemen.framework",
@@ -487,7 +485,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactiveCocoa.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactiveSSE.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactiveSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftBeaker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/URITemplate.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Ikemen.framework",
@@ -495,7 +492,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-imastodon-mac/Pods-imastodon-mac-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-imastodon-mac/Pods-imastodon-mac-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD174175ECEBE32229D17E94 /* [CP] Check Pods Manifest.lock */ = {
@@ -659,6 +656,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -719,6 +717,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -778,7 +777,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = jp.banjun.imastodon;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -792,7 +791,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = jp.banjun.imastodon;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};

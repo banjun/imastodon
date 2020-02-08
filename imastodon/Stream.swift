@@ -34,7 +34,7 @@ class Stream {
         source = ReactiveSSE(urlRequest: req)
         source.producer
             .take(during: lifetime)
-            .filterMap {e in e.data.data(using: .utf8).map {(e.type, $0)}}
+            .compactMap {e in e.data.data(using: .utf8).map {(e.type, $0)}}
             .mapError {AppError.eventstream($0)}
             .observe(on: QueueScheduler.main)
             .startWithSignal { signal, disposable in
