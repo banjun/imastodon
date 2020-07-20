@@ -11,7 +11,8 @@ Pod::Spec.new do |s|
   s.social_media_url   = "https://twitter.com/banjun"
   s.ios.deployment_target = "11.0"
   s.osx.deployment_target = "10.13"
-  s.source       = { :git => "https://github.com/banjun/imastodon", :tag => "api/#{s.version}" }
+  s.swift_versions = ['5.0']
+  s.source       = { :git => "https://github.com/banjun/imastodon.git", :tag => "api/#{s.version}" }
   s.source_files  = "API/**/*.swift"
   s.dependency "SwiftBeaker"
 end

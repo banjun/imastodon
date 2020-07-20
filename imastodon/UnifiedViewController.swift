@@ -65,9 +65,9 @@ class UnifiedViewController: TimelineViewController, ClientContainer {
         unifiedSignal?
             .observeResult { [weak self] r in
                 switch r {
-                case .success(.open, _): self?.refreshControl.endRefreshing()
-                case let .success(.update, tev): _ = tev.map {self?.append([$0])}
-                case let .failure(e):
+                case .success((.open, _)): self?.refreshControl.endRefreshing()
+                case .success((.update, let tev)): _ = tev.map {self?.append([$0])}
+                case .failure(let e):
                     self?.refreshControl.endRefreshing()
                     self?.append([.local(e.errorStatus, nil)])
                 }

@@ -4,8 +4,8 @@ import Ikemen
 
 final class InstanceAccountsWindowController: NSWindowController, NSTableViewDataSource, NSTableViewDelegate {
     private var accounts: [Store.IDAndInstanceAccount] {
-        get {return StoreFile.shared.store.instanceAccounts}
-        set {StoreFile.shared.store.instanceAccounts = accounts}
+        get {StoreFile.shared.store.instanceAccounts}
+        set {StoreFile.shared.store.instanceAccounts = newValue}
     }
     private lazy var accountsView: VisibleLimitedTableView = .init() ※ { tv in
         tv.addTableColumn(accountsColumn)

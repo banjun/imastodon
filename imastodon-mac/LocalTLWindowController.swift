@@ -5,7 +5,6 @@ import Differ
 import ReactiveSSE
 import ReactiveSwift
 import ReactiveCocoa
-import Result
 import API
 
 final class LocalTLWindowController: TimelineWindowController, NSWindowRestoration, NSWindowDelegate {
