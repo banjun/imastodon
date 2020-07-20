@@ -8,7 +8,7 @@ target 'imastodon' do
   pod 'NorthLayout'
   pod 'Eureka'
   pod 'Kingfisher'
-  pod 'SVProgressHUD'
+  pod 'MBProgressHUD'
   pod 'BrightFutures'
   pod 'ReactiveSSE'
   pod 'ReactiveSwift'

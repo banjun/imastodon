@@ -1,6 +1,5 @@
 import Foundation
 import Eureka
-import SVProgressHUD
 
 class LoginViewController: FormViewController {
     var onNewInstance: ((InstanceAccout) -> Void)?
@@ -39,7 +38,7 @@ class LoginViewController: FormViewController {
             let email = emailRow.value,
             let password = passwordRow.value else { return }
 
-        SVProgressHUD.show()
+        showHUD()
         var client = Client(baseURL: host, accessToken: nil, account: nil)
         client.registerApp()
             .flatMap { app in
@@ -51,7 +50,7 @@ class LoginViewController: FormViewController {
                 client.currentInstance().zip(client.currentUser())
                     .map {(loginSettings, $0.0, $0.1)}
             }
-            .onComplete {_ in SVProgressHUD.dismiss()}
+            .onComplete {_ in self.dismissHUD()}
             .onSuccess {
                 let (loginSettings, instance, account) = $0
                 self.onNewInstance?(InstanceAccout(instance: instance, account: account, accessToken: loginSettings.access_token))

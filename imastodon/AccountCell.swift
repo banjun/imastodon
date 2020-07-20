@@ -10,13 +10,13 @@ final class AccountCell: UITableViewCell {
     }
     let displayNameLabel = UILabel() ※ { l in
         l.font = .systemFont(ofSize: 12)
-        l.textColor = .darkGray
+        l.textColor = ThemeColor.secondaryLabel
         l.numberOfLines = 0
         l.lineBreakMode = .byTruncatingTail
     }
     let userNameLabel = UILabel() ※ { l in
         l.font = .systemFont(ofSize: 16)
-        l.textColor = .black
+        l.textColor = ThemeColor.label
         l.numberOfLines = 0
         l.lineBreakMode = .byTruncatingTail
     }

@@ -46,10 +46,10 @@ final class NotificationsViewController: UITableViewController, ClientContainer 
         let cell = tableView.dequeueReusableCell(withIdentifier: "NotificationTableViewCell", for: indexPath) as! NotificationTableViewCell
         let n = notifications[indexPath.row]
         cell.notificationView.setNotification(n, text: nil, baseURL: client.baseURL)
-        cell.notificationView.backgroundColor = .white
-        cell.notificationView.nameLabel.textColor = .black
-        cell.notificationView.bodyLabel.textColor = .black
-        cell.notificationView.targetLabel.textColor = .black
+        cell.notificationView.backgroundColor = ThemeColor.background
+        cell.notificationView.nameLabel.textColor = ThemeColor.label
+        cell.notificationView.bodyLabel.textColor = ThemeColor.label
+        cell.notificationView.targetLabel.textColor = ThemeColor.label
         return cell
     }
 

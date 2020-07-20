@@ -1,5 +1,4 @@
 import Foundation
-import SVProgressHUD
 import SafariServices
 import Ikemen
 import Dwifft
@@ -95,7 +94,7 @@ class TimelineViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         guard let collectionView = collectionView else { return }
-        collectionView.backgroundColor = .white
+        collectionView.backgroundColor = ThemeColor.background
         collectionView.showsVerticalScrollIndicator = false
         collectionView.register(StatusCollectionViewCell.self, forCellWithReuseIdentifier: TimelineEvent.homeCellID)
         collectionView.register(StatusCollectionViewCell.self, forCellWithReuseIdentifier: TimelineEvent.localCellID)
@@ -183,15 +182,15 @@ extension TimelineViewController {
 
 extension ClientContainer where Self: UIViewController {
     func boost(_ s: Status) {
-        SVProgressHUD.show()
+        showHUD()
         client.boost(s)
-            .onComplete {_ in SVProgressHUD.dismiss()}
+            .onComplete {_ in self.dismissHUD()}
     }
     
     func favorite(_ s: Status) {
-        SVProgressHUD.show()
+        showHUD()
         client.favorite(s)
-            .onComplete {_ in SVProgressHUD.dismiss()}
+            .onComplete {_ in self.dismissHUD()}
     }
 }
 

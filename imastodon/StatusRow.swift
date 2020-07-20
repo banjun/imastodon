@@ -9,7 +9,7 @@ extension Status: Equatable {
     }
 }
 
-func stubImage(_ size: CGSize = CGSize(width: 44, height: 44), _ color: UIColor = .lightGray) -> UIImage {
+func stubImage(_ size: CGSize = CGSize(width: 44, height: 44), _ color: UIColor = ThemeColor.secondaryBackground) -> UIImage {
     UIGraphicsBeginImageContextWithOptions(size, false, 0)
     defer {UIGraphicsEndImageContext()}
     color.setFill()
@@ -169,7 +169,7 @@ final class StatusView: UIView {
     }
     let nameLabel = UILabel() ※ { l in
         l.font = .preferredFont(forTextStyle: .caption1)
-        l.textColor = .darkGray
+        l.textColor = ThemeColor.secondaryLabel
         l.numberOfLines = 0
         l.lineBreakMode = .byTruncatingTail
         l.adjustsFontForContentSizeCategory = true
@@ -177,13 +177,13 @@ final class StatusView: UIView {
     let pinLabel = UILabel() ※ { l in
         l.text = "pinned📌"
         l.font = .preferredFont(forTextStyle: .caption1)
-        l.textColor = .darkGray
+        l.textColor = ThemeColor.secondaryLabel
         l.numberOfLines = 1
         l.adjustsFontForContentSizeCategory = true
     }
     let bodyLabel = UILabel() ※ { l in
         l.font = .preferredFont(forTextStyle: .body)
-        l.textColor = .black
+        l.textColor = ThemeColor.label
         l.numberOfLines = 0
         l.lineBreakMode = .byTruncatingTail
         l.adjustsFontForContentSizeCategory = true
@@ -321,18 +321,18 @@ final class NotificationView: UIView {
     }
     let nameLabel = UILabel() ※ { l in
         l.font = .systemFont(ofSize: 12)
-        l.textColor = .white
+        l.textColor = ThemeColor.label
         l.lineBreakMode = .byTruncatingTail
     }
     let bodyLabel = UILabel() ※ { l in
         l.font = .systemFont(ofSize: 16)
-        l.textColor = .white
+        l.textColor = ThemeColor.label
         l.lineBreakMode = .byTruncatingTail
         l.textAlignment = .center
     }
     let targetLabel = UILabel() ※ { l in
         l.font = .systemFont(ofSize: 16)
-        l.textColor = .white
+        l.textColor = ThemeColor.label
         l.lineBreakMode = .byTruncatingTail
         l.textAlignment = .center
     }

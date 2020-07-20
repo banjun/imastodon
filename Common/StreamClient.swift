@@ -2,7 +2,6 @@ import Foundation
 import ReactiveSwift
 import ReactiveCocoa
 import ReactiveSSE
-import Result
 import Ikemen
 import API
 
@@ -10,12 +9,12 @@ final class StreamClient {
     private let instanceAccount: InstanceAccout
     private var activeSignals: ActiveSignals = .init()
     private struct ActiveSignals {
-        weak var local: Signal<SSEvent, NoError>?
-        weak var localToots: Signal<Status, NoError>?
-        weak var user: Signal<SSEvent, NoError>?
-        weak var homeToots: Signal<Status, NoError>?
-        weak var notifications: Signal<API.Notification, NoError>?
-        var hashtags: [String: Signal<Status, NoError>] = [:]
+        weak var local: Signal<SSEvent, Never>?
+        weak var localToots: Signal<Status, Never>?
+        weak var user: Signal<SSEvent, Never>?
+        weak var homeToots: Signal<Status, Never>?
+        weak var notifications: Signal<API.Notification, Never>?
+        var hashtags: [String: Signal<Status, Never>] = [:]
     }
 
     init(instanceAccount: InstanceAccout) {
@@ -32,7 +31,7 @@ final class StreamClient {
             .take(duringLifetimeOf: self)
     }
 
-    private func signal(relativeURL: String) -> Signal<SSEvent, NoError> {
+    private func signal(relativeURL: String) -> Signal<SSEvent, Never> {
         return .init { observer, lifetime in
             producer(relativeURL: relativeURL)
                 .startIntoDownstreamIgnoringError(observer, lifetime)
@@ -40,7 +39,7 @@ final class StreamClient {
     }
 
     // local events signal sharing underlying network connection
-    func local(during lifetime: Lifetime) -> Signal<SSEvent, NoError> {
+    func local(during lifetime: Lifetime) -> Signal<SSEvent, Never> {
         defer {lifetime += SignalRetainingDisposable(activeSignals.local)}
         return (activeSignals.local?.signal ?? (
             signal(relativeURL: "/api/v1/streaming/public/local")
@@ -48,25 +47,25 @@ final class StreamClient {
     }
 
     // local toots signal sharing results of Codable decodes
-    func localToots(during lifetime: Lifetime) -> Signal<Status, NoError> {
+    func localToots(during lifetime: Lifetime) -> Signal<Status, Never> {
         defer {lifetime += SignalRetainingDisposable(activeSignals.localToots)}
         return (activeSignals.localToots?.signal ?? (
             local(during: lifetime)
                 .filter {$0.type == "update"}
-                .filterMap {$0.data.data(using: .utf8)}
-                .filterMap {try? JSONDecoder().decode(Status.self, from: $0)}
+                .compactMap {$0.data.data(using: .utf8)}
+                .compactMap {try? JSONDecoder().decode(Status.self, from: $0)}
                 ※ {activeSignals.localToots = $0}))
     }
 
     // local deleted ids signal that is not sharing results of Codable decodes, sharing underlying networks
-    func localDeletedIDs(during lifetime: Lifetime) -> Signal<ID, NoError> {
+    func localDeletedIDs(during lifetime: Lifetime) -> Signal<ID, Never> {
         return local(during: lifetime)
             .filter {$0.type == "delete"}
             .map {ID(stringLiteral: $0.data)}
     }
 
     // user events signal sharing underlying network connection
-    func user(during lifetime: Lifetime) -> Signal<SSEvent, NoError> {
+    func user(during lifetime: Lifetime) -> Signal<SSEvent, Never> {
         defer {lifetime += SignalRetainingDisposable(activeSignals.user)}
         return (activeSignals.user?.signal ?? (
             signal(relativeURL: "/api/v1/streaming/user")
@@ -74,38 +73,38 @@ final class StreamClient {
     }
 
     // home toots signal sharing results of Codable decodes
-    func homeToots(during lifetime: Lifetime) -> Signal<Status, NoError> {
+    func homeToots(during lifetime: Lifetime) -> Signal<Status, Never> {
         defer {lifetime += SignalRetainingDisposable(activeSignals.homeToots)}
         return (activeSignals.homeToots?.signal ?? (
             user(during: lifetime)
                 .filter {$0.type == "update"}
-                .filterMap {$0.data.data(using: .utf8)}
-                .filterMap {try? JSONDecoder().decode(Status.self, from: $0)}
+                .compactMap {$0.data.data(using: .utf8)}
+                .compactMap {try? JSONDecoder().decode(Status.self, from: $0)}
                 ※ {activeSignals.homeToots = $0}))
     }
 
     // home deleted ids signal that is not sharing results of Codable decodes, sharing underlying networks
-    func homeDeletedIDs(during lifetime: Lifetime) -> Signal<ID, NoError> {
+    func homeDeletedIDs(during lifetime: Lifetime) -> Signal<ID, Never> {
         return user(during: lifetime)
             .filter {$0.type == "delete"}
             .map {ID(stringLiteral: $0.data)}
     }
 
     // user notifications signal sharing results of Codable decodes
-    func notifications(during lifetime: Lifetime) -> Signal<API.Notification, NoError> {
+    func notifications(during lifetime: Lifetime) -> Signal<API.Notification, Never> {
         defer {lifetime += SignalRetainingDisposable(activeSignals.notifications)}
         return (activeSignals.notifications?.signal ?? (
             user(during: lifetime)
                 .filter {$0.type == "notification"}
-                .filterMap {$0.data.data(using: .utf8)}
-                .filterMap {try? JSONDecoder().decode(Notification.self, from: $0)}
+                .compactMap {$0.data.data(using: .utf8)}
+                .compactMap {try? JSONDecoder().decode(Notification.self, from: $0)}
                 ※ {activeSignals.notifications = $0}))
     }
 }
 
 private extension SignalProducer {
-    func startIntoDownstreamIgnoringError(_ observer: Signal<Value, NoError>.Observer, _ lifetime: Lifetime) -> Void {
-        flatMapError {_ in SignalProducer<Value, NoError>.empty}
+    func startIntoDownstreamIgnoringError(_ observer: Signal<Value, Never>.Observer, _ lifetime: Lifetime) -> Void {
+        flatMapError {_ in SignalProducer<Value, Never>.empty}
             .startWithSignal {s, d in
                 lifetime += AnyDisposable {NSLog("%@", "disposing directly produced by Stream SignalProducer")}
                 lifetime += d

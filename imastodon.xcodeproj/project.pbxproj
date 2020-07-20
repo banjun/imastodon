@@ -32,6 +32,9 @@
 		EA65F7C41F9F68F700071B4D /* HeaderImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65F7C31F9F68F700071B4D /* HeaderImageView.swift */; };
 		EA85B2612041BDFB00B5287B /* LayerImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA85B2602041BDFB00B5287B /* LayerImageView.swift */; };
 		EA96F382220B0F1E0013B000 /* SharedStreamClients.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA96F381220B0F1E0013B000 /* SharedStreamClients.swift */; };
+		EAA1219B23EF187A00A95F37 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA1219A23EF187A00A95F37 /* SceneDelegate.swift */; };
+		EAA1219D23EF1DE600A95F37 /* HUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA1219C23EF1DE600A95F37 /* HUD.swift */; };
+		EAA1219F23EF23D900A95F37 /* ThemeColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA1219E23EF23D900A95F37 /* ThemeColor.swift */; };
 		EAB868271EF6B4A700B38879 /* AttachmentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB868261EF6B4A700B38879 /* AttachmentViewController.swift */; };
 		EAC4F2422014FE5000A35E9D /* ReactiveExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC4F2412014FE5000A35E9D /* ReactiveExtension.swift */; };
 		EAC4F2432014FE5000A35E9D /* ReactiveExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC4F2412014FE5000A35E9D /* ReactiveExtension.swift */; };
@@ -96,6 +99,9 @@
 		EA72DC741EF14E2B00B5A7CD /* Mastodon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mastodon.swift; sourceTree = "<group>"; };
 		EA85B2602041BDFB00B5287B /* LayerImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerImageView.swift; sourceTree = "<group>"; };
 		EA96F381220B0F1E0013B000 /* SharedStreamClients.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedStreamClients.swift; sourceTree = "<group>"; };
+		EAA1219A23EF187A00A95F37 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		EAA1219C23EF1DE600A95F37 /* HUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUD.swift; sourceTree = "<group>"; };
+		EAA1219E23EF23D900A95F37 /* ThemeColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeColor.swift; sourceTree = "<group>"; };
 		EAB623AC1EF16AA500F7BE80 /* MastodonHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonHelper.swift; sourceTree = "<group>"; };
 		EAB868261EF6B4A700B38879 /* AttachmentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentViewController.swift; sourceTree = "<group>"; };
 		EAC4F2412014FE5000A35E9D /* ReactiveExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactiveExtension.swift; sourceTree = "<group>"; };
@@ -234,6 +240,9 @@
 			isa = PBXGroup;
 			children = (
 				EAC55F2D1ED07C5700CD567D /* AppDelegate.swift */,
+				EAA1219A23EF187A00A95F37 /* SceneDelegate.swift */,
+				EAA1219C23EF1DE600A95F37 /* HUD.swift */,
+				EAA1219E23EF23D900A95F37 /* ThemeColor.swift */,
 				EAE218B41ED15494001209F2 /* Store.swift */,
 				EAE218BE1ED176C4001209F2 /* StatusRow.swift */,
 				EA0EDB491EE41FC000280536 /* Stream.swift */,
@@ -321,7 +330,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0920;
-				LastUpgradeCheck = 1010;
+				LastUpgradeCheck = 1130;
 				ORGANIZATIONNAME = banjun;
 				TargetAttributes = {
 					EA302459200B80100084FFD8 = {
@@ -341,7 +350,7 @@
 					EAC55F291ED07C5700CD567D = {
 						CreatedOnToolsVersion = 8.3.1;
 						DevelopmentTeam = FPZK4WRGW7;
-						LastSwiftMigration = 1010;
+						LastSwiftMigration = 1130;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -351,6 +360,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -411,7 +421,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-imastodon/Pods-imastodon-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-imastodon/Pods-imastodon-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/API-iOS/API.framework",
 				"${BUILT_PRODUCTS_DIR}/APIKit-iOS/APIKit.framework",
 				"${BUILT_PRODUCTS_DIR}/BrightFutures-iOS/BrightFutures.framework",
@@ -420,12 +430,11 @@
 				"${BUILT_PRODUCTS_DIR}/FootlessParser-iOS/FootlessParser.framework",
 				"${BUILT_PRODUCTS_DIR}/Fuzi-iOS/Fuzi.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher-iOS/Kingfisher.framework",
+				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/NorthLayout-iOS/NorthLayout.framework",
 				"${BUILT_PRODUCTS_DIR}/ReactiveCocoa-iOS/ReactiveCocoa.framework",
 				"${BUILT_PRODUCTS_DIR}/ReactiveSSE-iOS/ReactiveSSE.framework",
 				"${BUILT_PRODUCTS_DIR}/ReactiveSwift-iOS/ReactiveSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/Result-iOS/Result.framework",
-				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftBeaker-iOS/SwiftBeaker.framework",
 				"${BUILT_PRODUCTS_DIR}/URITemplate-iOS/URITemplate.framework",
 				"${BUILT_PRODUCTS_DIR}/※ikemen-iOS/Ikemen.framework",
@@ -440,19 +449,18 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FootlessParser.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Fuzi.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NorthLayout.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactiveCocoa.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactiveSSE.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactiveSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftBeaker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/URITemplate.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Ikemen.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-imastodon/Pods-imastodon-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-imastodon/Pods-imastodon-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		A1B635027D4D913C7C894A65 /* [CP] Embed Pods Frameworks */ = {
@@ -461,7 +469,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-imastodon-mac/Pods-imastodon-mac-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-imastodon-mac/Pods-imastodon-mac-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/API-macOS/API.framework",
 				"${BUILT_PRODUCTS_DIR}/APIKit-macOS/APIKit.framework",
 				"${BUILT_PRODUCTS_DIR}/BrightFutures-macOS/BrightFutures.framework",
@@ -472,7 +480,6 @@
 				"${BUILT_PRODUCTS_DIR}/ReactiveCocoa-macOS/ReactiveCocoa.framework",
 				"${BUILT_PRODUCTS_DIR}/ReactiveSSE-macOS/ReactiveSSE.framework",
 				"${BUILT_PRODUCTS_DIR}/ReactiveSwift-macOS/ReactiveSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/Result-macOS/Result.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftBeaker-macOS/SwiftBeaker.framework",
 				"${BUILT_PRODUCTS_DIR}/URITemplate-macOS/URITemplate.framework",
 				"${BUILT_PRODUCTS_DIR}/※ikemen-macOS/Ikemen.framework",
@@ -490,7 +497,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactiveCocoa.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactiveSSE.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactiveSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftBeaker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/URITemplate.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Ikemen.framework",
@@ -498,7 +504,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-imastodon-mac/Pods-imastodon-mac-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-imastodon-mac/Pods-imastodon-mac-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD174175ECEBE32229D17E94 /* [CP] Check Pods Manifest.lock */ = {
@@ -565,6 +571,8 @@
 				EA6429F01FA51738006A67C0 /* AccountCell.swift in Sources */,
 				EA6429F21FA518F6006A67C0 /* FollowersViewController.swift in Sources */,
 				EAE218BF1ED176C4001209F2 /* StatusRow.swift in Sources */,
+				EAA1219F23EF23D900A95F37 /* ThemeColor.swift in Sources */,
+				EAA1219B23EF187A00A95F37 /* SceneDelegate.swift in Sources */,
 				EAFB332C1FA61A1C00BB12C5 /* StatusViewController.swift in Sources */,
 				EA65F7C21F9E2AFE00071B4D /* UserViewController.swift in Sources */,
 				EAC55F301ED07C5700CD567D /* ViewController.swift in Sources */,
@@ -578,6 +586,7 @@
 				EAE218B11ED1460B001209F2 /* InstanceListViewController.swift in Sources */,
 				EAE218B91ED15BB0001209F2 /* HomeViewController.swift in Sources */,
 				EAD8AD961EF2ADE0002648F9 /* UnifiedViewController.swift in Sources */,
+				EAA1219D23EF1DE600A95F37 /* HUD.swift in Sources */,
 				EAE218BD1ED176B4001209F2 /* LocalViewController.swift in Sources */,
 				EAE218BB1ED1615A001209F2 /* Client.swift in Sources */,
 			);
@@ -663,6 +672,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -723,6 +733,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -782,7 +793,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = jp.banjun.imastodon;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -796,7 +807,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = jp.banjun.imastodon;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};

@@ -1,5 +1,4 @@
 import Foundation
-import SVProgressHUD
 import UserNotifications
 import Kingfisher
 import ReactiveSwift
@@ -90,11 +89,11 @@ class UnifiedViewController: TimelineViewController, ClientContainer {
     }
 
     private func fetch() {
-        SVProgressHUD.show()
+        showHUD()
         let since = timelineEvents.compactMap {$0.status?.id}.first {$0 != "0"}
         client.local(since: since)
             .zip(client.home(since: since))
-            .onComplete {_ in SVProgressHUD.dismiss()}
+            .onComplete {_ in self.dismissHUD()}
             .onSuccess { ls, hs in
                 let events: [TimelineEvent] = ls.map {.local($0, nil)} + hs.map {.home($0, nil)}
                 self.append(events.sorted {($0.status?.createdAt?.timeIntervalSinceReferenceDate ?? 0) > ($1.status?.createdAt?.timeIntervalSinceReferenceDate ?? 0)})
@@ -122,10 +121,10 @@ class UnifiedViewController: TimelineViewController, ClientContainer {
         let e = timelineDiff.value(atIndexPath: indexPath)
         switch e {
         case .home:
-            cell.contentView.backgroundColor = UIColor(white: 0.95, alpha: 1.0)
+            cell.contentView.backgroundColor = ThemeColor.secondaryBackground
             (cell as? StatusCollectionViewCell)?.showInnerShadow = true
         case .local:
-            cell.contentView.backgroundColor = .white
+            cell.contentView.backgroundColor = ThemeColor.background
             (cell as? StatusCollectionViewCell)?.showInnerShadow = false
         case .notification:
             cell.contentView.backgroundColor = UIColor(red: 0.16, green: 0.17, blue: 0.22, alpha: 1.0)

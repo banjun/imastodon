@@ -1,13 +1,12 @@
 import Foundation
 import NorthLayout
 import Ikemen
-import SVProgressHUD
 
 class PostViewController: UIViewController {
     private let client: Client
 
     private let contentView = UIView() ※ { v in
-        v.backgroundColor = .white
+        v.backgroundColor = ThemeColor.background
     }
 
     private let postField = UITextView() ※ { tv in
@@ -49,9 +48,9 @@ class PostViewController: UIViewController {
 
     @objc private func post() {
         guard let status = postField.text else { return }
-        SVProgressHUD.show()
+        showHUD()
         client.post(message: status)
-            .onComplete {_ in SVProgressHUD.dismiss()}
+            .onComplete {_ in self.dismissHUD()}
             .onSuccess {_ in
                 self.view.endEditing(true)
                 self.dismiss(animated: true)
