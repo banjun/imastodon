@@ -30,5 +30,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationWillResignActive(_ notification: Notification) {
         ImageCache.default.cleanExpiredDiskCache()
+
+        StoreFile.shared.store.cleanNotUsedUUIDs(
+            usedUUIDs: windowControllers
+                .compactMap {$0.window?.identifier}
+                .compactMap {UUID(uuidString: $0.rawValue)})
     }
 }
