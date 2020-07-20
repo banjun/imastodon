@@ -83,7 +83,9 @@ final class NewAccountWindowController: NSWindowController, NSTableViewDataSourc
             .onSuccess {
                 let (loginSettings, instance, account) = $0
                 StoreFile.shared.store.instanceAccounts.append(
-                    InstanceAccout(instance: instance, account: account, accessToken: loginSettings.access_token))
+                    Store.IDAndInstanceAccount(
+                        uuid: UUID(),
+                        instanceAccount: InstanceAccout(instance: instance, account: account, accessToken: loginSettings.access_token)))
                 window.sheetParent?.endSheet(window, returnCode: NSApplication.ModalResponse.OK)
             }.onFailure { e in
                 NSAlert(error: e).beginSheetModal(for: window)
