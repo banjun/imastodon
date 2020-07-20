@@ -42,7 +42,7 @@ final class PostWindowController: NSWindowController, NSTextViewDelegate {
     private lazy var visibilityPopup: NSPopUpButton = .init(frame: .zero, pullsDown: false) ※ {
         $0.addItems(withTitles: visibilities.map {$0.displayName})
         visibility <~ $0.reactive.selectedIndexes.map {[unowned self] in self.visibilities[$0]}
-        $0.reactive.selectedIndex <~ visibility.map {[unowned self] in self.visibilities.index(of: $0)}
+        $0.reactive.selectedIndex <~ visibility.map {[unowned self] in self.visibilities.firstIndex(of: $0)}
     }
 
     init(instanceAccount: InstanceAccout, visibility: Visibility?) {
