@@ -104,6 +104,7 @@
 		EAA1219E23EF23D900A95F37 /* ThemeColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeColor.swift; sourceTree = "<group>"; };
 		EAB623AC1EF16AA500F7BE80 /* MastodonHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonHelper.swift; sourceTree = "<group>"; };
 		EAB868261EF6B4A700B38879 /* AttachmentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentViewController.swift; sourceTree = "<group>"; };
+		EAC1CA9B23EF2FBF00B62083 /* imastodon.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = imastodon.entitlements; sourceTree = "<group>"; };
 		EAC4F2412014FE5000A35E9D /* ReactiveExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactiveExtension.swift; sourceTree = "<group>"; };
 		EAC55F2A1ED07C5700CD567D /* imastodon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = imastodon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAC55F2D1ED07C5700CD567D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -239,6 +240,7 @@
 		EAC55F2C1ED07C5700CD567D /* imastodon */ = {
 			isa = PBXGroup;
 			children = (
+				EAC1CA9B23EF2FBF00B62083 /* imastodon.entitlements */,
 				EAC55F2D1ED07C5700CD567D /* AppDelegate.swift */,
 				EAA1219A23EF187A00A95F37 /* SceneDelegate.swift */,
 				EAA1219C23EF1DE600A95F37 /* HUD.swift */,
@@ -788,11 +790,14 @@
 			baseConfigurationReference = 7C138BF5F063A0B55F519D11 /* Pods-imastodon.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = imastodon/imastodon.entitlements;
+				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = FPZK4WRGW7;
 				INFOPLIST_FILE = imastodon/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = jp.banjun.imastodon;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -802,11 +807,14 @@
 			baseConfigurationReference = 3395940DED0D0BA0835EFD0E /* Pods-imastodon.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = imastodon/imastodon.entitlements;
+				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = FPZK4WRGW7;
 				INFOPLIST_FILE = imastodon/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = jp.banjun.imastodon;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
