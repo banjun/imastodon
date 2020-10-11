@@ -36,6 +36,7 @@
 		EAA1219D23EF1DE600A95F37 /* HUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA1219C23EF1DE600A95F37 /* HUD.swift */; };
 		EAA1219F23EF23D900A95F37 /* ThemeColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA1219E23EF23D900A95F37 /* ThemeColor.swift */; };
 		EAB868271EF6B4A700B38879 /* AttachmentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB868261EF6B4A700B38879 /* AttachmentViewController.swift */; };
+		EABDB57825333629009F8447 /* ReactiveCocoaCatalinaFix.m in Sources */ = {isa = PBXBuildFile; fileRef = EABDB57725333629009F8447 /* ReactiveCocoaCatalinaFix.m */; };
 		EAC4F2422014FE5000A35E9D /* ReactiveExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC4F2412014FE5000A35E9D /* ReactiveExtension.swift */; };
 		EAC4F2432014FE5000A35E9D /* ReactiveExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC4F2412014FE5000A35E9D /* ReactiveExtension.swift */; };
 		EAC55F2E1ED07C5700CD567D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC55F2D1ED07C5700CD567D /* AppDelegate.swift */; };
@@ -104,6 +105,8 @@
 		EAA1219E23EF23D900A95F37 /* ThemeColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeColor.swift; sourceTree = "<group>"; };
 		EAB623AC1EF16AA500F7BE80 /* MastodonHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonHelper.swift; sourceTree = "<group>"; };
 		EAB868261EF6B4A700B38879 /* AttachmentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentViewController.swift; sourceTree = "<group>"; };
+		EABDB57625333628009F8447 /* imastodon-mac-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "imastodon-mac-Bridging-Header.h"; sourceTree = "<group>"; };
+		EABDB57725333629009F8447 /* ReactiveCocoaCatalinaFix.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReactiveCocoaCatalinaFix.m; sourceTree = "<group>"; };
 		EAC4F2412014FE5000A35E9D /* ReactiveExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactiveExtension.swift; sourceTree = "<group>"; };
 		EAC55F2A1ED07C5700CD567D /* imastodon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = imastodon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAC55F2D1ED07C5700CD567D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -200,6 +203,8 @@
 				EA302462200B80100084FFD8 /* Main.storyboard */,
 				EA302465200B80100084FFD8 /* Info.plist */,
 				EA302466200B80100084FFD8 /* imastodon_mac.entitlements */,
+				EABDB57625333628009F8447 /* imastodon-mac-Bridging-Header.h */,
+				EABDB57725333629009F8447 /* ReactiveCocoaCatalinaFix.m */,
 			);
 			path = "imastodon-mac";
 			sourceTree = "<group>";
@@ -532,6 +537,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EAE1C02F201778A100D4765F /* HomeTLWindowController.swift in Sources */,
+				EABDB57825333629009F8447 /* ReactiveCocoaCatalinaFix.m in Sources */,
 				EA584F5D200E2E6C00D08656 /* Store.swift in Sources */,
 				EACE4E12201C9F600005D2BE /* StreamClient.swift in Sources */,
 				EAE1C02B2017774400D4765F /* TimelineViewModel.swift in Sources */,
@@ -619,6 +625,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = "imastodon-mac/imastodon-mac.entitlements";
 				CODE_SIGN_IDENTITY = "Mac Developer";
@@ -635,6 +642,8 @@
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = "imastodon-mac/imastodon-mac-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -645,6 +654,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = "imastodon-mac/imastodon-mac.entitlements";
 				CODE_SIGN_IDENTITY = "Mac Developer";
@@ -661,6 +671,7 @@
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = "imastodon-mac/imastodon-mac-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;

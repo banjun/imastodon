@@ -106,6 +106,12 @@ final class StatusTableCellView: NSTableCellView, NibLessLoadable {
 
     required init?(coder decoder: NSCoder) {fatalError()}
 
+    deinit {
+        NSLog("%@", "deinit \(String(describing: self))")
+        contentStackView.safelyRemoveArrangedSubviews()
+        attachmentStackView.safelyRemoveArrangedSubviews()
+    }
+
     func setStatus(_ status: Status, baseURL: URL?) {
         nameLabel.stringValue = status.account.displayNameOrUserName
         bodyLabel.stringValue = status.textContent
