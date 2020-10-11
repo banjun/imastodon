@@ -144,6 +144,8 @@ final class HomeTLViewController: NSViewController, NSTableViewDataSource, NSTab
                         .onFailure {NSAlert(error: $0).beginSheetModal(for: window)}
                     tableView.rowActionsVisible = false
                 }]
+        @unknown default:
+            return []
         }
     }
 

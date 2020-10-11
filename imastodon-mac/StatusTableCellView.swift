@@ -133,6 +133,8 @@ final class StatusTableCellView: NSTableCellView, NibLessLoadable {
                 bodyLabel.textColor = .controlTextColor
             case .raised, .lowered:
                 break
+            @unknown default:
+                break
             }
         }
     }

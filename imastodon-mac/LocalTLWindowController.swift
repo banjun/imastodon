@@ -140,6 +140,8 @@ final class LocalTLViewController: NSViewController, NSTableViewDataSource, NSTa
                         .onFailure {NSAlert(error: $0).beginSheetModal(for: window)}
                     tableView.rowActionsVisible = false
                 }]
+        @unknown default:
+            return []
         }
     }
 
