@@ -5,12 +5,12 @@ PODS:
   - BrightFutures (8.0.0)
   - Differ (1.4.5)
   - Dwifft (0.9)
-  - Eureka (5.3.1)
+  - Eureka (5.3.2)
   - FootlessParser (0.5.2)
   - Fuzi (3.1.2)
-  - Kingfisher (5.15.6):
-    - Kingfisher/Core (= 5.15.6)
-  - Kingfisher/Core (5.15.6)
+  - Kingfisher (5.15.7):
+    - Kingfisher/Core (= 5.15.7)
+  - Kingfisher/Core (5.15.7)
   - MBProgressHUD (1.2.0)
   - NorthLayout (5.2.0):
     - FootlessParser (~> 0.4)
@@ -19,12 +19,12 @@ PODS:
   - ReactiveSSE (0.4.0):
     - FootlessParser (~> 0.5)
     - ReactiveSwift (~> 6.0)
-  - ReactiveSwift (6.4.0)
+  - ReactiveSwift (6.5.0)
   - SwiftBeaker (1.0.1):
     - APIKit
     - URITemplate
   - URITemplate (3.0.0)
-  - "※ikemen (0.6.0)"
+  - "※ikemen (0.7.0)"
 
 DEPENDENCIES:
   - API (from `.`)
@@ -71,19 +71,19 @@ SPEC CHECKSUMS:
   BrightFutures: f8427b46feabaf73c5e71ace7d86d65dfbb47696
   Differ: 3b6bd78e2b20cc795d9a86f7641d087524e4273e
   Dwifft: 42912068ed2a8146077d1a1404df18625bd086e1
-  Eureka: 859877ab1e85661b6b7e810015d430e937d9cc7d
+  Eureka: 1c2b8b5892bfb0e972d0fe05f8c09fd89f8625ec
   FootlessParser: 521916d592fa6cba06cfca6f4b5d4f5a2d49175a
   Fuzi: dba7215e52fb39dd7b1a62f69ede1e30edff0ae1
-  Kingfisher: b3554e7bf6106115b44e8795300bad580ef2fdc7
+  Kingfisher: 6e1a13523fcb1c86924ce53affe4ac957e544d59
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   NorthLayout: 308a58a8f7d96f316e6399ff6432f8769321bbdf
   ReactiveCocoa: 7bc87ad2d361b9de141278b1950edd7fe91b15b1
   ReactiveSSE: 3492578cb4acd9f34a2778fc88909abe9f72ae7e
-  ReactiveSwift: 7555791a608c0679563a3f72546f971b2a06de98
+  ReactiveSwift: 8d159904084e908856cde90b2e28823f3c7e485f
   SwiftBeaker: 49a89e7a664189936b6555738a38d066320ede9a
   URITemplate: 58e0d47f967006c5d59888af5356c4a8ed3b197d
-  "※ikemen": da47fe6e0acfbe241611221f4d98ade266bf50a2
+  "※ikemen": db03a47c165f9889af8260758087b49f6cdeee2f
 
 PODFILE CHECKSUM: cc42600da54de7200713ade46a989cdb66853c02
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.10.0
