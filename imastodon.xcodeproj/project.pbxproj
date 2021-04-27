@@ -36,6 +36,7 @@
 		EAA1219D23EF1DE600A95F37 /* HUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA1219C23EF1DE600A95F37 /* HUD.swift */; };
 		EAA1219F23EF23D900A95F37 /* ThemeColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA1219E23EF23D900A95F37 /* ThemeColor.swift */; };
 		EAB868271EF6B4A700B38879 /* AttachmentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB868261EF6B4A700B38879 /* AttachmentViewController.swift */; };
+		EABDB57825333629009F8447 /* ReactiveCocoaCatalinaFix.m in Sources */ = {isa = PBXBuildFile; fileRef = EABDB57725333629009F8447 /* ReactiveCocoaCatalinaFix.m */; };
 		EAC4F2422014FE5000A35E9D /* ReactiveExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC4F2412014FE5000A35E9D /* ReactiveExtension.swift */; };
 		EAC4F2432014FE5000A35E9D /* ReactiveExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC4F2412014FE5000A35E9D /* ReactiveExtension.swift */; };
 		EAC55F2E1ED07C5700CD567D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC55F2D1ED07C5700CD567D /* AppDelegate.swift */; };
@@ -104,6 +105,8 @@
 		EAA1219E23EF23D900A95F37 /* ThemeColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeColor.swift; sourceTree = "<group>"; };
 		EAB623AC1EF16AA500F7BE80 /* MastodonHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonHelper.swift; sourceTree = "<group>"; };
 		EAB868261EF6B4A700B38879 /* AttachmentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentViewController.swift; sourceTree = "<group>"; };
+		EABDB57625333628009F8447 /* imastodon-mac-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "imastodon-mac-Bridging-Header.h"; sourceTree = "<group>"; };
+		EABDB57725333629009F8447 /* ReactiveCocoaCatalinaFix.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReactiveCocoaCatalinaFix.m; sourceTree = "<group>"; };
 		EAC4F2412014FE5000A35E9D /* ReactiveExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactiveExtension.swift; sourceTree = "<group>"; };
 		EAC55F2A1ED07C5700CD567D /* imastodon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = imastodon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAC55F2D1ED07C5700CD567D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -200,6 +203,8 @@
 				EA302462200B80100084FFD8 /* Main.storyboard */,
 				EA302465200B80100084FFD8 /* Info.plist */,
 				EA302466200B80100084FFD8 /* imastodon_mac.entitlements */,
+				EABDB57625333628009F8447 /* imastodon-mac-Bridging-Header.h */,
+				EABDB57725333629009F8447 /* ReactiveCocoaCatalinaFix.m */,
 			);
 			path = "imastodon-mac";
 			sourceTree = "<group>";
@@ -330,13 +335,13 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0920;
-				LastUpgradeCheck = 1130;
+				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = banjun;
 				TargetAttributes = {
 					EA302459200B80100084FFD8 = {
 						CreatedOnToolsVersion = 9.2;
 						DevelopmentTeam = FPZK4WRGW7;
-						LastSwiftMigration = 1010;
+						LastSwiftMigration = 1200;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.HardenedRuntime = {
@@ -357,10 +362,9 @@
 			};
 			buildConfigurationList = EAC55F251ED07C5700CD567D /* Build configuration list for PBXProject "imastodon" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
 				en,
 				Base,
 			);
@@ -533,6 +537,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EAE1C02F201778A100D4765F /* HomeTLWindowController.swift in Sources */,
+				EABDB57825333629009F8447 /* ReactiveCocoaCatalinaFix.m in Sources */,
 				EA584F5D200E2E6C00D08656 /* Store.swift in Sources */,
 				EACE4E12201C9F600005D2BE /* StreamClient.swift in Sources */,
 				EAE1C02B2017774400D4765F /* TimelineViewModel.swift in Sources */,
@@ -619,7 +624,9 @@
 			baseConfigurationReference = D907FF16E22400E775461EBC /* Pods-imastodon-mac.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "Accent Color";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = "imastodon-mac/imastodon-mac.entitlements";
 				CODE_SIGN_IDENTITY = "Mac Developer";
@@ -632,12 +639,13 @@
 				INFOPLIST_FILE = "imastodon-mac/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				OTHER_CODE_SIGN_FLAGS = "--timestamp";
 				PRODUCT_BUNDLE_IDENTIFIER = "jp.banjun.imastodon-mac";
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				SWIFT_VERSION = 4.2;
+				SWIFT_OBJC_BRIDGING_HEADER = "imastodon-mac/imastodon-mac-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -646,7 +654,9 @@
 			baseConfigurationReference = 7518B5189A465B5CDC2E2350 /* Pods-imastodon-mac.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "Accent Color";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = "imastodon-mac/imastodon-mac.entitlements";
 				CODE_SIGN_IDENTITY = "Mac Developer";
@@ -659,12 +669,12 @@
 				INFOPLIST_FILE = "imastodon-mac/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				OTHER_CODE_SIGN_FLAGS = "--timestamp";
 				PRODUCT_BUNDLE_IDENTIFIER = "jp.banjun.imastodon-mac";
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				SWIFT_VERSION = 4.2;
+				SWIFT_OBJC_BRIDGING_HEADER = "imastodon-mac/imastodon-mac-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -694,6 +704,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -701,7 +712,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 34;
+				CURRENT_PROJECT_VERSION = 37;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -755,6 +766,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -762,7 +774,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 34;
+				CURRENT_PROJECT_VERSION = 37;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;

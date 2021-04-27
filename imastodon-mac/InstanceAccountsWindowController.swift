@@ -12,6 +12,9 @@ final class InstanceAccountsWindowController: NSWindowController, NSTableViewDat
         tv.dataSource = self
         tv.delegate = self
         tv.target = self
+        if #available(OSX 11.0, *) {
+            tv.style = .plain
+        }
     }
     private lazy var accountsColumn: NSTableColumn = .init(identifier: .init("Account")) ※ { c in
         c.title = "\(StoreFile.shared.store.instanceAccounts.count) Accounts"

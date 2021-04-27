@@ -21,16 +21,14 @@ end
 
 platform :mac do
   lane :archive do
-    build = 'build'
-    scheme = 'imastodon-mac'
-    app = "#{build}/#{scheme}.app"
-    sh "rm -rf ../#{app}"
-    gym(
-      scheme: scheme,
+    app = gym(
+      scheme: 'imastodon-mac',
       clean: true,
-      output_directory: build,
-      codesigning_identity: 'Developer ID Application')
-    notarize(package: app)
+      export_method: 'developer-id',
+      codesigning_identity: 'Developer ID Application',
+      skip_package_pkg: true)
+    notarize(package: app, try_early_stapling: true, verbose: true)
+    zip(path: app, symlinks: true, output_path: Pathname(app).sub_ext("-#{get_version_number(target: 'imastodon-mac')}-#{get_build_number}.zip").to_s)
   end
 end
 

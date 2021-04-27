@@ -1,1 +1,3 @@
 scheme "imastodon"
+output_directory './build'
+

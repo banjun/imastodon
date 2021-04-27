@@ -22,8 +22,8 @@ final class TimelineViewModel {
             .map {filterPredicate, timeline in filterPredicate.map {timeline.filter($0)} ?? timeline}
             .observe(on: UIScheduler()))
 
-    func insert(status: Status) {
-        timeline.value = [status] + timeline.value.prefix(345)
+    func insert(statuses: [Status]) {
+        timeline.value = statuses + timeline.value.prefix(346 - statuses.count)
     }
 
     func delete(id: ID) {

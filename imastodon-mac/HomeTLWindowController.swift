@@ -71,6 +71,9 @@ final class HomeTLViewController: NSViewController, NSTableViewDataSource, NSTab
         timelineView.doubleAction = #selector(tableViewDidDoubleClick)
         timelineView.usesAutomaticRowHeights = true
         timelineView.intercellSpacing = .zero
+        if #available(OSX 11.0, *) {
+            timelineView.style = .plain
+        }
         let tc = NSTableColumn() ※ {
             $0.identifier = NSUserInterfaceItemIdentifier(rawValue: "Status")
             $0.title = ""
@@ -89,10 +92,11 @@ final class HomeTLViewController: NSViewController, NSTableViewDataSource, NSTab
         autolayout("H:|[sv(>=128)]|")
         autolayout("V:|[search][sv(>=128)]|")
 
+        client?.home().onSuccess {self.viewModel.insert(statuses: $0)}
         streamClient.homeToots(during: reactive.lifetime)
             .take(during: reactive.lifetime)
             .observe(on: UIScheduler())
-            .observeValues {[unowned self] in self.viewModel.insert(status: $0)}
+            .observeValues {[unowned self] in self.viewModel.insert(statuses: [$0])}
         streamClient.homeDeletedIDs(during: reactive.lifetime)
             .take(during: reactive.lifetime)
             .observe(on: UIScheduler())
@@ -144,6 +148,8 @@ final class HomeTLViewController: NSViewController, NSTableViewDataSource, NSTab
                         .onFailure {NSAlert(error: $0).beginSheetModal(for: window)}
                     tableView.rowActionsVisible = false
                 }]
+        @unknown default:
+            return []
         }
     }
 
