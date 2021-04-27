@@ -195,7 +195,7 @@ extension UserViewController: UITableViewDataSource, UITableViewDelegate {
         let s = toots[indexPath.row].0
         let ac = UIAlertController(actionFor: s,
                                    safari: {[unowned self] in self.present($0, animated: true)},
-                                   showAccount: {[unowned self] in _ = self.show(UserViewController(fetcher: .account(client: self.client, account: s.mainContentStatus.account)), sender: nil)},
+                                   showAccount: {[unowned self] in self.show(UserViewController(fetcher: .account(client: self.client, account: s.mainContentStatus.account)), sender: nil)},
                                    boost: {[unowned self] in self.boost(s)},
                                    favorite: {[unowned self] in self.favorite(s)})
         ac.popoverPresentationController?.sourceView = tableView
