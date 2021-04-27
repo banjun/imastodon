@@ -96,7 +96,7 @@ final class StatusViewController: UITableViewController, ClientContainer {
         let s = formDiff.value(atIndexPath: indexPath).status
         let ac = UIAlertController(actionFor: s,
                                    safari: {[unowned self] in self.present($0, animated: true)},
-                                   showAccount: {[unowned self] in _ = self.showUserVC(s)},
+                                   showAccount: {[unowned self] in self.showUserVC(s)},
                                    boost: {[unowned self] in self.boost(s)},
                                    favorite: {[unowned self] in self.favorite(s)})
         ac.popoverPresentationController?.sourceView = tableView

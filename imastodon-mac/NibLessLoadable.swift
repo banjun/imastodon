@@ -1,6 +1,6 @@
 import Cocoa
 
-protocol NibLessLoadable: class {
+protocol NibLessLoadable: AnyObject {
     init(identifier: NSUserInterfaceItemIdentifier)
 }
 extension NibLessLoadable where Self: NSTableCellView {
