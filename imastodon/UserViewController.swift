@@ -97,7 +97,6 @@ final class UserViewController: UIViewController, ClientContainer {
         autolayout("V:|[timeline]|")
         view.bringSubviewToFront(headerView)
         loadTimelineView()
-        registerForPreviewing(with: previewingDelegate, sourceView: timelineView)
 
         switch fetcher {
         case let .fetch(client, id):
@@ -204,6 +203,19 @@ extension UserViewController: UITableViewDataSource, UITableViewDelegate {
             ac.popoverPresentationController?.sourceRect = tableView.convert(cell.statusView.iconView.bounds, from: cell.statusView.iconView)
         }
         present(ac, animated: true)
+    }
+
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        UIContextMenuConfiguration(identifier: point as NSCopying, previewProvider: { [weak self] in self?.previewingDelegate.preview(for: point) }, actionProvider: nil)
+    }
+
+    func tableView(_ tableView: UITableView, willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionCommitAnimating) {
+        animator.addCompletion { [weak self] in
+            guard let self = self,
+                  let point = configuration.identifier as? CGPoint,
+                  let vc = self.previewingDelegate.preview(for: point) else { return }
+            self.show(vc, sender: nil)
+        }
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
