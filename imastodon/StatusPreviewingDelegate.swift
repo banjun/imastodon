@@ -1,7 +1,7 @@
 import UIKit
 import API
 
-final class StatusPreviewingDelegate: NSObject, UIViewControllerPreviewingDelegate {
+final class StatusPreviewingDelegate {
     let client: Client
     let context: (CGPoint) -> (status: Status, attributedText: NSAttributedString?, sourceRect: CGRect)?
     weak var vc: UIViewController?
@@ -11,13 +11,9 @@ final class StatusPreviewingDelegate: NSObject, UIViewControllerPreviewingDelega
         self.vc = vc
     }
 
-    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+    // NOTE: might be better if vc is cached on preview and re-used on commit transition
+    func preview(for location: CGPoint) -> UIViewController? {
         guard let context = context(location) else { return nil }
-        previewingContext.sourceRect = context.sourceRect
         return StatusViewController(client: client, status: (context.status, context.attributedText), previewActionParentViewController: vc)
-    }
-
-    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
-        vc?.show(viewControllerToCommit, sender: nil)
     }
 }

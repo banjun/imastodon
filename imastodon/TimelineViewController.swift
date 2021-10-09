@@ -99,7 +99,6 @@ class TimelineViewController: UICollectionViewController {
         collectionView.register(StatusCollectionViewCell.self, forCellWithReuseIdentifier: TimelineEvent.homeCellID)
         collectionView.register(StatusCollectionViewCell.self, forCellWithReuseIdentifier: TimelineEvent.localCellID)
         collectionView.register(NotificationCollectionViewCell.self, forCellWithReuseIdentifier: TimelineEvent.notificationCellID)
-        _ = previewingDelegate.map {registerForPreviewing(with: $0, sourceView: collectionView)}
     }
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -177,6 +176,19 @@ extension TimelineViewController {
     func showAttachment(_ a: Attachment) {
         let vc = AttachmentViewController(attachment: a)
         present(vc, animated: true)
+    }
+
+    override func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        UIContextMenuConfiguration(identifier: point as NSCopying, previewProvider: { [weak self] in self?.previewingDelegate?.preview(for: point) }, actionProvider: nil)
+    }
+
+    override func collectionView(_ collectionView: UICollectionView, willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionCommitAnimating) {
+        animator.addCompletion { [weak self] in
+            guard let self = self,
+                  let point = configuration.identifier as? CGPoint,
+                  let vc = self.previewingDelegate?.preview(for: point) else { return }
+            self.show(vc, sender: nil)
+        }
     }
 }
 
