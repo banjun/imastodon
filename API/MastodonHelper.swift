@@ -40,6 +40,9 @@ extension Status {
     public var createdAt: Date? { // should be non-nil checked at decode
         return ISO8601DateFormatter().date(from: created_at)
     }
+    public var editedAt: Date? {
+        edited_at.flatMap {ISO8601DateFormatter().date(from: $0)}
+    }
 }
 
 public struct LoginSilentFormURLEncoded: APIBlueprintRequest {
