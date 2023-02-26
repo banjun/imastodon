@@ -20,15 +20,19 @@ platform :ios do
 end
 
 platform :mac do
-  lane :archive do
+  lane :archive do |options|
+    keychain_profile = options[:keychain_profile]
     app = gym(
       scheme: 'imastodon-mac',
       clean: true,
       export_method: 'developer-id',
       codesigning_identity: 'Developer ID Application',
       skip_package_pkg: true)
-    notarize(package: app, try_early_stapling: true, verbose: true)
-    zip(path: app, symlinks: true, output_path: Pathname(app).sub_ext("-#{get_version_number(target: 'imastodon-mac')}-#{get_build_number}.zip").to_s)
+    zipfile = app + ".zip"
+    sh "/usr/bin/ditto -c -k --keepParent '#{app}' '#{zipfile}'"
+    sh "xcrun notarytool submit #{zipfile} --keychain-profile #{keychain_profile} --wait"
+    sh "xcrun stapler staple #{app}"
+    sh "/usr/bin/ditto -c -k --keepParent '#{app}' '#{Pathname(app).sub_ext("-#{get_version_number(target: 'imastodon-mac')}-#{get_build_number}.zip").to_s}'"
   end
 end
 
