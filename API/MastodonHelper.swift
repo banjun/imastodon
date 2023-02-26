@@ -36,12 +36,18 @@ extension ID: ExpressibleByStringLiteral {
     }
 }
 
+private let dateFormatter = {
+    var df = ISO8601DateFormatter()
+    df.formatOptions.formUnion(.withFractionalSeconds)
+    return df
+}()
+
 extension Status {
     public var createdAt: Date? { // should be non-nil checked at decode
-        return ISO8601DateFormatter().date(from: created_at)
+        return dateFormatter.date(from: created_at)
     }
     public var editedAt: Date? {
-        edited_at.flatMap {ISO8601DateFormatter().date(from: $0)}
+        edited_at.flatMap {dateFormatter.date(from: $0)}
     }
 }
 
