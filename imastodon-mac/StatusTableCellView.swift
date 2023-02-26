@@ -10,6 +10,16 @@ final class StatusTableCellView: NSTableCellView, NibLessLoadable {
     private let spoilerText = MutableProperty<String>("")
     private lazy var hasSpoiler = Property<Bool>(capturing: spoilerText.map {!$0.isEmpty})
     private let showsSpoiler = MutableProperty<Bool>(false)
+    private let createdAt = MutableProperty<Date?>(nil)
+    private let editedAt = MutableProperty<Date?>(nil)
+    private lazy var editDescription = Property.combineLatest(createdAt, editedAt).map { c, e -> String? in
+        guard let c, let e else { return nil }
+        let createdAt = (RelativeDateTimeFormatter() ※ {
+            $0.dateTimeStyle = .numeric
+            $0.unitsStyle = .short
+        }).localizedString(for: c, relativeTo: e)
+        return "(edited toot created at \(createdAt))"
+    }
 
     let iconView = IconView()
     let nameLabel = AutolayoutLabel() ※ { l in
@@ -48,6 +58,15 @@ final class StatusTableCellView: NSTableCellView, NibLessLoadable {
         l.maximumNumberOfLines = 0
         l.cell?.isScrollable = false
     }
+    let editedLabel = AutolayoutLabel() ※ { l in
+        l.wantsLayer = false // draw to cellview layer
+        l.font = .systemFont(ofSize: 14)
+        l.isBezeled = false
+        l.drawsBackground = false
+        l.lineBreakMode = .byCharWrapping
+        l.cell?.truncatesLastVisibleLine = true
+        l.maximumNumberOfLines = 1
+    }
     let contentStackView = NSStackView() ※ { s in
         s.wantsLayer = false // draw to cellview layer
         s.orientation = .vertical
@@ -77,12 +96,12 @@ final class StatusTableCellView: NSTableCellView, NibLessLoadable {
         let autolayout = northLayoutFormat([:], [
             "icon": iconView,
             "content": contentStackView ※ { s in
-                ([nameLabel, spoilerLabel, spoilerButton, bodyLabel] as [NSView]).forEach {
+                ([nameLabel, spoilerLabel, spoilerButton, bodyLabel, editedLabel] as [NSView]).forEach {
                     s.addArrangedSubview($0)
                     $0.setContentCompressionResistancePriority(.required, for: .vertical)
                     $0.setContentHuggingPriority(.required, for: .vertical)
                 }
-                [nameLabel, spoilerLabel, bodyLabel].forEach {
+                [nameLabel, spoilerLabel, bodyLabel, editedLabel].forEach {
                     s.widthAnchor.constraint(equalTo: $0.widthAnchor).isActive = true
                 }
                 s.setHuggingPriority(.required, for: .vertical)
@@ -102,6 +121,8 @@ final class StatusTableCellView: NSTableCellView, NibLessLoadable {
         spoilerButton.reactive.state <~ showsSpoiler.map {$0 ? .on : .off}
         showsSpoiler <~ spoilerButton.reactive.boolValues
         bodyLabel.reactive[\.isHidden] <~ hasSpoiler.and(showsSpoiler.negate())
+        editedLabel.reactive[\.isHidden] <~ editDescription.map {$0 == nil}
+        editedLabel.reactive.stringValue <~ editDescription.map {$0 ?? ""}
     }
 
     required init?(coder decoder: NSCoder) {fatalError()}
@@ -126,17 +147,21 @@ final class StatusTableCellView: NSTableCellView, NibLessLoadable {
         attachmentStackViewHeight.constant = attachmentStackView.isHidden ? 0 : 128 // as nested stackview layout calculation is heavy, manually set height to auto-shrink attachments view
         attachmentStackView.reactive.attachmentURLs.action(
             attachments.compactMap {URL(string: $0.preview_url)})
+
+        createdAt.value = status.createdAt
+        editedAt.value = status.editedAt
     }
 
     override var backgroundStyle: NSView.BackgroundStyle {
         didSet {
             switch backgroundStyle {
             case .dark:
-                [nameLabel, spoilerLabel, bodyLabel].forEach {$0.textColor = .controlTextColor}
+                [nameLabel, spoilerLabel, bodyLabel, editedLabel].forEach {$0.textColor = .controlTextColor}
             case .light, .normal, .emphasized:
                 nameLabel.textColor = .systemGray
                 spoilerLabel.textColor = .controlTextColor
                 bodyLabel.textColor = .controlTextColor
+                editedLabel.textColor = .systemGray
             case .raised, .lowered:
                 break
             @unknown default:

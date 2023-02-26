@@ -266,6 +266,7 @@ Fetching a user's notifications
 + application (Application, optional) - [Application](#application) from which the status was posted
 + language (string, optional) - The detected language for the status (default: en)
 + pinned (boolean, optional) - Whether the authenticated user has pinned the status in API response. app may use app level mark as pinned
++ edited_at (string) - Timestamp of when the status was last edited.
 
 ## Application
 

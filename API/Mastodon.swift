@@ -1006,9 +1006,11 @@ public struct Status: Codable {
     public var language: String?
     /// Whether the authenticated user has pinned the status in API response. app may use app level mark as pinned  ex. boolean
     public var pinned: Bool?
+    /// Timestamp of when the status was last edited.
+    public var edited_at: String?
 
     // public memberwise init
-    public init(id: ID, uri: String, url: String?, account: Account, in_reply_to_id: ID?, in_reply_to_account_id: ID?, reblog: Indirect<Status>?, content: String, created_at: String, reblogs_count: Int, favourites_count: Int, reblogged: Bool?, favourited: Bool?, sensitive: Bool?, spoiler_text: String, visibility: String, media_attachments: [Attachment], mentions: [Mention], tags: [Tag], application: Application?, language: String?, pinned: Bool?) {
+    public init(id: ID, uri: String, url: String?, account: Account, in_reply_to_id: ID?, in_reply_to_account_id: ID?, reblog: Indirect<Status>?, content: String, created_at: String, reblogs_count: Int, favourites_count: Int, reblogged: Bool?, favourited: Bool?, sensitive: Bool?, spoiler_text: String, visibility: String, media_attachments: [Attachment], mentions: [Mention], tags: [Tag], application: Application?, language: String?, pinned: Bool?, edited_at: String?) {
         self.id = id
         self.uri = uri
         self.url = url
@@ -1031,6 +1033,7 @@ public struct Status: Codable {
         self.application = application
         self.language = language
         self.pinned = pinned
+        self.edited_at = edited_at
     }
 }
 
