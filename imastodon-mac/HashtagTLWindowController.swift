@@ -78,7 +78,7 @@ final class HashtagTLViewController: NSViewController, NSTableViewDataSource, NS
             .retry(throttling: 10)
             .take(duringLifetimeOf: self)
             .startWithSignal { signal, disposable in
-                signal.filter {$0.type == "update"}
+                signal.filter {$0.type == "update" || $0.type == "status.update"}
                     .compactMap {$0.data.data(using: .utf8)}
                     .compactMap {try? JSONDecoder().decode(Status.self, from: $0)}
                     .observe(on: UIScheduler())

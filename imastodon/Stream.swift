@@ -43,7 +43,7 @@ class Stream {
                     .on(value: {[weak self] _ in self?.updateObserver.send(value: .open)})
                     .observe {_ in}
 
-                signal.filter {$0.0 == "update"}
+                signal.filter {$0.0 == "update" || $0.type == "status.update"}
                     .flatMap(.concat) { _, d -> SignalProducer<Stream.Event, AppError> in
                         do {
                             return .init(value: .update(try JSONDecoder().decode(Status.self, from: d)))

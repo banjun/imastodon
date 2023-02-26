@@ -51,7 +51,7 @@ final class StreamClient {
         defer {lifetime += SignalRetainingDisposable(activeSignals.localToots)}
         return (activeSignals.localToots?.signal ?? (
             local(during: lifetime)
-                .filter {$0.type == "update"}
+                .filter {$0.type == "update" || $0.type == "status.update"}
                 .compactMap {$0.data.data(using: .utf8)}
                 .compactMap {try? JSONDecoder().decode(Status.self, from: $0)}
                 ※ {activeSignals.localToots = $0}))
@@ -77,7 +77,7 @@ final class StreamClient {
         defer {lifetime += SignalRetainingDisposable(activeSignals.homeToots)}
         return (activeSignals.homeToots?.signal ?? (
             user(during: lifetime)
-                .filter {$0.type == "update"}
+                .filter {$0.type == "update" || $0.type == "status.update"}
                 .compactMap {$0.data.data(using: .utf8)}
                 .compactMap {try? JSONDecoder().decode(Status.self, from: $0)}
                 ※ {activeSignals.homeToots = $0}))
