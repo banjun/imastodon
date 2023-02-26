@@ -20,6 +20,7 @@ final class StatusTableCellView: NSTableCellView, NibLessLoadable {
         }).localizedString(for: c, relativeTo: e)
         return "(edited toot created at \(createdAt))"
     }
+    private let reblogAuthor = MutableProperty<Account?>(nil)
 
     let iconView = IconView()
     let nameLabel = AutolayoutLabel() ※ { l in
@@ -67,6 +68,23 @@ final class StatusTableCellView: NSTableCellView, NibLessLoadable {
         l.cell?.truncatesLastVisibleLine = true
         l.maximumNumberOfLines = 1
     }
+    private let reblogAuthorIconView = IconView()
+    private let reblogAuthorNameLabel = AutolayoutLabel() ※ { l in
+        l.wantsLayer = false // draw to cellview layer
+        l.font = .systemFont(ofSize: 12)
+        l.isBezeled = false
+        l.drawsBackground = false
+        l.lineBreakMode = .byCharWrapping
+        l.cell?.truncatesLastVisibleLine = true
+        l.maximumNumberOfLines = 1
+        l.setContentHuggingPriority(.required, for: .vertical)
+    }
+    private lazy var reblogAuthorView: NSView = .init() ※ {
+        let autolayout = $0.northLayoutFormat([:], ["icon": reblogAuthorIconView, "name": reblogAuthorNameLabel])
+        autolayout("H:|[icon(14)]-4-[name]|")
+        autolayout("V:|[name]-(0@750,>=0)-|")
+        autolayout("V:|[icon(14)]-(0@750,>=0)-|")
+    }
     let contentStackView = NSStackView() ※ { s in
         s.wantsLayer = false // draw to cellview layer
         s.orientation = .vertical
@@ -96,12 +114,12 @@ final class StatusTableCellView: NSTableCellView, NibLessLoadable {
         let autolayout = northLayoutFormat([:], [
             "icon": iconView,
             "content": contentStackView ※ { s in
-                ([nameLabel, spoilerLabel, spoilerButton, bodyLabel, editedLabel] as [NSView]).forEach {
+                ([nameLabel, reblogAuthorView, spoilerLabel, spoilerButton, bodyLabel, editedLabel] as [NSView]).forEach {
                     s.addArrangedSubview($0)
                     $0.setContentCompressionResistancePriority(.required, for: .vertical)
                     $0.setContentHuggingPriority(.required, for: .vertical)
                 }
-                [nameLabel, spoilerLabel, bodyLabel, editedLabel].forEach {
+                [nameLabel, reblogAuthorView, spoilerLabel, bodyLabel, editedLabel].forEach {
                     s.widthAnchor.constraint(equalTo: $0.widthAnchor).isActive = true
                 }
                 s.setHuggingPriority(.required, for: .vertical)
@@ -123,6 +141,8 @@ final class StatusTableCellView: NSTableCellView, NibLessLoadable {
         bodyLabel.reactive[\.isHidden] <~ hasSpoiler.and(showsSpoiler.negate())
         editedLabel.reactive[\.isHidden] <~ editDescription.map {$0 == nil}
         editedLabel.reactive.stringValue <~ editDescription.map {$0 ?? ""}
+        reblogAuthorView.reactive[\.isHidden] <~ reblogAuthor.map {$0 == nil}
+        reblogAuthorNameLabel.reactive.stringValue <~ reblogAuthor.map {$0?.displayNameOrUserName ?? ""}
     }
 
     required init?(coder decoder: NSCoder) {fatalError()}
@@ -135,30 +155,41 @@ final class StatusTableCellView: NSTableCellView, NibLessLoadable {
 
     func setStatus(_ status: Status, baseURL: URL?) {
         nameLabel.stringValue = status.account.displayNameOrUserName
-        bodyLabel.stringValue = status.textContent
-        spoilerText.value = status.spoiler_text
+        bodyLabel.stringValue = status.mainContentStatus.textContent
+        spoilerText.value = status.mainContentStatus.spoiler_text
         showsSpoiler.value = false
         if let avatarURL = (baseURL.flatMap {status.account.avatarURL(baseURL: $0)}) {
+            iconView.image = nil
             iconView.kf.setImage(with: avatarURL)
         }
+        let reblogAuthorAccount = status.reblog?.value.account
+        if let reblogAuthorAccount, let avatarURL = (baseURL.flatMap {reblogAuthorAccount.avatarURL(baseURL: $0)}) {
+            reblogAuthorIconView.image = nil
+            reblogAuthorIconView.kf.setImage(with: avatarURL)
+        } else {
+            reblogAuthorIconView.kf.cancelDownloadTask()
+            reblogAuthorIconView.image = nil
+        }
 
-        let attachments = status.media_attachments
+        let attachments = status.mainContentStatus.media_attachments
         attachmentStackView.isHidden = attachments.isEmpty
         attachmentStackViewHeight.constant = attachmentStackView.isHidden ? 0 : 128 // as nested stackview layout calculation is heavy, manually set height to auto-shrink attachments view
         attachmentStackView.reactive.attachmentURLs.action(
             attachments.compactMap {URL(string: $0.preview_url)})
 
-        createdAt.value = status.createdAt
-        editedAt.value = status.editedAt
+        createdAt.value = status.mainContentStatus.createdAt
+        editedAt.value = status.mainContentStatus.editedAt
+        reblogAuthor.value = reblogAuthorAccount
     }
 
     override var backgroundStyle: NSView.BackgroundStyle {
         didSet {
             switch backgroundStyle {
             case .dark:
-                [nameLabel, spoilerLabel, bodyLabel, editedLabel].forEach {$0.textColor = .controlTextColor}
+                [nameLabel, reblogAuthorNameLabel, spoilerLabel, bodyLabel, editedLabel].forEach {$0.textColor = .controlTextColor}
             case .light, .normal, .emphasized:
                 nameLabel.textColor = .systemGray
+                reblogAuthorNameLabel.textColor = .systemGray
                 spoilerLabel.textColor = .controlTextColor
                 bodyLabel.textColor = .controlTextColor
                 editedLabel.textColor = .systemGray

@@ -10,4 +10,9 @@ final class IconView: NSImageView {
     }
 
     required init?(coder: NSCoder) {fatalError()}
+
+    override func updateLayer() {
+        // just overriding cause better image interpolation quality
+        super.updateLayer()
+    }
 }
